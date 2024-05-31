@@ -1,0 +1,184 @@
+type Activity {
+  id: String!
+  metadata: ActivityMetadata!
+}
+
+interface ActivityMetadata {
+  subject: [Identifier]
+}
+
+type ActivityResponse {
+  data: [Activity]!
+  limit: Int64!
+  total: Int64!
+  page: Int64!
+}
+
+type AmazonActivityMetadata implements ActivityMetadata {
+  productName: String!
+  subject: [Identifier]
+  date: Date
+  quantityPurchased: Int!
+  totalCost: String!
+}
+
+type Application {
+  appName: String!
+  publicKey: String!
+  iconURL: String!
+  gandalfID: Int64!
+  appRegistrar: String!
+}
+
+scalar Boolean
+
+enum ContentType {
+  VIDEO
+  SHORTS
+  MUSIC
+}
+
+scalar Date
+
+scalar Float
+
+scalar ID
+
+type Identifier {
+  value: String!
+  identifierType: IdentifierType!
+}
+
+enum IdentifierType {
+  IMDB
+  MOBY
+  RAWG
+  IGDB
+  ASIN
+  PLAYSTATION
+  YOUTUBE
+  TVDB
+  TVMAZE
+  UBER
+  INSTACART
+}
+
+type InstacartActivityMetadata implements ActivityMetadata {
+  subject: [Identifier]
+  retailer: String!
+  totalOrderAmountSpent: String!
+  dateOrdered: Date!
+  dateDelivered: Date!
+  statusString: String!
+  items: [InstacartOrderItem!]!
+}
+
+enum InstacartItemStatus {
+  FOUND
+  REPLACED
+  TOREFUND
+}
+
+type InstacartOrderItem {
+  itemID: String!
+  productName: String!
+  unitPrice: String!
+  status: InstacartItemStatus!
+  quantityPurchased: Int64!
+}
+
+enum InstacartOrderStatus {
+  COMPLETE
+}
+
+scalar Int
+
+scalar Int64
+
+scalar JSON
+
+scalar Map
+
+type NetflixActivityMetadata implements ActivityMetadata {
+  title: String!
+  subject: [Identifier]
+  date: Date
+  lastPlayedAt: Date
+}
+
+type PlaystationActivityMetadata implements ActivityMetadata {
+  title: String!
+  subject: [Identifier]
+  lastPlayedAt: Date
+}
+
+type Query {
+  getActivity(dataKey: String!, source: Source!, limit: Int64!, page: Int64!): ActivityResponse!
+  lookupActivity(dataKey: String!, activityId: UUID!): Activity!
+  getAppByPublicKey(publicKey: String!): Application!
+  getTraits(dataKey: String!, source: Source!, labels: [TraitLabel]!): [Trait]!
+  lookupTrait(dataKey: String!, traitId: UUID!): Trait!
+}
+
+enum Source {
+  NETFLIX
+  PLAYSTATION
+  YOUTUBE
+  AMAZON
+  UBER
+  INSTACART
+  INSTAGRAM
+  X
+}
+
+scalar String
+
+scalar Time
+
+type Trait {
+  id: UUID!
+  source: Source!
+  label: TraitLabel!
+  value: String!
+  timestamp: Time!
+}
+
+enum TraitLabel {
+  PRIME_SUBSCRIBER
+  RATING
+  TRIP_COUNT
+  ACCOUNT_CREATED_ON
+  PLAN
+  GENIUS_LEVEL
+  FOLLOWER_COUNT
+  FOLLOWING_COUNT
+  USERNAME
+  POST_COUNT
+}
+
+enum TripStatus {
+  CANCELED
+  COMPLETED
+  UNFULFILLED
+}
+
+scalar UUID
+
+type UberActivityMetadata implements ActivityMetadata {
+  subject: [Identifier]
+  beginTripTime: Time!
+  dropoffTime: Time
+  cost: String!
+  city: String!
+  distance: String!
+  status: TripStatus!
+}
+
+type YoutubeActivityMetadata implements ActivityMetadata {
+  title: String!
+  subject: [Identifier]
+  date: Date
+  percentageWatched: Int!
+  contentType: ContentType!
+}
+

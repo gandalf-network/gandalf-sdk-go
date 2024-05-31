@@ -1,0 +1,162 @@
+fragment AmazonActivityMetadataFragment on AmazonActivityMetadata {
+  productName
+  subject {
+    ... on Identifier {
+      value
+      identifierType
+    }
+  }
+  date
+  quantityPurchased
+  totalCost
+}
+
+fragment PlaystationActivityMetadataFragment on PlaystationActivityMetadata {
+  title
+  subject {
+    ... on Identifier {
+      value
+      identifierType
+    }
+  }
+  lastPlayedAt
+}
+
+fragment YoutubeActivityMetadataFragment on YoutubeActivityMetadata {
+  title
+  subject {
+    ... on Identifier {
+      value
+      identifierType
+    }
+  }
+  date
+  percentageWatched
+  contentType
+}
+
+fragment UberActivityMetadataFragment on UberActivityMetadata {
+  subject {
+    ... on Identifier {
+      value
+      identifierType
+    }
+  }
+  beginTripTime
+  dropoffTime
+  cost
+  city
+  distance
+  status
+}
+
+fragment InstacartActivityMetadataFragment on InstacartActivityMetadata {
+  subject {
+    ... on Identifier {
+      value
+      identifierType
+    }
+  }
+  retailer
+  totalOrderAmountSpent
+  dateOrdered
+  dateDelivered
+  statusString
+  items {
+    ... on InstacartOrderItem {
+      itemID
+      productName
+      unitPrice
+      status
+      quantityPurchased
+    }
+  }
+}
+
+fragment NetflixActivityMetadataFragment on NetflixActivityMetadata {
+  title
+  subject {
+    ... on Identifier {
+      value
+      identifierType
+    }
+  }
+  date
+  lastPlayedAt
+}
+
+query getActivity($dataKey: String!, $source: Source!, $limit: Int64!, $page: Int64!) {
+  getActivity(dataKey: $dataKey, source: $source, limit: $limit, page: $page) {
+    ... on ActivityResponse {
+      data {
+    ... on Activity {
+      id
+      metadata {
+        ...NetflixActivityMetadataFragment
+        ...PlaystationActivityMetadataFragment
+        ...AmazonActivityMetadataFragment
+        ...YoutubeActivityMetadataFragment
+        ...UberActivityMetadataFragment
+        ...InstacartActivityMetadataFragment
+      }
+    }
+      }
+      limit
+      total
+      page
+    }
+  }
+}
+
+query lookupActivity($dataKey: String!, $activityId: UUID!) {
+  lookupActivity(dataKey: $dataKey, activityId: $activityId) {
+    ... on Activity {
+      id
+      metadata {
+        ...NetflixActivityMetadataFragment
+        ...PlaystationActivityMetadataFragment
+        ...AmazonActivityMetadataFragment
+        ...YoutubeActivityMetadataFragment
+        ...UberActivityMetadataFragment
+        ...InstacartActivityMetadataFragment
+      }
+    }
+  }
+}
+
+query getAppByPublicKey($publicKey: String!) {
+  getAppByPublicKey(publicKey: $publicKey) {
+    ... on Application {
+      appName
+      publicKey
+      iconURL
+      gandalfID
+      appRegistrar
+    }
+  }
+}
+
+query getTraits($dataKey: String!, $source: Source!, $labels: [TraitLabel]!) {
+  getTraits(dataKey: $dataKey, source: $source, labels: $labels) {
+    ... on Trait {
+      id
+      source
+      label
+      value
+      timestamp
+    }
+  }
+}
+
+query lookupTrait($dataKey: String!, $traitId: UUID!) {
+  lookupTrait(dataKey: $dataKey, traitId: $traitId) {
+    ... on Trait {
+      id
+      source
+      label
+      value
+      timestamp
+    }
+  }
+}
+
