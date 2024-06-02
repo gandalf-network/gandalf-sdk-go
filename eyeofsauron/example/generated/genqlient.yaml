@@ -1,7 +1,8 @@
+
 schema: schema.graphql
 operations:
 - genqlient.graphql
-generated: ./generated/generated.go
+generated: generated.go
 bindings:
   Int64:
     type: github.com/gandalf-network/gandalf-sdk-go/eyeofsauron/graphqlTypes.Int64

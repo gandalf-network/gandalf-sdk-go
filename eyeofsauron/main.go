@@ -2,12 +2,16 @@ package main
 
 import (
 	"context"
+	"flag"
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 	"strings"
 
-	"github.com/machinebox/graphql"
+	"github.com/Khan/genqlient/generate"
+
+	graphqlClient "github.com/machinebox/graphql"
 )
 
 // IntrospectionResult represents the schema structure received from the GraphQL introspection query
@@ -50,9 +54,27 @@ type Value struct {
 }
 
 func main() {
+	var folder string
+	flag.StringVar(&folder, "folder", "", "Set the destination folder for the generated files")
+	flag.StringVar(&folder, "f", "", "Set the destination folder for the generated files")
+	flag.Parse()
 
-	client := graphql.NewClient("http://localhost:1000/public/gql")
-	req := graphql.NewRequest(introspectionQuery)
+	cwd, err := os.Getwd()
+	if err != nil {
+		log.Fatalf("Error getting current working directory: %v", err)
+	}
+
+	if folder == "" {
+		fmt.Println("Error: folder flag is required")
+		flag.Usage()
+		os.Exit(1)
+	}
+
+	// Join the CWD with the provided folder path
+	folder = filepath.Join(cwd, folder)
+
+	client := graphqlClient.NewClient("http://localhost:1000/public/gql")
+	req := graphqlClient.NewRequest(introspectionQuery)
 
 	ctx := context.Background()
 
@@ -63,7 +85,7 @@ func main() {
 	}
 
 	sdl := convertToSDL(respData)
-	writeToFile("schema.graphql", sdl)
+	writeToFile(filepath.Join(folder, "schema.graphql"), sdl)
 
 	typesMap := buildtypesMap(respData)
 	interfaceImplementations := buildInterfaceImplementationsMap(respData)
@@ -73,104 +95,43 @@ func main() {
 	generateQueries(stringBuilder, respData, typesMap, interfaceImplementations)
 	generateMutations(stringBuilder, respData, typesMap, interfaceImplementations)
 
-	writeToFile("genqlient.graphql", stringBuilder.String())
+	writeToFile(filepath.Join(folder, "genqlient.graphql"), stringBuilder.String())
 
-	fmt.Println("Schema, fragments, queries, and mutations dumped to files.")
-}
+	var gqlgenConfigFilename = filepath.Join(folder, "genqlient.yaml")
+	writeToFile(gqlgenConfigFilename, gqlgenConfig)
 
-const introspectionQuery = `
-	query {
-		__schema {
-			types {
-				kind
-				name
-				description
-				fields(includeDeprecated: true) {
-					name
-					description
-					args {
-						name
-						description
-						type {
-							kind
-							name
-							ofType {
-								kind
-								name
-								ofType {
-									kind
-									name
-									ofType {
-										kind
-										name
-									}
-								}
-							}
-						}
-						defaultValue
-					}
-					type {
-						kind
-						name
-						ofType {
-							kind
-							name
-							ofType {
-								kind
-								name
-								ofType {
-									kind
-									name
-								}
-							}
-						}
-					}
-					isDeprecated
-					deprecationReason
-				}
-				inputFields {
-					name
-					description
-					type {
-						kind
-						name
-						ofType {
-							kind
-							name
-							ofType {
-								kind
-								name
-							}
-						}
-					}
-					defaultValue
-				}
-				interfaces {
-					kind
-					name
-					ofType {
-						kind
-						name
-					}
-				}
-				enumValues(includeDeprecated: true) {
-					name
-					description
-					isDeprecated
-					deprecationReason
-				}
-				possibleTypes {
-					kind
-					name
-					ofType {
-						kind
-						name
-					}
-				}
-			}
+	var config *generate.Config
+
+	if gqlgenConfigFilename != "" {
+		config, err = generate.ReadAndValidateConfig(gqlgenConfigFilename)
+		if err != nil {
+			log.Fatalf("unable to read config: %s", err)
+		}
+	} else {
+		config, err = generate.ReadAndValidateConfigFromDefaultLocations()
+		if err != nil {
+			log.Fatalf("unable to read config: %s", err)
 		}
 	}
-`
+
+	generated, err := generate.Generate(config)
+	if err != nil {
+		log.Fatalf("unable to generate code: %s", err)
+	}
+
+	for filename, content := range generated {
+		err = os.MkdirAll(filepath.Dir(filename), 0o755)
+		if err != nil {
+			log.Fatalf("could not create parent directory for generated file %v: %v", filename, err)
+			return
+		}
+
+		err = os.WriteFile(filename, content, 0o644)
+		if err != nil {
+			log.Fatalf("could not write generated file %v: %v", filename, err)
+		}
+	}
+}
 
 func convertToSDL(introspection IntrospectionResult) string {
 	var sb strings.Builder
@@ -452,6 +413,11 @@ func writeFieldSelection(sb *strings.Builder, t Type, typesMap map[string]Type, 
 }
 
 func writeToFile(filename, content string) {
+	dir := filepath.Dir(filename)
+	if err := os.MkdirAll(dir, 0755); err != nil {
+		log.Fatalf("Error creating directory %s: %v", dir, err)
+	}
+
 	if err := os.WriteFile(filename, []byte(content), 0644); err != nil {
 		log.Fatalf("Error writing to file %s: %v", filename, err)
 	}
