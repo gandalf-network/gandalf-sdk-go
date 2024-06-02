@@ -5,7 +5,6 @@ go 1.22.1
 require (
 	github.com/Khan/genqlient v0.7.0
 	github.com/btcsuite/btcd/btcec/v2 v2.3.3
-	github.com/davecgh/go-spew v1.1.1
 	github.com/google/uuid v1.6.0
 	github.com/machinebox/graphql v0.2.2
 )
@@ -26,4 +25,5 @@ require (
 
 replace github.com/machinebox/graphql => github.com/machinebox/graphql v0.2.3-0.20181106130121-3a9253180225
 
-replace github.com/Khan/genqlient v0.7.0 => ./../../../gandalf-gate/genqlient
+// replace github.com/Khan/genqlient v0.7.0 => ./../../../gandalf-gate/genqlient
+replace github.com/Khan/genqlient v0.7.0 => github.com/gandalf-network/genqlient v0.0.0-20240602155823-670b8ef32925
