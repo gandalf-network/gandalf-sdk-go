@@ -15,10 +15,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Khan/genqlient/graphql"
 	"github.com/btcsuite/btcd/btcec/v2"
+	graphql2 "github.com/gandalf-network/gandalf-sdk-go/eyeofsauron/graphql"
 	"github.com/gandalf-network/gandalf-sdk-go/eyeofsauron/graphqlTypes"
-	graphql2 "github.com/machinebox/graphql"
+	"github.com/gandalf-network/genqlient/graphql"
 )
 
 type EyeOfSauron struct {

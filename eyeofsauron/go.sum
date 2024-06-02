@@ -1,3 +1,5 @@
+github.com/Khan/genqlient v0.7.0 h1:GZ1meyRnzcDTK48EjqB8t3bcfYvHArCUUvgOwpz1D4w=
+github.com/Khan/genqlient v0.7.0/go.mod h1:HNyy3wZvuYwmW3Y7mkoQLZsa/R5n5yIRajS1kPBvSFM=
 github.com/agnivade/levenshtein v1.1.1 h1:QY8M92nrzkmr798gCo3kmMyqXFzdQVpxLlGPRBij0P8=
 github.com/agnivade/levenshtein v1.1.1/go.mod h1:veldBMzWxcCG2ZvUTKD2kJNRdCk5hVbJomOvKkmgYbo=
 github.com/alexflint/go-arg v1.4.2 h1:lDWZAXxpAnZUq4qwb86p/3rIJJ2Li81EoMbTMujhVa0=
@@ -21,14 +23,10 @@ github.com/decred/dcrd/dcrec/secp256k1/v4 v4.0.1 h1:YLtO71vCjJRCBcrPMtQ9nqBsqpA1
 github.com/decred/dcrd/dcrec/secp256k1/v4 v4.0.1/go.mod h1:hyedUtir6IdtD/7lIxGeCxkaw7y45JueMRL4DIyJDKs=
 github.com/dgryski/trifles v0.0.0-20200323201526-dd97f9abfb48 h1:fRzb/w+pyskVMQ+UbP35JkH8yB7MYb4q/qhBarqZE6g=
 github.com/dgryski/trifles v0.0.0-20200323201526-dd97f9abfb48/go.mod h1:if7Fbed8SFyPtHLHbg49SI7NAdJiC5WIA09pe59rfAA=
-github.com/gandalf-network/genqlient v0.0.0-20240602164016-6dfd436f2b5b h1:AcoA5u7ZwQTLB2NeRKcfk+vS3HV66gmZT0+WtG126mg=
-github.com/gandalf-network/genqlient v0.0.0-20240602164016-6dfd436f2b5b/go.mod h1:5QM9qo6jkvqATefk2WgDJmrCcfbbmzn84sis6Pja/V0=
+github.com/gandalf-network/genqlient v0.0.0-20240602203751-3e5c5b5232ea h1:7SJ2ijROf3tkPCK5tN4SSRfebyv5v+/clDP6vLHtyDI=
+github.com/gandalf-network/genqlient v0.0.0-20240602203751-3e5c5b5232ea/go.mod h1:psNwR/HdMPm9ELCr4ApfcUj4+cenzDbZkPBUl6JYEi0=
 github.com/google/uuid v1.6.0 h1:NIvaJDMOsjHA8n1jAhLSgzrAzy1Hgr+hNrb57e+94F0=
 github.com/google/uuid v1.6.0/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
-github.com/machinebox/graphql v0.2.3-0.20181106130121-3a9253180225 h1:guHWmqIKr4G+gQ4uYU5vcZjsUhhklRA2uOcGVfcfqis=
-github.com/machinebox/graphql v0.2.3-0.20181106130121-3a9253180225/go.mod h1:F+kbVMHuwrQ5tYgU9JXlnskM8nOaFxCAEolaQybkjWA=
-github.com/matryer/is v1.4.1 h1:55ehd8zaGABKLXQUe2awZ99BD/PTc2ls+KV/dXphgEQ=
-github.com/matryer/is v1.4.1/go.mod h1:8I/i5uYgLzgsgEloJE1U6xx5HkBQpAZvepWuujKwMRU=
 github.com/pkg/errors v0.9.1 h1:FEBLx1zS214owpjy7qsBeixbURkuhQAwrK5UwLGTwt4=
 github.com/pkg/errors v0.9.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=

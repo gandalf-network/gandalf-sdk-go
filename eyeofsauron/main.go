@@ -9,8 +9,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/Khan/genqlient/generate"
 	graphqlClient "github.com/gandalf-network/gandalf-sdk-go/eyeofsauron/graphql"
+	"github.com/gandalf-network/genqlient/generate"
 )
 
 // IntrospectionResult represents the schema structure received from the GraphQL introspection query

@@ -1,7 +1,3 @@
 package graphqlTypes
 
-import (
-	"time"
-)
-
-type Date time.Time
+type Date string

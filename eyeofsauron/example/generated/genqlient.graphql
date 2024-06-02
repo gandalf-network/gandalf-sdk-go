@@ -1,3 +1,26 @@
+fragment InstacartActivityMetadata on InstacartActivityMetadata {
+  subject {
+    ... on Identifier {
+      value
+      identifierType
+    }
+  }
+  retailer
+  totalOrderAmountSpent
+  dateOrdered
+  dateDelivered
+  statusString
+  items {
+    ... on InstacartOrderItem {
+      itemID
+      productName
+      unitPrice
+      status
+      quantityPurchased
+    }
+  }
+}
+
 fragment PlaystationActivityMetadata on PlaystationActivityMetadata {
   title
   subject {
@@ -21,27 +44,17 @@ fragment NetflixActivityMetadata on NetflixActivityMetadata {
   lastPlayedAt
 }
 
-fragment InstacartActivityMetadata on InstacartActivityMetadata {
+fragment AmazonActivityMetadata on AmazonActivityMetadata {
+  productName
   subject {
     ... on Identifier {
       value
       identifierType
     }
   }
-  retailer
-  totalOrderAmountSpent
-  dateOrdered
-  dateDelivered
-  statusString
-  items {
-    ... on InstacartOrderItem {
-      itemID
-      productName
-      unitPrice
-      status
-      quantityPurchased
-    }
-  }
+  date
+  quantityPurchased
+  totalCost
 }
 
 fragment UberActivityMetadata on UberActivityMetadata {
@@ -70,19 +83,6 @@ fragment YoutubeActivityMetadata on YoutubeActivityMetadata {
   date
   percentageWatched
   contentType
-}
-
-fragment AmazonActivityMetadata on AmazonActivityMetadata {
-  productName
-  subject {
-    ... on Identifier {
-      value
-      identifierType
-    }
-  }
-  date
-  quantityPurchased
-  totalCost
 }
 
 query getActivity($dataKey: String!, $source: Source!, $limit: Int64!, $page: Int64!) {
