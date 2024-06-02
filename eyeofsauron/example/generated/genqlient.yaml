@@ -1,0 +1,14 @@
+
+schema: schema.graphql
+operations:
+- genqlient.graphql
+generated: generated.go
+bindings:
+  Int64:
+    type: github.com/gandalf-network/gandalf-sdk-go/eyeofsauron/graphqlTypes.Int64
+  Date:
+    type: github.com/gandalf-network/gandalf-sdk-go/eyeofsauron/graphqlTypes.Date
+  UUID:
+    type: github.com/gandalf-network/gandalf-sdk-go/eyeofsauron/graphqlTypes.UUID
+  Time:
+    type: time.Time
