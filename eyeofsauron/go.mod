@@ -4,7 +4,7 @@ go 1.22.1
 
 require (
 	github.com/btcsuite/btcd/btcec/v2 v2.3.3
-	github.com/gandalf-network/genqlient v0.0.0-20240602203751-3e5c5b5232ea
+	github.com/gandalf-network/genqlient v1.0.0
 	github.com/google/uuid v1.6.0
 	github.com/pkg/errors v0.9.1
 )
