@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"strings"
 
@@ -54,14 +53,8 @@ type Value struct {
 	DeprecationReason string `json:"deprecationReason"`
 }
 
-func runCommand(name string, arg ...string) error {
-	cmd := exec.Command(name, arg...)
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	return cmd.Run()
-}
-
 func main() {
+
 	var folder string
 	flag.StringVar(&folder, "folder", "", "Set the destination folder for the generated files")
 	flag.StringVar(&folder, "f", "", "Set the destination folder for the generated files")
@@ -77,6 +70,7 @@ func main() {
 		flag.Usage()
 		os.Exit(1)
 	}
+	fmt.Println("H__O")
 
 	// Join the CWD with the provided folder path
 	folder = filepath.Join(cwd, folder)
