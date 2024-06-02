@@ -1,10 +1,10 @@
-module github.com/gandalf-network/gandalf-sdk-go/eyeofsauron
+module github.com/gandalf-network/gandalf-sdk-go
 
 go 1.22.1
 
 require (
 	github.com/btcsuite/btcd/btcec/v2 v2.3.3
-	github.com/gandalf-network/genqlient v1.0.0
+	github.com/gandalf-network/genqlient v1.0.1
 	github.com/google/uuid v1.6.0
 	github.com/pkg/errors v0.9.1
 )
