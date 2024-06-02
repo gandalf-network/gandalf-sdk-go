@@ -21,8 +21,8 @@ github.com/decred/dcrd/dcrec/secp256k1/v4 v4.0.1 h1:YLtO71vCjJRCBcrPMtQ9nqBsqpA1
 github.com/decred/dcrd/dcrec/secp256k1/v4 v4.0.1/go.mod h1:hyedUtir6IdtD/7lIxGeCxkaw7y45JueMRL4DIyJDKs=
 github.com/dgryski/trifles v0.0.0-20200323201526-dd97f9abfb48 h1:fRzb/w+pyskVMQ+UbP35JkH8yB7MYb4q/qhBarqZE6g=
 github.com/dgryski/trifles v0.0.0-20200323201526-dd97f9abfb48/go.mod h1:if7Fbed8SFyPtHLHbg49SI7NAdJiC5WIA09pe59rfAA=
-github.com/gandalf-network/genqlient v0.0.0-20240602155823-670b8ef32925 h1:H/W5jx0xXLK3LS66Zlkw+HeUuOdAT4vUSVGvjbQVsHU=
-github.com/gandalf-network/genqlient v0.0.0-20240602155823-670b8ef32925/go.mod h1:5QM9qo6jkvqATefk2WgDJmrCcfbbmzn84sis6Pja/V0=
+github.com/gandalf-network/genqlient v0.0.0-20240602164016-6dfd436f2b5b h1:AcoA5u7ZwQTLB2NeRKcfk+vS3HV66gmZT0+WtG126mg=
+github.com/gandalf-network/genqlient v0.0.0-20240602164016-6dfd436f2b5b/go.mod h1:5QM9qo6jkvqATefk2WgDJmrCcfbbmzn84sis6Pja/V0=
 github.com/google/uuid v1.6.0 h1:NIvaJDMOsjHA8n1jAhLSgzrAzy1Hgr+hNrb57e+94F0=
 github.com/google/uuid v1.6.0/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
 github.com/machinebox/graphql v0.2.3-0.20181106130121-3a9253180225 h1:guHWmqIKr4G+gQ4uYU5vcZjsUhhklRA2uOcGVfcfqis=
