@@ -295,13 +295,13 @@ func generateFragments(sb *strings.Builder, typesMap map[string]Type, interfaceI
 			continue
 		}
 
-		sb.WriteString(fmt.Sprintf("fragment %sFragment on %s {\n", typeName, typeName))
+		sb.WriteString(fmt.Sprintf("fragment %s on %s {\n", typeName, typeName))
 		for _, field := range fields {
 			sb.WriteString(fmt.Sprintf("  %s", field.Name))
 
 			innermostType := findInnermostType(&field.Type)
 			if innermostType.Kind == "INTERFACE" {
-				sb.WriteString(fmt.Sprintf(" {\n    ...%sFragment\n  }\n", innermostType.Name))
+				sb.WriteString(fmt.Sprintf(" {\n    ...%s\n  }\n", innermostType.Name))
 			} else if innermostType.Kind == "OBJECT" {
 				sb.WriteString(" {\n")
 				writeFieldSelection(sb, *innermostType, typesMap, interfaceImplementations)
@@ -392,7 +392,7 @@ func writeFieldSelection(sb *strings.Builder, t Type, typesMap map[string]Type, 
 				if field.Type.OfType.Kind == "INTERFACE" {
 					sb.WriteString(" {\n")
 					for _, impl := range interfaceImplementations[field.Type.OfType.Name] {
-						sb.WriteString(fmt.Sprintf("        ...%sFragment\n", impl))
+						sb.WriteString(fmt.Sprintf("        ...%s\n", impl))
 					}
 					sb.WriteString("      }\n")
 				} else if field.Type.OfType.Kind == "OBJECT" || field.Type.OfType.Kind == "UNION" || field.Type.OfType.Kind == "LIST" {

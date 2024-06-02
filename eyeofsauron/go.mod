@@ -5,6 +5,7 @@ go 1.22.1
 require (
 	github.com/Khan/genqlient v0.7.0
 	github.com/btcsuite/btcd/btcec/v2 v2.3.3
+	github.com/davecgh/go-spew v1.1.1
 	github.com/google/uuid v1.6.0
 	github.com/machinebox/graphql v0.2.2
 )

@@ -1,4 +1,4 @@
-fragment AmazonActivityMetadataFragment on AmazonActivityMetadata {
+fragment AmazonActivityMetadata on AmazonActivityMetadata {
   productName
   subject {
     ... on Identifier {
@@ -11,7 +11,7 @@ fragment AmazonActivityMetadataFragment on AmazonActivityMetadata {
   totalCost
 }
 
-fragment UberActivityMetadataFragment on UberActivityMetadata {
+fragment UberActivityMetadata on UberActivityMetadata {
   subject {
     ... on Identifier {
       value
@@ -26,43 +26,7 @@ fragment UberActivityMetadataFragment on UberActivityMetadata {
   status
 }
 
-fragment YoutubeActivityMetadataFragment on YoutubeActivityMetadata {
-  title
-  subject {
-    ... on Identifier {
-      value
-      identifierType
-    }
-  }
-  date
-  percentageWatched
-  contentType
-}
-
-fragment NetflixActivityMetadataFragment on NetflixActivityMetadata {
-  title
-  subject {
-    ... on Identifier {
-      value
-      identifierType
-    }
-  }
-  date
-  lastPlayedAt
-}
-
-fragment PlaystationActivityMetadataFragment on PlaystationActivityMetadata {
-  title
-  subject {
-    ... on Identifier {
-      value
-      identifierType
-    }
-  }
-  lastPlayedAt
-}
-
-fragment InstacartActivityMetadataFragment on InstacartActivityMetadata {
+fragment InstacartActivityMetadata on InstacartActivityMetadata {
   subject {
     ... on Identifier {
       value
@@ -85,6 +49,42 @@ fragment InstacartActivityMetadataFragment on InstacartActivityMetadata {
   }
 }
 
+fragment PlaystationActivityMetadata on PlaystationActivityMetadata {
+  title
+  subject {
+    ... on Identifier {
+      value
+      identifierType
+    }
+  }
+  lastPlayedAt
+}
+
+fragment YoutubeActivityMetadata on YoutubeActivityMetadata {
+  title
+  subject {
+    ... on Identifier {
+      value
+      identifierType
+    }
+  }
+  date
+  percentageWatched
+  contentType
+}
+
+fragment NetflixActivityMetadata on NetflixActivityMetadata {
+  title
+  subject {
+    ... on Identifier {
+      value
+      identifierType
+    }
+  }
+  date
+  lastPlayedAt
+}
+
 query getActivity($dataKey: String!, $source: Source!, $limit: Int64!, $page: Int64!) {
   getActivity(dataKey: $dataKey, source: $source, limit: $limit, page: $page) {
     ... on ActivityResponse {
@@ -92,12 +92,12 @@ query getActivity($dataKey: String!, $source: Source!, $limit: Int64!, $page: In
     ... on Activity {
       id
       metadata {
-        ...NetflixActivityMetadataFragment
-        ...PlaystationActivityMetadataFragment
-        ...AmazonActivityMetadataFragment
-        ...YoutubeActivityMetadataFragment
-        ...UberActivityMetadataFragment
-        ...InstacartActivityMetadataFragment
+        ...NetflixActivityMetadata
+        ...PlaystationActivityMetadata
+        ...AmazonActivityMetadata
+        ...YoutubeActivityMetadata
+        ...UberActivityMetadata
+        ...InstacartActivityMetadata
       }
     }
       }
@@ -113,12 +113,12 @@ query lookupActivity($dataKey: String!, $activityId: UUID!) {
     ... on Activity {
       id
       metadata {
-        ...NetflixActivityMetadataFragment
-        ...PlaystationActivityMetadataFragment
-        ...AmazonActivityMetadataFragment
-        ...YoutubeActivityMetadataFragment
-        ...UberActivityMetadataFragment
-        ...InstacartActivityMetadataFragment
+        ...NetflixActivityMetadata
+        ...PlaystationActivityMetadata
+        ...AmazonActivityMetadata
+        ...YoutubeActivityMetadata
+        ...UberActivityMetadata
+        ...InstacartActivityMetadata
       }
     }
   }

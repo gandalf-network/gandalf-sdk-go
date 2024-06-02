@@ -67,43 +67,43 @@ func SignMessageAsBase64(privKey *ecdsa.PrivateKey, message []byte) (string, err
 	return signatureB64, nil
 }
 
-// AmazonActivityMetadataFragment includes the GraphQL fields of AmazonActivityMetadata requested by the fragment AmazonActivityMetadataFragment.
-type AmazonActivityMetadataFragment struct {
-	ProductName       string                                            `json:"productName"`
-	Subject           []AmazonActivityMetadataFragmentSubjectIdentifier `json:"subject"`
-	Date              graphqlTypes.Date                                 `json:"date"`
-	QuantityPurchased int                                               `json:"quantityPurchased"`
-	TotalCost         string                                            `json:"totalCost"`
+// AmazonActivityMetadata includes the GraphQL fields of AmazonActivityMetadata requested by the fragment AmazonActivityMetadata.
+type AmazonActivityMetadata struct {
+	ProductName       string                                    `json:"productName"`
+	Subject           []AmazonActivityMetadataSubjectIdentifier `json:"subject"`
+	Date              graphqlTypes.Date                         `json:"date"`
+	QuantityPurchased int                                       `json:"quantityPurchased"`
+	TotalCost         string                                    `json:"totalCost"`
 }
 
-// GetProductName returns AmazonActivityMetadataFragment.ProductName, and is useful for accessing the field via an interface.
-func (v *AmazonActivityMetadataFragment) GetProductName() string { return v.ProductName }
+// GetProductName returns AmazonActivityMetadata.ProductName, and is useful for accessing the field via an interface.
+func (v *AmazonActivityMetadata) GetProductName() string { return v.ProductName }
 
-// GetSubject returns AmazonActivityMetadataFragment.Subject, and is useful for accessing the field via an interface.
-func (v *AmazonActivityMetadataFragment) GetSubject() []AmazonActivityMetadataFragmentSubjectIdentifier {
+// GetSubject returns AmazonActivityMetadata.Subject, and is useful for accessing the field via an interface.
+func (v *AmazonActivityMetadata) GetSubject() []AmazonActivityMetadataSubjectIdentifier {
 	return v.Subject
 }
 
-// GetDate returns AmazonActivityMetadataFragment.Date, and is useful for accessing the field via an interface.
-func (v *AmazonActivityMetadataFragment) GetDate() graphqlTypes.Date { return v.Date }
+// GetDate returns AmazonActivityMetadata.Date, and is useful for accessing the field via an interface.
+func (v *AmazonActivityMetadata) GetDate() graphqlTypes.Date { return v.Date }
 
-// GetQuantityPurchased returns AmazonActivityMetadataFragment.QuantityPurchased, and is useful for accessing the field via an interface.
-func (v *AmazonActivityMetadataFragment) GetQuantityPurchased() int { return v.QuantityPurchased }
+// GetQuantityPurchased returns AmazonActivityMetadata.QuantityPurchased, and is useful for accessing the field via an interface.
+func (v *AmazonActivityMetadata) GetQuantityPurchased() int { return v.QuantityPurchased }
 
-// GetTotalCost returns AmazonActivityMetadataFragment.TotalCost, and is useful for accessing the field via an interface.
-func (v *AmazonActivityMetadataFragment) GetTotalCost() string { return v.TotalCost }
+// GetTotalCost returns AmazonActivityMetadata.TotalCost, and is useful for accessing the field via an interface.
+func (v *AmazonActivityMetadata) GetTotalCost() string { return v.TotalCost }
 
-// AmazonActivityMetadataFragmentSubjectIdentifier includes the requested fields of the GraphQL type Identifier.
-type AmazonActivityMetadataFragmentSubjectIdentifier struct {
+// AmazonActivityMetadataSubjectIdentifier includes the requested fields of the GraphQL type Identifier.
+type AmazonActivityMetadataSubjectIdentifier struct {
 	Value          string         `json:"value"`
 	IdentifierType IdentifierType `json:"identifierType"`
 }
 
-// GetValue returns AmazonActivityMetadataFragmentSubjectIdentifier.Value, and is useful for accessing the field via an interface.
-func (v *AmazonActivityMetadataFragmentSubjectIdentifier) GetValue() string { return v.Value }
+// GetValue returns AmazonActivityMetadataSubjectIdentifier.Value, and is useful for accessing the field via an interface.
+func (v *AmazonActivityMetadataSubjectIdentifier) GetValue() string { return v.Value }
 
-// GetIdentifierType returns AmazonActivityMetadataFragmentSubjectIdentifier.IdentifierType, and is useful for accessing the field via an interface.
-func (v *AmazonActivityMetadataFragmentSubjectIdentifier) GetIdentifierType() IdentifierType {
+// GetIdentifierType returns AmazonActivityMetadataSubjectIdentifier.IdentifierType, and is useful for accessing the field via an interface.
+func (v *AmazonActivityMetadataSubjectIdentifier) GetIdentifierType() IdentifierType {
 	return v.IdentifierType
 }
 
@@ -114,6 +114,887 @@ const (
 	ContentTypeShorts ContentType = "SHORTS"
 	ContentTypeMusic  ContentType = "MUSIC"
 )
+
+// GetActivityActivityResponse includes the requested fields of the GraphQL type ActivityResponse.
+type GetActivityActivityResponse struct {
+	Data  []GetActivityActivityResponseDataActivity `json:"data"`
+	Limit graphqlTypes.Int64                        `json:"limit"`
+	Total graphqlTypes.Int64                        `json:"total"`
+	Page  graphqlTypes.Int64                        `json:"page"`
+}
+
+// GetData returns GetActivityActivityResponse.Data, and is useful for accessing the field via an interface.
+func (v *GetActivityActivityResponse) GetData() []GetActivityActivityResponseDataActivity {
+	return v.Data
+}
+
+// GetLimit returns GetActivityActivityResponse.Limit, and is useful for accessing the field via an interface.
+func (v *GetActivityActivityResponse) GetLimit() graphqlTypes.Int64 { return v.Limit }
+
+// GetTotal returns GetActivityActivityResponse.Total, and is useful for accessing the field via an interface.
+func (v *GetActivityActivityResponse) GetTotal() graphqlTypes.Int64 { return v.Total }
+
+// GetPage returns GetActivityActivityResponse.Page, and is useful for accessing the field via an interface.
+func (v *GetActivityActivityResponse) GetPage() graphqlTypes.Int64 { return v.Page }
+
+// GetActivityActivityResponseDataActivity includes the requested fields of the GraphQL type Activity.
+type GetActivityActivityResponseDataActivity struct {
+	Id       string                                          `json:"id"`
+	Metadata GetActivityActivityResponseDataActivityMetadata `json:"-"`
+}
+
+// GetId returns GetActivityActivityResponseDataActivity.Id, and is useful for accessing the field via an interface.
+func (v *GetActivityActivityResponseDataActivity) GetId() string { return v.Id }
+
+// GetMetadata returns GetActivityActivityResponseDataActivity.Metadata, and is useful for accessing the field via an interface.
+func (v *GetActivityActivityResponseDataActivity) GetMetadata() GetActivityActivityResponseDataActivityMetadata {
+	return v.Metadata
+}
+
+func (v *GetActivityActivityResponseDataActivity) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*GetActivityActivityResponseDataActivity
+		Metadata json.RawMessage `json:"metadata"`
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.GetActivityActivityResponseDataActivity = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	{
+		dst := &v.Metadata
+		src := firstPass.Metadata
+		if len(src) != 0 && string(src) != "null" {
+			err = __unmarshalGetActivityActivityResponseDataActivityMetadata(
+				src, dst)
+			if err != nil {
+				return fmt.Errorf(
+					"unable to unmarshal GetActivityActivityResponseDataActivity.Metadata: %w", err)
+			}
+		}
+	}
+	return nil
+}
+
+type __premarshalGetActivityActivityResponseDataActivity struct {
+	Id string `json:"id"`
+
+	Metadata json.RawMessage `json:"metadata"`
+}
+
+func (v *GetActivityActivityResponseDataActivity) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *GetActivityActivityResponseDataActivity) __premarshalJSON() (*__premarshalGetActivityActivityResponseDataActivity, error) {
+	var retval __premarshalGetActivityActivityResponseDataActivity
+
+	retval.Id = v.Id
+	{
+
+		dst := &retval.Metadata
+		src := v.Metadata
+		var err error
+		*dst, err = __marshalGetActivityActivityResponseDataActivityMetadata(
+			&src)
+		if err != nil {
+			return nil, fmt.Errorf(
+				"unable to marshal GetActivityActivityResponseDataActivity.Metadata: %w", err)
+		}
+	}
+	return &retval, nil
+}
+
+// GetActivityActivityResponseDataActivityMetadata includes the requested fields of the GraphQL interface ActivityMetadata.
+//
+// GetActivityActivityResponseDataActivityMetadata is implemented by the following types:
+// GetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata
+// GetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata
+// GetActivityActivityResponseDataActivityMetadataNetflixActivityMetadata
+// GetActivityActivityResponseDataActivityMetadataPlaystationActivityMetadata
+// GetActivityActivityResponseDataActivityMetadataUberActivityMetadata
+// GetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata
+type GetActivityActivityResponseDataActivityMetadata interface {
+	implementsGraphQLInterfaceGetActivityActivityResponseDataActivityMetadata()
+	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
+	GetTypename() string
+}
+
+func (v *GetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata) implementsGraphQLInterfaceGetActivityActivityResponseDataActivityMetadata() {
+}
+func (v *GetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata) implementsGraphQLInterfaceGetActivityActivityResponseDataActivityMetadata() {
+}
+func (v *GetActivityActivityResponseDataActivityMetadataNetflixActivityMetadata) implementsGraphQLInterfaceGetActivityActivityResponseDataActivityMetadata() {
+}
+func (v *GetActivityActivityResponseDataActivityMetadataPlaystationActivityMetadata) implementsGraphQLInterfaceGetActivityActivityResponseDataActivityMetadata() {
+}
+func (v *GetActivityActivityResponseDataActivityMetadataUberActivityMetadata) implementsGraphQLInterfaceGetActivityActivityResponseDataActivityMetadata() {
+}
+func (v *GetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata) implementsGraphQLInterfaceGetActivityActivityResponseDataActivityMetadata() {
+}
+
+func __unmarshalGetActivityActivityResponseDataActivityMetadata(b []byte, v *GetActivityActivityResponseDataActivityMetadata) error {
+	if string(b) == "null" {
+		return nil
+	}
+
+	var tn struct {
+		TypeName string `json:"__typename"`
+	}
+	err := json.Unmarshal(b, &tn)
+	if err != nil {
+		return err
+	}
+
+	switch tn.TypeName {
+	case "AmazonActivityMetadata":
+		*v = new(GetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata)
+		return json.Unmarshal(b, *v)
+	case "InstacartActivityMetadata":
+		*v = new(GetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata)
+		return json.Unmarshal(b, *v)
+	case "NetflixActivityMetadata":
+		*v = new(GetActivityActivityResponseDataActivityMetadataNetflixActivityMetadata)
+		return json.Unmarshal(b, *v)
+	case "PlaystationActivityMetadata":
+		*v = new(GetActivityActivityResponseDataActivityMetadataPlaystationActivityMetadata)
+		return json.Unmarshal(b, *v)
+	case "UberActivityMetadata":
+		*v = new(GetActivityActivityResponseDataActivityMetadataUberActivityMetadata)
+		return json.Unmarshal(b, *v)
+	case "YoutubeActivityMetadata":
+		*v = new(GetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata)
+		return json.Unmarshal(b, *v)
+	case "":
+		return fmt.Errorf(
+			"response was missing ActivityMetadata.__typename")
+	default:
+		return fmt.Errorf(
+			`unexpected concrete type for GetActivityActivityResponseDataActivityMetadata: "%v"`, tn.TypeName)
+	}
+}
+
+func __marshalGetActivityActivityResponseDataActivityMetadata(v *GetActivityActivityResponseDataActivityMetadata) ([]byte, error) {
+
+	var typename string
+	switch v := (*v).(type) {
+	case *GetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata:
+		typename = "AmazonActivityMetadata"
+
+		premarshaled, err := v.__premarshalJSON()
+		if err != nil {
+			return nil, err
+		}
+		result := struct {
+			TypeName string `json:"__typename"`
+			*__premarshalGetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata
+		}{typename, premarshaled}
+		return json.Marshal(result)
+	case *GetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata:
+		typename = "InstacartActivityMetadata"
+
+		premarshaled, err := v.__premarshalJSON()
+		if err != nil {
+			return nil, err
+		}
+		result := struct {
+			TypeName string `json:"__typename"`
+			*__premarshalGetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata
+		}{typename, premarshaled}
+		return json.Marshal(result)
+	case *GetActivityActivityResponseDataActivityMetadataNetflixActivityMetadata:
+		typename = "NetflixActivityMetadata"
+
+		premarshaled, err := v.__premarshalJSON()
+		if err != nil {
+			return nil, err
+		}
+		result := struct {
+			TypeName string `json:"__typename"`
+			*__premarshalGetActivityActivityResponseDataActivityMetadataNetflixActivityMetadata
+		}{typename, premarshaled}
+		return json.Marshal(result)
+	case *GetActivityActivityResponseDataActivityMetadataPlaystationActivityMetadata:
+		typename = "PlaystationActivityMetadata"
+
+		premarshaled, err := v.__premarshalJSON()
+		if err != nil {
+			return nil, err
+		}
+		result := struct {
+			TypeName string `json:"__typename"`
+			*__premarshalGetActivityActivityResponseDataActivityMetadataPlaystationActivityMetadata
+		}{typename, premarshaled}
+		return json.Marshal(result)
+	case *GetActivityActivityResponseDataActivityMetadataUberActivityMetadata:
+		typename = "UberActivityMetadata"
+
+		premarshaled, err := v.__premarshalJSON()
+		if err != nil {
+			return nil, err
+		}
+		result := struct {
+			TypeName string `json:"__typename"`
+			*__premarshalGetActivityActivityResponseDataActivityMetadataUberActivityMetadata
+		}{typename, premarshaled}
+		return json.Marshal(result)
+	case *GetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata:
+		typename = "YoutubeActivityMetadata"
+
+		premarshaled, err := v.__premarshalJSON()
+		if err != nil {
+			return nil, err
+		}
+		result := struct {
+			TypeName string `json:"__typename"`
+			*__premarshalGetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata
+		}{typename, premarshaled}
+		return json.Marshal(result)
+	case nil:
+		return []byte("null"), nil
+	default:
+		return nil, fmt.Errorf(
+			`unexpected concrete type for GetActivityActivityResponseDataActivityMetadata: "%T"`, v)
+	}
+}
+
+// GetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata includes the requested fields of the GraphQL type AmazonActivityMetadata.
+type GetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata struct {
+	Typename               string `json:"__typename"`
+	AmazonActivityMetadata `json:"-"`
+}
+
+// GetTypename returns GetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata.Typename, and is useful for accessing the field via an interface.
+func (v *GetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata) GetTypename() string {
+	return v.Typename
+}
+
+// GetProductName returns GetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata.ProductName, and is useful for accessing the field via an interface.
+func (v *GetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata) GetProductName() string {
+	return v.AmazonActivityMetadata.ProductName
+}
+
+// GetSubject returns GetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata.Subject, and is useful for accessing the field via an interface.
+func (v *GetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata) GetSubject() []AmazonActivityMetadataSubjectIdentifier {
+	return v.AmazonActivityMetadata.Subject
+}
+
+// GetDate returns GetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata.Date, and is useful for accessing the field via an interface.
+func (v *GetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata) GetDate() graphqlTypes.Date {
+	return v.AmazonActivityMetadata.Date
+}
+
+// GetQuantityPurchased returns GetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata.QuantityPurchased, and is useful for accessing the field via an interface.
+func (v *GetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata) GetQuantityPurchased() int {
+	return v.AmazonActivityMetadata.QuantityPurchased
+}
+
+// GetTotalCost returns GetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata.TotalCost, and is useful for accessing the field via an interface.
+func (v *GetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata) GetTotalCost() string {
+	return v.AmazonActivityMetadata.TotalCost
+}
+
+func (v *GetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*GetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.GetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.AmazonActivityMetadata)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalGetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata struct {
+	Typename string `json:"__typename"`
+
+	ProductName string `json:"productName"`
+
+	Subject []AmazonActivityMetadataSubjectIdentifier `json:"subject"`
+
+	Date graphqlTypes.Date `json:"date"`
+
+	QuantityPurchased int `json:"quantityPurchased"`
+
+	TotalCost string `json:"totalCost"`
+}
+
+func (v *GetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *GetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata) __premarshalJSON() (*__premarshalGetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata, error) {
+	var retval __premarshalGetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata
+
+	retval.Typename = v.Typename
+	retval.ProductName = v.AmazonActivityMetadata.ProductName
+	retval.Subject = v.AmazonActivityMetadata.Subject
+	retval.Date = v.AmazonActivityMetadata.Date
+	retval.QuantityPurchased = v.AmazonActivityMetadata.QuantityPurchased
+	retval.TotalCost = v.AmazonActivityMetadata.TotalCost
+	return &retval, nil
+}
+
+// GetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata includes the requested fields of the GraphQL type InstacartActivityMetadata.
+type GetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata struct {
+	Typename                  string `json:"__typename"`
+	InstacartActivityMetadata `json:"-"`
+}
+
+// GetTypename returns GetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata.Typename, and is useful for accessing the field via an interface.
+func (v *GetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata) GetTypename() string {
+	return v.Typename
+}
+
+// GetSubject returns GetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata.Subject, and is useful for accessing the field via an interface.
+func (v *GetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata) GetSubject() []InstacartActivityMetadataSubjectIdentifier {
+	return v.InstacartActivityMetadata.Subject
+}
+
+// GetRetailer returns GetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata.Retailer, and is useful for accessing the field via an interface.
+func (v *GetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata) GetRetailer() string {
+	return v.InstacartActivityMetadata.Retailer
+}
+
+// GetTotalOrderAmountSpent returns GetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata.TotalOrderAmountSpent, and is useful for accessing the field via an interface.
+func (v *GetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata) GetTotalOrderAmountSpent() string {
+	return v.InstacartActivityMetadata.TotalOrderAmountSpent
+}
+
+// GetDateOrdered returns GetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata.DateOrdered, and is useful for accessing the field via an interface.
+func (v *GetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata) GetDateOrdered() graphqlTypes.Date {
+	return v.InstacartActivityMetadata.DateOrdered
+}
+
+// GetDateDelivered returns GetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata.DateDelivered, and is useful for accessing the field via an interface.
+func (v *GetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata) GetDateDelivered() graphqlTypes.Date {
+	return v.InstacartActivityMetadata.DateDelivered
+}
+
+// GetStatusString returns GetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata.StatusString, and is useful for accessing the field via an interface.
+func (v *GetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata) GetStatusString() string {
+	return v.InstacartActivityMetadata.StatusString
+}
+
+// GetItems returns GetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata.Items, and is useful for accessing the field via an interface.
+func (v *GetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata) GetItems() []InstacartActivityMetadataItemsInstacartOrderItem {
+	return v.InstacartActivityMetadata.Items
+}
+
+func (v *GetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*GetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.GetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.InstacartActivityMetadata)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalGetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata struct {
+	Typename string `json:"__typename"`
+
+	Subject []InstacartActivityMetadataSubjectIdentifier `json:"subject"`
+
+	Retailer string `json:"retailer"`
+
+	TotalOrderAmountSpent string `json:"totalOrderAmountSpent"`
+
+	DateOrdered graphqlTypes.Date `json:"dateOrdered"`
+
+	DateDelivered graphqlTypes.Date `json:"dateDelivered"`
+
+	StatusString string `json:"statusString"`
+
+	Items []InstacartActivityMetadataItemsInstacartOrderItem `json:"items"`
+}
+
+func (v *GetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *GetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata) __premarshalJSON() (*__premarshalGetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata, error) {
+	var retval __premarshalGetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata
+
+	retval.Typename = v.Typename
+	retval.Subject = v.InstacartActivityMetadata.Subject
+	retval.Retailer = v.InstacartActivityMetadata.Retailer
+	retval.TotalOrderAmountSpent = v.InstacartActivityMetadata.TotalOrderAmountSpent
+	retval.DateOrdered = v.InstacartActivityMetadata.DateOrdered
+	retval.DateDelivered = v.InstacartActivityMetadata.DateDelivered
+	retval.StatusString = v.InstacartActivityMetadata.StatusString
+	retval.Items = v.InstacartActivityMetadata.Items
+	return &retval, nil
+}
+
+// GetActivityActivityResponseDataActivityMetadataNetflixActivityMetadata includes the requested fields of the GraphQL type NetflixActivityMetadata.
+type GetActivityActivityResponseDataActivityMetadataNetflixActivityMetadata struct {
+	Typename                string `json:"__typename"`
+	NetflixActivityMetadata `json:"-"`
+}
+
+// GetTypename returns GetActivityActivityResponseDataActivityMetadataNetflixActivityMetadata.Typename, and is useful for accessing the field via an interface.
+func (v *GetActivityActivityResponseDataActivityMetadataNetflixActivityMetadata) GetTypename() string {
+	return v.Typename
+}
+
+// GetTitle returns GetActivityActivityResponseDataActivityMetadataNetflixActivityMetadata.Title, and is useful for accessing the field via an interface.
+func (v *GetActivityActivityResponseDataActivityMetadataNetflixActivityMetadata) GetTitle() string {
+	return v.NetflixActivityMetadata.Title
+}
+
+// GetSubject returns GetActivityActivityResponseDataActivityMetadataNetflixActivityMetadata.Subject, and is useful for accessing the field via an interface.
+func (v *GetActivityActivityResponseDataActivityMetadataNetflixActivityMetadata) GetSubject() []NetflixActivityMetadataSubjectIdentifier {
+	return v.NetflixActivityMetadata.Subject
+}
+
+// GetDate returns GetActivityActivityResponseDataActivityMetadataNetflixActivityMetadata.Date, and is useful for accessing the field via an interface.
+func (v *GetActivityActivityResponseDataActivityMetadataNetflixActivityMetadata) GetDate() graphqlTypes.Date {
+	return v.NetflixActivityMetadata.Date
+}
+
+// GetLastPlayedAt returns GetActivityActivityResponseDataActivityMetadataNetflixActivityMetadata.LastPlayedAt, and is useful for accessing the field via an interface.
+func (v *GetActivityActivityResponseDataActivityMetadataNetflixActivityMetadata) GetLastPlayedAt() graphqlTypes.Date {
+	return v.NetflixActivityMetadata.LastPlayedAt
+}
+
+func (v *GetActivityActivityResponseDataActivityMetadataNetflixActivityMetadata) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*GetActivityActivityResponseDataActivityMetadataNetflixActivityMetadata
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.GetActivityActivityResponseDataActivityMetadataNetflixActivityMetadata = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.NetflixActivityMetadata)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalGetActivityActivityResponseDataActivityMetadataNetflixActivityMetadata struct {
+	Typename string `json:"__typename"`
+
+	Title string `json:"title"`
+
+	Subject []NetflixActivityMetadataSubjectIdentifier `json:"subject"`
+
+	Date graphqlTypes.Date `json:"date"`
+
+	LastPlayedAt graphqlTypes.Date `json:"lastPlayedAt"`
+}
+
+func (v *GetActivityActivityResponseDataActivityMetadataNetflixActivityMetadata) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *GetActivityActivityResponseDataActivityMetadataNetflixActivityMetadata) __premarshalJSON() (*__premarshalGetActivityActivityResponseDataActivityMetadataNetflixActivityMetadata, error) {
+	var retval __premarshalGetActivityActivityResponseDataActivityMetadataNetflixActivityMetadata
+
+	retval.Typename = v.Typename
+	retval.Title = v.NetflixActivityMetadata.Title
+	retval.Subject = v.NetflixActivityMetadata.Subject
+	retval.Date = v.NetflixActivityMetadata.Date
+	retval.LastPlayedAt = v.NetflixActivityMetadata.LastPlayedAt
+	return &retval, nil
+}
+
+// GetActivityActivityResponseDataActivityMetadataPlaystationActivityMetadata includes the requested fields of the GraphQL type PlaystationActivityMetadata.
+type GetActivityActivityResponseDataActivityMetadataPlaystationActivityMetadata struct {
+	Typename                    string `json:"__typename"`
+	PlaystationActivityMetadata `json:"-"`
+}
+
+// GetTypename returns GetActivityActivityResponseDataActivityMetadataPlaystationActivityMetadata.Typename, and is useful for accessing the field via an interface.
+func (v *GetActivityActivityResponseDataActivityMetadataPlaystationActivityMetadata) GetTypename() string {
+	return v.Typename
+}
+
+// GetTitle returns GetActivityActivityResponseDataActivityMetadataPlaystationActivityMetadata.Title, and is useful for accessing the field via an interface.
+func (v *GetActivityActivityResponseDataActivityMetadataPlaystationActivityMetadata) GetTitle() string {
+	return v.PlaystationActivityMetadata.Title
+}
+
+// GetSubject returns GetActivityActivityResponseDataActivityMetadataPlaystationActivityMetadata.Subject, and is useful for accessing the field via an interface.
+func (v *GetActivityActivityResponseDataActivityMetadataPlaystationActivityMetadata) GetSubject() []PlaystationActivityMetadataSubjectIdentifier {
+	return v.PlaystationActivityMetadata.Subject
+}
+
+// GetLastPlayedAt returns GetActivityActivityResponseDataActivityMetadataPlaystationActivityMetadata.LastPlayedAt, and is useful for accessing the field via an interface.
+func (v *GetActivityActivityResponseDataActivityMetadataPlaystationActivityMetadata) GetLastPlayedAt() graphqlTypes.Date {
+	return v.PlaystationActivityMetadata.LastPlayedAt
+}
+
+func (v *GetActivityActivityResponseDataActivityMetadataPlaystationActivityMetadata) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*GetActivityActivityResponseDataActivityMetadataPlaystationActivityMetadata
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.GetActivityActivityResponseDataActivityMetadataPlaystationActivityMetadata = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.PlaystationActivityMetadata)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalGetActivityActivityResponseDataActivityMetadataPlaystationActivityMetadata struct {
+	Typename string `json:"__typename"`
+
+	Title string `json:"title"`
+
+	Subject []PlaystationActivityMetadataSubjectIdentifier `json:"subject"`
+
+	LastPlayedAt graphqlTypes.Date `json:"lastPlayedAt"`
+}
+
+func (v *GetActivityActivityResponseDataActivityMetadataPlaystationActivityMetadata) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *GetActivityActivityResponseDataActivityMetadataPlaystationActivityMetadata) __premarshalJSON() (*__premarshalGetActivityActivityResponseDataActivityMetadataPlaystationActivityMetadata, error) {
+	var retval __premarshalGetActivityActivityResponseDataActivityMetadataPlaystationActivityMetadata
+
+	retval.Typename = v.Typename
+	retval.Title = v.PlaystationActivityMetadata.Title
+	retval.Subject = v.PlaystationActivityMetadata.Subject
+	retval.LastPlayedAt = v.PlaystationActivityMetadata.LastPlayedAt
+	return &retval, nil
+}
+
+// GetActivityActivityResponseDataActivityMetadataUberActivityMetadata includes the requested fields of the GraphQL type UberActivityMetadata.
+type GetActivityActivityResponseDataActivityMetadataUberActivityMetadata struct {
+	Typename             string `json:"__typename"`
+	UberActivityMetadata `json:"-"`
+}
+
+// GetTypename returns GetActivityActivityResponseDataActivityMetadataUberActivityMetadata.Typename, and is useful for accessing the field via an interface.
+func (v *GetActivityActivityResponseDataActivityMetadataUberActivityMetadata) GetTypename() string {
+	return v.Typename
+}
+
+// GetSubject returns GetActivityActivityResponseDataActivityMetadataUberActivityMetadata.Subject, and is useful for accessing the field via an interface.
+func (v *GetActivityActivityResponseDataActivityMetadataUberActivityMetadata) GetSubject() []UberActivityMetadataSubjectIdentifier {
+	return v.UberActivityMetadata.Subject
+}
+
+// GetBeginTripTime returns GetActivityActivityResponseDataActivityMetadataUberActivityMetadata.BeginTripTime, and is useful for accessing the field via an interface.
+func (v *GetActivityActivityResponseDataActivityMetadataUberActivityMetadata) GetBeginTripTime() time.Time {
+	return v.UberActivityMetadata.BeginTripTime
+}
+
+// GetDropoffTime returns GetActivityActivityResponseDataActivityMetadataUberActivityMetadata.DropoffTime, and is useful for accessing the field via an interface.
+func (v *GetActivityActivityResponseDataActivityMetadataUberActivityMetadata) GetDropoffTime() time.Time {
+	return v.UberActivityMetadata.DropoffTime
+}
+
+// GetCost returns GetActivityActivityResponseDataActivityMetadataUberActivityMetadata.Cost, and is useful for accessing the field via an interface.
+func (v *GetActivityActivityResponseDataActivityMetadataUberActivityMetadata) GetCost() string {
+	return v.UberActivityMetadata.Cost
+}
+
+// GetCity returns GetActivityActivityResponseDataActivityMetadataUberActivityMetadata.City, and is useful for accessing the field via an interface.
+func (v *GetActivityActivityResponseDataActivityMetadataUberActivityMetadata) GetCity() string {
+	return v.UberActivityMetadata.City
+}
+
+// GetDistance returns GetActivityActivityResponseDataActivityMetadataUberActivityMetadata.Distance, and is useful for accessing the field via an interface.
+func (v *GetActivityActivityResponseDataActivityMetadataUberActivityMetadata) GetDistance() string {
+	return v.UberActivityMetadata.Distance
+}
+
+// GetStatus returns GetActivityActivityResponseDataActivityMetadataUberActivityMetadata.Status, and is useful for accessing the field via an interface.
+func (v *GetActivityActivityResponseDataActivityMetadataUberActivityMetadata) GetStatus() TripStatus {
+	return v.UberActivityMetadata.Status
+}
+
+func (v *GetActivityActivityResponseDataActivityMetadataUberActivityMetadata) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*GetActivityActivityResponseDataActivityMetadataUberActivityMetadata
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.GetActivityActivityResponseDataActivityMetadataUberActivityMetadata = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.UberActivityMetadata)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalGetActivityActivityResponseDataActivityMetadataUberActivityMetadata struct {
+	Typename string `json:"__typename"`
+
+	Subject []UberActivityMetadataSubjectIdentifier `json:"subject"`
+
+	BeginTripTime time.Time `json:"beginTripTime"`
+
+	DropoffTime time.Time `json:"dropoffTime"`
+
+	Cost string `json:"cost"`
+
+	City string `json:"city"`
+
+	Distance string `json:"distance"`
+
+	Status TripStatus `json:"status"`
+}
+
+func (v *GetActivityActivityResponseDataActivityMetadataUberActivityMetadata) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *GetActivityActivityResponseDataActivityMetadataUberActivityMetadata) __premarshalJSON() (*__premarshalGetActivityActivityResponseDataActivityMetadataUberActivityMetadata, error) {
+	var retval __premarshalGetActivityActivityResponseDataActivityMetadataUberActivityMetadata
+
+	retval.Typename = v.Typename
+	retval.Subject = v.UberActivityMetadata.Subject
+	retval.BeginTripTime = v.UberActivityMetadata.BeginTripTime
+	retval.DropoffTime = v.UberActivityMetadata.DropoffTime
+	retval.Cost = v.UberActivityMetadata.Cost
+	retval.City = v.UberActivityMetadata.City
+	retval.Distance = v.UberActivityMetadata.Distance
+	retval.Status = v.UberActivityMetadata.Status
+	return &retval, nil
+}
+
+// GetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata includes the requested fields of the GraphQL type YoutubeActivityMetadata.
+type GetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata struct {
+	Typename                string `json:"__typename"`
+	YoutubeActivityMetadata `json:"-"`
+}
+
+// GetTypename returns GetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata.Typename, and is useful for accessing the field via an interface.
+func (v *GetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata) GetTypename() string {
+	return v.Typename
+}
+
+// GetTitle returns GetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata.Title, and is useful for accessing the field via an interface.
+func (v *GetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata) GetTitle() string {
+	return v.YoutubeActivityMetadata.Title
+}
+
+// GetSubject returns GetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata.Subject, and is useful for accessing the field via an interface.
+func (v *GetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata) GetSubject() []YoutubeActivityMetadataSubjectIdentifier {
+	return v.YoutubeActivityMetadata.Subject
+}
+
+// GetDate returns GetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata.Date, and is useful for accessing the field via an interface.
+func (v *GetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata) GetDate() graphqlTypes.Date {
+	return v.YoutubeActivityMetadata.Date
+}
+
+// GetPercentageWatched returns GetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata.PercentageWatched, and is useful for accessing the field via an interface.
+func (v *GetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata) GetPercentageWatched() int {
+	return v.YoutubeActivityMetadata.PercentageWatched
+}
+
+// GetContentType returns GetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata.ContentType, and is useful for accessing the field via an interface.
+func (v *GetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata) GetContentType() ContentType {
+	return v.YoutubeActivityMetadata.ContentType
+}
+
+func (v *GetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*GetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.GetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.YoutubeActivityMetadata)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalGetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata struct {
+	Typename string `json:"__typename"`
+
+	Title string `json:"title"`
+
+	Subject []YoutubeActivityMetadataSubjectIdentifier `json:"subject"`
+
+	Date graphqlTypes.Date `json:"date"`
+
+	PercentageWatched int `json:"percentageWatched"`
+
+	ContentType ContentType `json:"contentType"`
+}
+
+func (v *GetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *GetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata) __premarshalJSON() (*__premarshalGetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata, error) {
+	var retval __premarshalGetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata
+
+	retval.Typename = v.Typename
+	retval.Title = v.YoutubeActivityMetadata.Title
+	retval.Subject = v.YoutubeActivityMetadata.Subject
+	retval.Date = v.YoutubeActivityMetadata.Date
+	retval.PercentageWatched = v.YoutubeActivityMetadata.PercentageWatched
+	retval.ContentType = v.YoutubeActivityMetadata.ContentType
+	return &retval, nil
+}
+
+// GetAppByPublicKeyApplication includes the requested fields of the GraphQL type Application.
+type GetAppByPublicKeyApplication struct {
+	AppName      string             `json:"appName"`
+	PublicKey    string             `json:"publicKey"`
+	IconURL      string             `json:"iconURL"`
+	GandalfID    graphqlTypes.Int64 `json:"gandalfID"`
+	AppRegistrar string             `json:"appRegistrar"`
+}
+
+// GetAppName returns GetAppByPublicKeyApplication.AppName, and is useful for accessing the field via an interface.
+func (v *GetAppByPublicKeyApplication) GetAppName() string { return v.AppName }
+
+// GetPublicKey returns GetAppByPublicKeyApplication.PublicKey, and is useful for accessing the field via an interface.
+func (v *GetAppByPublicKeyApplication) GetPublicKey() string { return v.PublicKey }
+
+// GetIconURL returns GetAppByPublicKeyApplication.IconURL, and is useful for accessing the field via an interface.
+func (v *GetAppByPublicKeyApplication) GetIconURL() string { return v.IconURL }
+
+// GetGandalfID returns GetAppByPublicKeyApplication.GandalfID, and is useful for accessing the field via an interface.
+func (v *GetAppByPublicKeyApplication) GetGandalfID() graphqlTypes.Int64 { return v.GandalfID }
+
+// GetAppRegistrar returns GetAppByPublicKeyApplication.AppRegistrar, and is useful for accessing the field via an interface.
+func (v *GetAppByPublicKeyApplication) GetAppRegistrar() string { return v.AppRegistrar }
+
+// GetTraitsTrait includes the requested fields of the GraphQL type Trait.
+type GetTraitsTrait struct {
+	Id        graphqlTypes.UUID `json:"id"`
+	Source    Source            `json:"source"`
+	Label     TraitLabel        `json:"label"`
+	Value     string            `json:"value"`
+	Timestamp time.Time         `json:"timestamp"`
+}
+
+// GetId returns GetTraitsTrait.Id, and is useful for accessing the field via an interface.
+func (v *GetTraitsTrait) GetId() graphqlTypes.UUID { return v.Id }
+
+// GetSource returns GetTraitsTrait.Source, and is useful for accessing the field via an interface.
+func (v *GetTraitsTrait) GetSource() Source { return v.Source }
+
+// GetLabel returns GetTraitsTrait.Label, and is useful for accessing the field via an interface.
+func (v *GetTraitsTrait) GetLabel() TraitLabel { return v.Label }
+
+// GetValue returns GetTraitsTrait.Value, and is useful for accessing the field via an interface.
+func (v *GetTraitsTrait) GetValue() string { return v.Value }
+
+// GetTimestamp returns GetTraitsTrait.Timestamp, and is useful for accessing the field via an interface.
+func (v *GetTraitsTrait) GetTimestamp() time.Time { return v.Timestamp }
 
 type IdentifierType string
 
@@ -131,48 +1012,44 @@ const (
 	IdentifierTypeInstacart   IdentifierType = "INSTACART"
 )
 
-// InstacartActivityMetadataFragment includes the GraphQL fields of InstacartActivityMetadata requested by the fragment InstacartActivityMetadataFragment.
-type InstacartActivityMetadataFragment struct {
-	Subject               []InstacartActivityMetadataFragmentSubjectIdentifier       `json:"subject"`
-	Retailer              string                                                     `json:"retailer"`
-	TotalOrderAmountSpent string                                                     `json:"totalOrderAmountSpent"`
-	DateOrdered           graphqlTypes.Date                                          `json:"dateOrdered"`
-	DateDelivered         graphqlTypes.Date                                          `json:"dateDelivered"`
-	StatusString          string                                                     `json:"statusString"`
-	Items                 []InstacartActivityMetadataFragmentItemsInstacartOrderItem `json:"items"`
+// InstacartActivityMetadata includes the GraphQL fields of InstacartActivityMetadata requested by the fragment InstacartActivityMetadata.
+type InstacartActivityMetadata struct {
+	Subject               []InstacartActivityMetadataSubjectIdentifier       `json:"subject"`
+	Retailer              string                                             `json:"retailer"`
+	TotalOrderAmountSpent string                                             `json:"totalOrderAmountSpent"`
+	DateOrdered           graphqlTypes.Date                                  `json:"dateOrdered"`
+	DateDelivered         graphqlTypes.Date                                  `json:"dateDelivered"`
+	StatusString          string                                             `json:"statusString"`
+	Items                 []InstacartActivityMetadataItemsInstacartOrderItem `json:"items"`
 }
 
-// GetSubject returns InstacartActivityMetadataFragment.Subject, and is useful for accessing the field via an interface.
-func (v *InstacartActivityMetadataFragment) GetSubject() []InstacartActivityMetadataFragmentSubjectIdentifier {
+// GetSubject returns InstacartActivityMetadata.Subject, and is useful for accessing the field via an interface.
+func (v *InstacartActivityMetadata) GetSubject() []InstacartActivityMetadataSubjectIdentifier {
 	return v.Subject
 }
 
-// GetRetailer returns InstacartActivityMetadataFragment.Retailer, and is useful for accessing the field via an interface.
-func (v *InstacartActivityMetadataFragment) GetRetailer() string { return v.Retailer }
+// GetRetailer returns InstacartActivityMetadata.Retailer, and is useful for accessing the field via an interface.
+func (v *InstacartActivityMetadata) GetRetailer() string { return v.Retailer }
 
-// GetTotalOrderAmountSpent returns InstacartActivityMetadataFragment.TotalOrderAmountSpent, and is useful for accessing the field via an interface.
-func (v *InstacartActivityMetadataFragment) GetTotalOrderAmountSpent() string {
-	return v.TotalOrderAmountSpent
-}
+// GetTotalOrderAmountSpent returns InstacartActivityMetadata.TotalOrderAmountSpent, and is useful for accessing the field via an interface.
+func (v *InstacartActivityMetadata) GetTotalOrderAmountSpent() string { return v.TotalOrderAmountSpent }
 
-// GetDateOrdered returns InstacartActivityMetadataFragment.DateOrdered, and is useful for accessing the field via an interface.
-func (v *InstacartActivityMetadataFragment) GetDateOrdered() graphqlTypes.Date { return v.DateOrdered }
+// GetDateOrdered returns InstacartActivityMetadata.DateOrdered, and is useful for accessing the field via an interface.
+func (v *InstacartActivityMetadata) GetDateOrdered() graphqlTypes.Date { return v.DateOrdered }
 
-// GetDateDelivered returns InstacartActivityMetadataFragment.DateDelivered, and is useful for accessing the field via an interface.
-func (v *InstacartActivityMetadataFragment) GetDateDelivered() graphqlTypes.Date {
-	return v.DateDelivered
-}
+// GetDateDelivered returns InstacartActivityMetadata.DateDelivered, and is useful for accessing the field via an interface.
+func (v *InstacartActivityMetadata) GetDateDelivered() graphqlTypes.Date { return v.DateDelivered }
 
-// GetStatusString returns InstacartActivityMetadataFragment.StatusString, and is useful for accessing the field via an interface.
-func (v *InstacartActivityMetadataFragment) GetStatusString() string { return v.StatusString }
+// GetStatusString returns InstacartActivityMetadata.StatusString, and is useful for accessing the field via an interface.
+func (v *InstacartActivityMetadata) GetStatusString() string { return v.StatusString }
 
-// GetItems returns InstacartActivityMetadataFragment.Items, and is useful for accessing the field via an interface.
-func (v *InstacartActivityMetadataFragment) GetItems() []InstacartActivityMetadataFragmentItemsInstacartOrderItem {
+// GetItems returns InstacartActivityMetadata.Items, and is useful for accessing the field via an interface.
+func (v *InstacartActivityMetadata) GetItems() []InstacartActivityMetadataItemsInstacartOrderItem {
 	return v.Items
 }
 
-// InstacartActivityMetadataFragmentItemsInstacartOrderItem includes the requested fields of the GraphQL type InstacartOrderItem.
-type InstacartActivityMetadataFragmentItemsInstacartOrderItem struct {
+// InstacartActivityMetadataItemsInstacartOrderItem includes the requested fields of the GraphQL type InstacartOrderItem.
+type InstacartActivityMetadataItemsInstacartOrderItem struct {
 	ItemID            string              `json:"itemID"`
 	ProductName       string              `json:"productName"`
 	UnitPrice         string              `json:"unitPrice"`
@@ -180,42 +1057,38 @@ type InstacartActivityMetadataFragmentItemsInstacartOrderItem struct {
 	QuantityPurchased graphqlTypes.Int64  `json:"quantityPurchased"`
 }
 
-// GetItemID returns InstacartActivityMetadataFragmentItemsInstacartOrderItem.ItemID, and is useful for accessing the field via an interface.
-func (v *InstacartActivityMetadataFragmentItemsInstacartOrderItem) GetItemID() string {
-	return v.ItemID
-}
+// GetItemID returns InstacartActivityMetadataItemsInstacartOrderItem.ItemID, and is useful for accessing the field via an interface.
+func (v *InstacartActivityMetadataItemsInstacartOrderItem) GetItemID() string { return v.ItemID }
 
-// GetProductName returns InstacartActivityMetadataFragmentItemsInstacartOrderItem.ProductName, and is useful for accessing the field via an interface.
-func (v *InstacartActivityMetadataFragmentItemsInstacartOrderItem) GetProductName() string {
+// GetProductName returns InstacartActivityMetadataItemsInstacartOrderItem.ProductName, and is useful for accessing the field via an interface.
+func (v *InstacartActivityMetadataItemsInstacartOrderItem) GetProductName() string {
 	return v.ProductName
 }
 
-// GetUnitPrice returns InstacartActivityMetadataFragmentItemsInstacartOrderItem.UnitPrice, and is useful for accessing the field via an interface.
-func (v *InstacartActivityMetadataFragmentItemsInstacartOrderItem) GetUnitPrice() string {
-	return v.UnitPrice
-}
+// GetUnitPrice returns InstacartActivityMetadataItemsInstacartOrderItem.UnitPrice, and is useful for accessing the field via an interface.
+func (v *InstacartActivityMetadataItemsInstacartOrderItem) GetUnitPrice() string { return v.UnitPrice }
 
-// GetStatus returns InstacartActivityMetadataFragmentItemsInstacartOrderItem.Status, and is useful for accessing the field via an interface.
-func (v *InstacartActivityMetadataFragmentItemsInstacartOrderItem) GetStatus() InstacartItemStatus {
+// GetStatus returns InstacartActivityMetadataItemsInstacartOrderItem.Status, and is useful for accessing the field via an interface.
+func (v *InstacartActivityMetadataItemsInstacartOrderItem) GetStatus() InstacartItemStatus {
 	return v.Status
 }
 
-// GetQuantityPurchased returns InstacartActivityMetadataFragmentItemsInstacartOrderItem.QuantityPurchased, and is useful for accessing the field via an interface.
-func (v *InstacartActivityMetadataFragmentItemsInstacartOrderItem) GetQuantityPurchased() graphqlTypes.Int64 {
+// GetQuantityPurchased returns InstacartActivityMetadataItemsInstacartOrderItem.QuantityPurchased, and is useful for accessing the field via an interface.
+func (v *InstacartActivityMetadataItemsInstacartOrderItem) GetQuantityPurchased() graphqlTypes.Int64 {
 	return v.QuantityPurchased
 }
 
-// InstacartActivityMetadataFragmentSubjectIdentifier includes the requested fields of the GraphQL type Identifier.
-type InstacartActivityMetadataFragmentSubjectIdentifier struct {
+// InstacartActivityMetadataSubjectIdentifier includes the requested fields of the GraphQL type Identifier.
+type InstacartActivityMetadataSubjectIdentifier struct {
 	Value          string         `json:"value"`
 	IdentifierType IdentifierType `json:"identifierType"`
 }
 
-// GetValue returns InstacartActivityMetadataFragmentSubjectIdentifier.Value, and is useful for accessing the field via an interface.
-func (v *InstacartActivityMetadataFragmentSubjectIdentifier) GetValue() string { return v.Value }
+// GetValue returns InstacartActivityMetadataSubjectIdentifier.Value, and is useful for accessing the field via an interface.
+func (v *InstacartActivityMetadataSubjectIdentifier) GetValue() string { return v.Value }
 
-// GetIdentifierType returns InstacartActivityMetadataFragmentSubjectIdentifier.IdentifierType, and is useful for accessing the field via an interface.
-func (v *InstacartActivityMetadataFragmentSubjectIdentifier) GetIdentifierType() IdentifierType {
+// GetIdentifierType returns InstacartActivityMetadataSubjectIdentifier.IdentifierType, and is useful for accessing the field via an interface.
+func (v *InstacartActivityMetadataSubjectIdentifier) GetIdentifierType() IdentifierType {
 	return v.IdentifierType
 }
 
@@ -227,73 +1100,892 @@ const (
 	InstacartItemStatusTorefund InstacartItemStatus = "TOREFUND"
 )
 
-// NetflixActivityMetadataFragment includes the GraphQL fields of NetflixActivityMetadata requested by the fragment NetflixActivityMetadataFragment.
-type NetflixActivityMetadataFragment struct {
-	Title        string                                             `json:"title"`
-	Subject      []NetflixActivityMetadataFragmentSubjectIdentifier `json:"subject"`
-	Date         graphqlTypes.Date                                  `json:"date"`
-	LastPlayedAt graphqlTypes.Date                                  `json:"lastPlayedAt"`
+// LookupActivity includes the requested fields of the GraphQL type Activity.
+type LookupActivity struct {
+	Id       string                 `json:"id"`
+	Metadata LookupActivityMetadata `json:"-"`
 }
 
-// GetTitle returns NetflixActivityMetadataFragment.Title, and is useful for accessing the field via an interface.
-func (v *NetflixActivityMetadataFragment) GetTitle() string { return v.Title }
+// GetId returns LookupActivity.Id, and is useful for accessing the field via an interface.
+func (v *LookupActivity) GetId() string { return v.Id }
 
-// GetSubject returns NetflixActivityMetadataFragment.Subject, and is useful for accessing the field via an interface.
-func (v *NetflixActivityMetadataFragment) GetSubject() []NetflixActivityMetadataFragmentSubjectIdentifier {
+// GetMetadata returns LookupActivity.Metadata, and is useful for accessing the field via an interface.
+func (v *LookupActivity) GetMetadata() LookupActivityMetadata { return v.Metadata }
+
+func (v *LookupActivity) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*LookupActivity
+		Metadata json.RawMessage `json:"metadata"`
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.LookupActivity = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	{
+		dst := &v.Metadata
+		src := firstPass.Metadata
+		if len(src) != 0 && string(src) != "null" {
+			err = __unmarshalLookupActivityMetadata(
+				src, dst)
+			if err != nil {
+				return fmt.Errorf(
+					"unable to unmarshal LookupActivity.Metadata: %w", err)
+			}
+		}
+	}
+	return nil
+}
+
+type __premarshalLookupActivity struct {
+	Id string `json:"id"`
+
+	Metadata json.RawMessage `json:"metadata"`
+}
+
+func (v *LookupActivity) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *LookupActivity) __premarshalJSON() (*__premarshalLookupActivity, error) {
+	var retval __premarshalLookupActivity
+
+	retval.Id = v.Id
+	{
+
+		dst := &retval.Metadata
+		src := v.Metadata
+		var err error
+		*dst, err = __marshalLookupActivityMetadata(
+			&src)
+		if err != nil {
+			return nil, fmt.Errorf(
+				"unable to marshal LookupActivity.Metadata: %w", err)
+		}
+	}
+	return &retval, nil
+}
+
+// LookupActivityMetadata includes the requested fields of the GraphQL interface ActivityMetadata.
+//
+// LookupActivityMetadata is implemented by the following types:
+// LookupActivityMetadataAmazonActivityMetadata
+// LookupActivityMetadataInstacartActivityMetadata
+// LookupActivityMetadataNetflixActivityMetadata
+// LookupActivityMetadataPlaystationActivityMetadata
+// LookupActivityMetadataUberActivityMetadata
+// LookupActivityMetadataYoutubeActivityMetadata
+type LookupActivityMetadata interface {
+	implementsGraphQLInterfaceLookupActivityMetadata()
+	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
+	GetTypename() string
+}
+
+func (v *LookupActivityMetadataAmazonActivityMetadata) implementsGraphQLInterfaceLookupActivityMetadata() {
+}
+func (v *LookupActivityMetadataInstacartActivityMetadata) implementsGraphQLInterfaceLookupActivityMetadata() {
+}
+func (v *LookupActivityMetadataNetflixActivityMetadata) implementsGraphQLInterfaceLookupActivityMetadata() {
+}
+func (v *LookupActivityMetadataPlaystationActivityMetadata) implementsGraphQLInterfaceLookupActivityMetadata() {
+}
+func (v *LookupActivityMetadataUberActivityMetadata) implementsGraphQLInterfaceLookupActivityMetadata() {
+}
+func (v *LookupActivityMetadataYoutubeActivityMetadata) implementsGraphQLInterfaceLookupActivityMetadata() {
+}
+
+func __unmarshalLookupActivityMetadata(b []byte, v *LookupActivityMetadata) error {
+	if string(b) == "null" {
+		return nil
+	}
+
+	var tn struct {
+		TypeName string `json:"__typename"`
+	}
+	err := json.Unmarshal(b, &tn)
+	if err != nil {
+		return err
+	}
+
+	switch tn.TypeName {
+	case "AmazonActivityMetadata":
+		*v = new(LookupActivityMetadataAmazonActivityMetadata)
+		return json.Unmarshal(b, *v)
+	case "InstacartActivityMetadata":
+		*v = new(LookupActivityMetadataInstacartActivityMetadata)
+		return json.Unmarshal(b, *v)
+	case "NetflixActivityMetadata":
+		*v = new(LookupActivityMetadataNetflixActivityMetadata)
+		return json.Unmarshal(b, *v)
+	case "PlaystationActivityMetadata":
+		*v = new(LookupActivityMetadataPlaystationActivityMetadata)
+		return json.Unmarshal(b, *v)
+	case "UberActivityMetadata":
+		*v = new(LookupActivityMetadataUberActivityMetadata)
+		return json.Unmarshal(b, *v)
+	case "YoutubeActivityMetadata":
+		*v = new(LookupActivityMetadataYoutubeActivityMetadata)
+		return json.Unmarshal(b, *v)
+	case "":
+		return fmt.Errorf(
+			"response was missing ActivityMetadata.__typename")
+	default:
+		return fmt.Errorf(
+			`unexpected concrete type for LookupActivityMetadata: "%v"`, tn.TypeName)
+	}
+}
+
+func __marshalLookupActivityMetadata(v *LookupActivityMetadata) ([]byte, error) {
+
+	var typename string
+	switch v := (*v).(type) {
+	case *LookupActivityMetadataAmazonActivityMetadata:
+		typename = "AmazonActivityMetadata"
+
+		premarshaled, err := v.__premarshalJSON()
+		if err != nil {
+			return nil, err
+		}
+		result := struct {
+			TypeName string `json:"__typename"`
+			*__premarshalLookupActivityMetadataAmazonActivityMetadata
+		}{typename, premarshaled}
+		return json.Marshal(result)
+	case *LookupActivityMetadataInstacartActivityMetadata:
+		typename = "InstacartActivityMetadata"
+
+		premarshaled, err := v.__premarshalJSON()
+		if err != nil {
+			return nil, err
+		}
+		result := struct {
+			TypeName string `json:"__typename"`
+			*__premarshalLookupActivityMetadataInstacartActivityMetadata
+		}{typename, premarshaled}
+		return json.Marshal(result)
+	case *LookupActivityMetadataNetflixActivityMetadata:
+		typename = "NetflixActivityMetadata"
+
+		premarshaled, err := v.__premarshalJSON()
+		if err != nil {
+			return nil, err
+		}
+		result := struct {
+			TypeName string `json:"__typename"`
+			*__premarshalLookupActivityMetadataNetflixActivityMetadata
+		}{typename, premarshaled}
+		return json.Marshal(result)
+	case *LookupActivityMetadataPlaystationActivityMetadata:
+		typename = "PlaystationActivityMetadata"
+
+		premarshaled, err := v.__premarshalJSON()
+		if err != nil {
+			return nil, err
+		}
+		result := struct {
+			TypeName string `json:"__typename"`
+			*__premarshalLookupActivityMetadataPlaystationActivityMetadata
+		}{typename, premarshaled}
+		return json.Marshal(result)
+	case *LookupActivityMetadataUberActivityMetadata:
+		typename = "UberActivityMetadata"
+
+		premarshaled, err := v.__premarshalJSON()
+		if err != nil {
+			return nil, err
+		}
+		result := struct {
+			TypeName string `json:"__typename"`
+			*__premarshalLookupActivityMetadataUberActivityMetadata
+		}{typename, premarshaled}
+		return json.Marshal(result)
+	case *LookupActivityMetadataYoutubeActivityMetadata:
+		typename = "YoutubeActivityMetadata"
+
+		premarshaled, err := v.__premarshalJSON()
+		if err != nil {
+			return nil, err
+		}
+		result := struct {
+			TypeName string `json:"__typename"`
+			*__premarshalLookupActivityMetadataYoutubeActivityMetadata
+		}{typename, premarshaled}
+		return json.Marshal(result)
+	case nil:
+		return []byte("null"), nil
+	default:
+		return nil, fmt.Errorf(
+			`unexpected concrete type for LookupActivityMetadata: "%T"`, v)
+	}
+}
+
+// LookupActivityMetadataAmazonActivityMetadata includes the requested fields of the GraphQL type AmazonActivityMetadata.
+type LookupActivityMetadataAmazonActivityMetadata struct {
+	Typename               string `json:"__typename"`
+	AmazonActivityMetadata `json:"-"`
+}
+
+// GetTypename returns LookupActivityMetadataAmazonActivityMetadata.Typename, and is useful for accessing the field via an interface.
+func (v *LookupActivityMetadataAmazonActivityMetadata) GetTypename() string { return v.Typename }
+
+// GetProductName returns LookupActivityMetadataAmazonActivityMetadata.ProductName, and is useful for accessing the field via an interface.
+func (v *LookupActivityMetadataAmazonActivityMetadata) GetProductName() string {
+	return v.AmazonActivityMetadata.ProductName
+}
+
+// GetSubject returns LookupActivityMetadataAmazonActivityMetadata.Subject, and is useful for accessing the field via an interface.
+func (v *LookupActivityMetadataAmazonActivityMetadata) GetSubject() []AmazonActivityMetadataSubjectIdentifier {
+	return v.AmazonActivityMetadata.Subject
+}
+
+// GetDate returns LookupActivityMetadataAmazonActivityMetadata.Date, and is useful for accessing the field via an interface.
+func (v *LookupActivityMetadataAmazonActivityMetadata) GetDate() graphqlTypes.Date {
+	return v.AmazonActivityMetadata.Date
+}
+
+// GetQuantityPurchased returns LookupActivityMetadataAmazonActivityMetadata.QuantityPurchased, and is useful for accessing the field via an interface.
+func (v *LookupActivityMetadataAmazonActivityMetadata) GetQuantityPurchased() int {
+	return v.AmazonActivityMetadata.QuantityPurchased
+}
+
+// GetTotalCost returns LookupActivityMetadataAmazonActivityMetadata.TotalCost, and is useful for accessing the field via an interface.
+func (v *LookupActivityMetadataAmazonActivityMetadata) GetTotalCost() string {
+	return v.AmazonActivityMetadata.TotalCost
+}
+
+func (v *LookupActivityMetadataAmazonActivityMetadata) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*LookupActivityMetadataAmazonActivityMetadata
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.LookupActivityMetadataAmazonActivityMetadata = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.AmazonActivityMetadata)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalLookupActivityMetadataAmazonActivityMetadata struct {
+	Typename string `json:"__typename"`
+
+	ProductName string `json:"productName"`
+
+	Subject []AmazonActivityMetadataSubjectIdentifier `json:"subject"`
+
+	Date graphqlTypes.Date `json:"date"`
+
+	QuantityPurchased int `json:"quantityPurchased"`
+
+	TotalCost string `json:"totalCost"`
+}
+
+func (v *LookupActivityMetadataAmazonActivityMetadata) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *LookupActivityMetadataAmazonActivityMetadata) __premarshalJSON() (*__premarshalLookupActivityMetadataAmazonActivityMetadata, error) {
+	var retval __premarshalLookupActivityMetadataAmazonActivityMetadata
+
+	retval.Typename = v.Typename
+	retval.ProductName = v.AmazonActivityMetadata.ProductName
+	retval.Subject = v.AmazonActivityMetadata.Subject
+	retval.Date = v.AmazonActivityMetadata.Date
+	retval.QuantityPurchased = v.AmazonActivityMetadata.QuantityPurchased
+	retval.TotalCost = v.AmazonActivityMetadata.TotalCost
+	return &retval, nil
+}
+
+// LookupActivityMetadataInstacartActivityMetadata includes the requested fields of the GraphQL type InstacartActivityMetadata.
+type LookupActivityMetadataInstacartActivityMetadata struct {
+	Typename                  string `json:"__typename"`
+	InstacartActivityMetadata `json:"-"`
+}
+
+// GetTypename returns LookupActivityMetadataInstacartActivityMetadata.Typename, and is useful for accessing the field via an interface.
+func (v *LookupActivityMetadataInstacartActivityMetadata) GetTypename() string { return v.Typename }
+
+// GetSubject returns LookupActivityMetadataInstacartActivityMetadata.Subject, and is useful for accessing the field via an interface.
+func (v *LookupActivityMetadataInstacartActivityMetadata) GetSubject() []InstacartActivityMetadataSubjectIdentifier {
+	return v.InstacartActivityMetadata.Subject
+}
+
+// GetRetailer returns LookupActivityMetadataInstacartActivityMetadata.Retailer, and is useful for accessing the field via an interface.
+func (v *LookupActivityMetadataInstacartActivityMetadata) GetRetailer() string {
+	return v.InstacartActivityMetadata.Retailer
+}
+
+// GetTotalOrderAmountSpent returns LookupActivityMetadataInstacartActivityMetadata.TotalOrderAmountSpent, and is useful for accessing the field via an interface.
+func (v *LookupActivityMetadataInstacartActivityMetadata) GetTotalOrderAmountSpent() string {
+	return v.InstacartActivityMetadata.TotalOrderAmountSpent
+}
+
+// GetDateOrdered returns LookupActivityMetadataInstacartActivityMetadata.DateOrdered, and is useful for accessing the field via an interface.
+func (v *LookupActivityMetadataInstacartActivityMetadata) GetDateOrdered() graphqlTypes.Date {
+	return v.InstacartActivityMetadata.DateOrdered
+}
+
+// GetDateDelivered returns LookupActivityMetadataInstacartActivityMetadata.DateDelivered, and is useful for accessing the field via an interface.
+func (v *LookupActivityMetadataInstacartActivityMetadata) GetDateDelivered() graphqlTypes.Date {
+	return v.InstacartActivityMetadata.DateDelivered
+}
+
+// GetStatusString returns LookupActivityMetadataInstacartActivityMetadata.StatusString, and is useful for accessing the field via an interface.
+func (v *LookupActivityMetadataInstacartActivityMetadata) GetStatusString() string {
+	return v.InstacartActivityMetadata.StatusString
+}
+
+// GetItems returns LookupActivityMetadataInstacartActivityMetadata.Items, and is useful for accessing the field via an interface.
+func (v *LookupActivityMetadataInstacartActivityMetadata) GetItems() []InstacartActivityMetadataItemsInstacartOrderItem {
+	return v.InstacartActivityMetadata.Items
+}
+
+func (v *LookupActivityMetadataInstacartActivityMetadata) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*LookupActivityMetadataInstacartActivityMetadata
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.LookupActivityMetadataInstacartActivityMetadata = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.InstacartActivityMetadata)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalLookupActivityMetadataInstacartActivityMetadata struct {
+	Typename string `json:"__typename"`
+
+	Subject []InstacartActivityMetadataSubjectIdentifier `json:"subject"`
+
+	Retailer string `json:"retailer"`
+
+	TotalOrderAmountSpent string `json:"totalOrderAmountSpent"`
+
+	DateOrdered graphqlTypes.Date `json:"dateOrdered"`
+
+	DateDelivered graphqlTypes.Date `json:"dateDelivered"`
+
+	StatusString string `json:"statusString"`
+
+	Items []InstacartActivityMetadataItemsInstacartOrderItem `json:"items"`
+}
+
+func (v *LookupActivityMetadataInstacartActivityMetadata) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *LookupActivityMetadataInstacartActivityMetadata) __premarshalJSON() (*__premarshalLookupActivityMetadataInstacartActivityMetadata, error) {
+	var retval __premarshalLookupActivityMetadataInstacartActivityMetadata
+
+	retval.Typename = v.Typename
+	retval.Subject = v.InstacartActivityMetadata.Subject
+	retval.Retailer = v.InstacartActivityMetadata.Retailer
+	retval.TotalOrderAmountSpent = v.InstacartActivityMetadata.TotalOrderAmountSpent
+	retval.DateOrdered = v.InstacartActivityMetadata.DateOrdered
+	retval.DateDelivered = v.InstacartActivityMetadata.DateDelivered
+	retval.StatusString = v.InstacartActivityMetadata.StatusString
+	retval.Items = v.InstacartActivityMetadata.Items
+	return &retval, nil
+}
+
+// LookupActivityMetadataNetflixActivityMetadata includes the requested fields of the GraphQL type NetflixActivityMetadata.
+type LookupActivityMetadataNetflixActivityMetadata struct {
+	Typename                string `json:"__typename"`
+	NetflixActivityMetadata `json:"-"`
+}
+
+// GetTypename returns LookupActivityMetadataNetflixActivityMetadata.Typename, and is useful for accessing the field via an interface.
+func (v *LookupActivityMetadataNetflixActivityMetadata) GetTypename() string { return v.Typename }
+
+// GetTitle returns LookupActivityMetadataNetflixActivityMetadata.Title, and is useful for accessing the field via an interface.
+func (v *LookupActivityMetadataNetflixActivityMetadata) GetTitle() string {
+	return v.NetflixActivityMetadata.Title
+}
+
+// GetSubject returns LookupActivityMetadataNetflixActivityMetadata.Subject, and is useful for accessing the field via an interface.
+func (v *LookupActivityMetadataNetflixActivityMetadata) GetSubject() []NetflixActivityMetadataSubjectIdentifier {
+	return v.NetflixActivityMetadata.Subject
+}
+
+// GetDate returns LookupActivityMetadataNetflixActivityMetadata.Date, and is useful for accessing the field via an interface.
+func (v *LookupActivityMetadataNetflixActivityMetadata) GetDate() graphqlTypes.Date {
+	return v.NetflixActivityMetadata.Date
+}
+
+// GetLastPlayedAt returns LookupActivityMetadataNetflixActivityMetadata.LastPlayedAt, and is useful for accessing the field via an interface.
+func (v *LookupActivityMetadataNetflixActivityMetadata) GetLastPlayedAt() graphqlTypes.Date {
+	return v.NetflixActivityMetadata.LastPlayedAt
+}
+
+func (v *LookupActivityMetadataNetflixActivityMetadata) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*LookupActivityMetadataNetflixActivityMetadata
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.LookupActivityMetadataNetflixActivityMetadata = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.NetflixActivityMetadata)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalLookupActivityMetadataNetflixActivityMetadata struct {
+	Typename string `json:"__typename"`
+
+	Title string `json:"title"`
+
+	Subject []NetflixActivityMetadataSubjectIdentifier `json:"subject"`
+
+	Date graphqlTypes.Date `json:"date"`
+
+	LastPlayedAt graphqlTypes.Date `json:"lastPlayedAt"`
+}
+
+func (v *LookupActivityMetadataNetflixActivityMetadata) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *LookupActivityMetadataNetflixActivityMetadata) __premarshalJSON() (*__premarshalLookupActivityMetadataNetflixActivityMetadata, error) {
+	var retval __premarshalLookupActivityMetadataNetflixActivityMetadata
+
+	retval.Typename = v.Typename
+	retval.Title = v.NetflixActivityMetadata.Title
+	retval.Subject = v.NetflixActivityMetadata.Subject
+	retval.Date = v.NetflixActivityMetadata.Date
+	retval.LastPlayedAt = v.NetflixActivityMetadata.LastPlayedAt
+	return &retval, nil
+}
+
+// LookupActivityMetadataPlaystationActivityMetadata includes the requested fields of the GraphQL type PlaystationActivityMetadata.
+type LookupActivityMetadataPlaystationActivityMetadata struct {
+	Typename                    string `json:"__typename"`
+	PlaystationActivityMetadata `json:"-"`
+}
+
+// GetTypename returns LookupActivityMetadataPlaystationActivityMetadata.Typename, and is useful for accessing the field via an interface.
+func (v *LookupActivityMetadataPlaystationActivityMetadata) GetTypename() string { return v.Typename }
+
+// GetTitle returns LookupActivityMetadataPlaystationActivityMetadata.Title, and is useful for accessing the field via an interface.
+func (v *LookupActivityMetadataPlaystationActivityMetadata) GetTitle() string {
+	return v.PlaystationActivityMetadata.Title
+}
+
+// GetSubject returns LookupActivityMetadataPlaystationActivityMetadata.Subject, and is useful for accessing the field via an interface.
+func (v *LookupActivityMetadataPlaystationActivityMetadata) GetSubject() []PlaystationActivityMetadataSubjectIdentifier {
+	return v.PlaystationActivityMetadata.Subject
+}
+
+// GetLastPlayedAt returns LookupActivityMetadataPlaystationActivityMetadata.LastPlayedAt, and is useful for accessing the field via an interface.
+func (v *LookupActivityMetadataPlaystationActivityMetadata) GetLastPlayedAt() graphqlTypes.Date {
+	return v.PlaystationActivityMetadata.LastPlayedAt
+}
+
+func (v *LookupActivityMetadataPlaystationActivityMetadata) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*LookupActivityMetadataPlaystationActivityMetadata
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.LookupActivityMetadataPlaystationActivityMetadata = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.PlaystationActivityMetadata)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalLookupActivityMetadataPlaystationActivityMetadata struct {
+	Typename string `json:"__typename"`
+
+	Title string `json:"title"`
+
+	Subject []PlaystationActivityMetadataSubjectIdentifier `json:"subject"`
+
+	LastPlayedAt graphqlTypes.Date `json:"lastPlayedAt"`
+}
+
+func (v *LookupActivityMetadataPlaystationActivityMetadata) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *LookupActivityMetadataPlaystationActivityMetadata) __premarshalJSON() (*__premarshalLookupActivityMetadataPlaystationActivityMetadata, error) {
+	var retval __premarshalLookupActivityMetadataPlaystationActivityMetadata
+
+	retval.Typename = v.Typename
+	retval.Title = v.PlaystationActivityMetadata.Title
+	retval.Subject = v.PlaystationActivityMetadata.Subject
+	retval.LastPlayedAt = v.PlaystationActivityMetadata.LastPlayedAt
+	return &retval, nil
+}
+
+// LookupActivityMetadataUberActivityMetadata includes the requested fields of the GraphQL type UberActivityMetadata.
+type LookupActivityMetadataUberActivityMetadata struct {
+	Typename             string `json:"__typename"`
+	UberActivityMetadata `json:"-"`
+}
+
+// GetTypename returns LookupActivityMetadataUberActivityMetadata.Typename, and is useful for accessing the field via an interface.
+func (v *LookupActivityMetadataUberActivityMetadata) GetTypename() string { return v.Typename }
+
+// GetSubject returns LookupActivityMetadataUberActivityMetadata.Subject, and is useful for accessing the field via an interface.
+func (v *LookupActivityMetadataUberActivityMetadata) GetSubject() []UberActivityMetadataSubjectIdentifier {
+	return v.UberActivityMetadata.Subject
+}
+
+// GetBeginTripTime returns LookupActivityMetadataUberActivityMetadata.BeginTripTime, and is useful for accessing the field via an interface.
+func (v *LookupActivityMetadataUberActivityMetadata) GetBeginTripTime() time.Time {
+	return v.UberActivityMetadata.BeginTripTime
+}
+
+// GetDropoffTime returns LookupActivityMetadataUberActivityMetadata.DropoffTime, and is useful for accessing the field via an interface.
+func (v *LookupActivityMetadataUberActivityMetadata) GetDropoffTime() time.Time {
+	return v.UberActivityMetadata.DropoffTime
+}
+
+// GetCost returns LookupActivityMetadataUberActivityMetadata.Cost, and is useful for accessing the field via an interface.
+func (v *LookupActivityMetadataUberActivityMetadata) GetCost() string {
+	return v.UberActivityMetadata.Cost
+}
+
+// GetCity returns LookupActivityMetadataUberActivityMetadata.City, and is useful for accessing the field via an interface.
+func (v *LookupActivityMetadataUberActivityMetadata) GetCity() string {
+	return v.UberActivityMetadata.City
+}
+
+// GetDistance returns LookupActivityMetadataUberActivityMetadata.Distance, and is useful for accessing the field via an interface.
+func (v *LookupActivityMetadataUberActivityMetadata) GetDistance() string {
+	return v.UberActivityMetadata.Distance
+}
+
+// GetStatus returns LookupActivityMetadataUberActivityMetadata.Status, and is useful for accessing the field via an interface.
+func (v *LookupActivityMetadataUberActivityMetadata) GetStatus() TripStatus {
+	return v.UberActivityMetadata.Status
+}
+
+func (v *LookupActivityMetadataUberActivityMetadata) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*LookupActivityMetadataUberActivityMetadata
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.LookupActivityMetadataUberActivityMetadata = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.UberActivityMetadata)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalLookupActivityMetadataUberActivityMetadata struct {
+	Typename string `json:"__typename"`
+
+	Subject []UberActivityMetadataSubjectIdentifier `json:"subject"`
+
+	BeginTripTime time.Time `json:"beginTripTime"`
+
+	DropoffTime time.Time `json:"dropoffTime"`
+
+	Cost string `json:"cost"`
+
+	City string `json:"city"`
+
+	Distance string `json:"distance"`
+
+	Status TripStatus `json:"status"`
+}
+
+func (v *LookupActivityMetadataUberActivityMetadata) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *LookupActivityMetadataUberActivityMetadata) __premarshalJSON() (*__premarshalLookupActivityMetadataUberActivityMetadata, error) {
+	var retval __premarshalLookupActivityMetadataUberActivityMetadata
+
+	retval.Typename = v.Typename
+	retval.Subject = v.UberActivityMetadata.Subject
+	retval.BeginTripTime = v.UberActivityMetadata.BeginTripTime
+	retval.DropoffTime = v.UberActivityMetadata.DropoffTime
+	retval.Cost = v.UberActivityMetadata.Cost
+	retval.City = v.UberActivityMetadata.City
+	retval.Distance = v.UberActivityMetadata.Distance
+	retval.Status = v.UberActivityMetadata.Status
+	return &retval, nil
+}
+
+// LookupActivityMetadataYoutubeActivityMetadata includes the requested fields of the GraphQL type YoutubeActivityMetadata.
+type LookupActivityMetadataYoutubeActivityMetadata struct {
+	Typename                string `json:"__typename"`
+	YoutubeActivityMetadata `json:"-"`
+}
+
+// GetTypename returns LookupActivityMetadataYoutubeActivityMetadata.Typename, and is useful for accessing the field via an interface.
+func (v *LookupActivityMetadataYoutubeActivityMetadata) GetTypename() string { return v.Typename }
+
+// GetTitle returns LookupActivityMetadataYoutubeActivityMetadata.Title, and is useful for accessing the field via an interface.
+func (v *LookupActivityMetadataYoutubeActivityMetadata) GetTitle() string {
+	return v.YoutubeActivityMetadata.Title
+}
+
+// GetSubject returns LookupActivityMetadataYoutubeActivityMetadata.Subject, and is useful for accessing the field via an interface.
+func (v *LookupActivityMetadataYoutubeActivityMetadata) GetSubject() []YoutubeActivityMetadataSubjectIdentifier {
+	return v.YoutubeActivityMetadata.Subject
+}
+
+// GetDate returns LookupActivityMetadataYoutubeActivityMetadata.Date, and is useful for accessing the field via an interface.
+func (v *LookupActivityMetadataYoutubeActivityMetadata) GetDate() graphqlTypes.Date {
+	return v.YoutubeActivityMetadata.Date
+}
+
+// GetPercentageWatched returns LookupActivityMetadataYoutubeActivityMetadata.PercentageWatched, and is useful for accessing the field via an interface.
+func (v *LookupActivityMetadataYoutubeActivityMetadata) GetPercentageWatched() int {
+	return v.YoutubeActivityMetadata.PercentageWatched
+}
+
+// GetContentType returns LookupActivityMetadataYoutubeActivityMetadata.ContentType, and is useful for accessing the field via an interface.
+func (v *LookupActivityMetadataYoutubeActivityMetadata) GetContentType() ContentType {
+	return v.YoutubeActivityMetadata.ContentType
+}
+
+func (v *LookupActivityMetadataYoutubeActivityMetadata) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*LookupActivityMetadataYoutubeActivityMetadata
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.LookupActivityMetadataYoutubeActivityMetadata = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.YoutubeActivityMetadata)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalLookupActivityMetadataYoutubeActivityMetadata struct {
+	Typename string `json:"__typename"`
+
+	Title string `json:"title"`
+
+	Subject []YoutubeActivityMetadataSubjectIdentifier `json:"subject"`
+
+	Date graphqlTypes.Date `json:"date"`
+
+	PercentageWatched int `json:"percentageWatched"`
+
+	ContentType ContentType `json:"contentType"`
+}
+
+func (v *LookupActivityMetadataYoutubeActivityMetadata) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *LookupActivityMetadataYoutubeActivityMetadata) __premarshalJSON() (*__premarshalLookupActivityMetadataYoutubeActivityMetadata, error) {
+	var retval __premarshalLookupActivityMetadataYoutubeActivityMetadata
+
+	retval.Typename = v.Typename
+	retval.Title = v.YoutubeActivityMetadata.Title
+	retval.Subject = v.YoutubeActivityMetadata.Subject
+	retval.Date = v.YoutubeActivityMetadata.Date
+	retval.PercentageWatched = v.YoutubeActivityMetadata.PercentageWatched
+	retval.ContentType = v.YoutubeActivityMetadata.ContentType
+	return &retval, nil
+}
+
+// LookupTrait includes the requested fields of the GraphQL type Trait.
+type LookupTrait struct {
+	Id        graphqlTypes.UUID `json:"id"`
+	Source    Source            `json:"source"`
+	Label     TraitLabel        `json:"label"`
+	Value     string            `json:"value"`
+	Timestamp time.Time         `json:"timestamp"`
+}
+
+// GetId returns LookupTrait.Id, and is useful for accessing the field via an interface.
+func (v *LookupTrait) GetId() graphqlTypes.UUID { return v.Id }
+
+// GetSource returns LookupTrait.Source, and is useful for accessing the field via an interface.
+func (v *LookupTrait) GetSource() Source { return v.Source }
+
+// GetLabel returns LookupTrait.Label, and is useful for accessing the field via an interface.
+func (v *LookupTrait) GetLabel() TraitLabel { return v.Label }
+
+// GetValue returns LookupTrait.Value, and is useful for accessing the field via an interface.
+func (v *LookupTrait) GetValue() string { return v.Value }
+
+// GetTimestamp returns LookupTrait.Timestamp, and is useful for accessing the field via an interface.
+func (v *LookupTrait) GetTimestamp() time.Time { return v.Timestamp }
+
+// NetflixActivityMetadata includes the GraphQL fields of NetflixActivityMetadata requested by the fragment NetflixActivityMetadata.
+type NetflixActivityMetadata struct {
+	Title        string                                     `json:"title"`
+	Subject      []NetflixActivityMetadataSubjectIdentifier `json:"subject"`
+	Date         graphqlTypes.Date                          `json:"date"`
+	LastPlayedAt graphqlTypes.Date                          `json:"lastPlayedAt"`
+}
+
+// GetTitle returns NetflixActivityMetadata.Title, and is useful for accessing the field via an interface.
+func (v *NetflixActivityMetadata) GetTitle() string { return v.Title }
+
+// GetSubject returns NetflixActivityMetadata.Subject, and is useful for accessing the field via an interface.
+func (v *NetflixActivityMetadata) GetSubject() []NetflixActivityMetadataSubjectIdentifier {
 	return v.Subject
 }
 
-// GetDate returns NetflixActivityMetadataFragment.Date, and is useful for accessing the field via an interface.
-func (v *NetflixActivityMetadataFragment) GetDate() graphqlTypes.Date { return v.Date }
+// GetDate returns NetflixActivityMetadata.Date, and is useful for accessing the field via an interface.
+func (v *NetflixActivityMetadata) GetDate() graphqlTypes.Date { return v.Date }
 
-// GetLastPlayedAt returns NetflixActivityMetadataFragment.LastPlayedAt, and is useful for accessing the field via an interface.
-func (v *NetflixActivityMetadataFragment) GetLastPlayedAt() graphqlTypes.Date { return v.LastPlayedAt }
+// GetLastPlayedAt returns NetflixActivityMetadata.LastPlayedAt, and is useful for accessing the field via an interface.
+func (v *NetflixActivityMetadata) GetLastPlayedAt() graphqlTypes.Date { return v.LastPlayedAt }
 
-// NetflixActivityMetadataFragmentSubjectIdentifier includes the requested fields of the GraphQL type Identifier.
-type NetflixActivityMetadataFragmentSubjectIdentifier struct {
+// NetflixActivityMetadataSubjectIdentifier includes the requested fields of the GraphQL type Identifier.
+type NetflixActivityMetadataSubjectIdentifier struct {
 	Value          string         `json:"value"`
 	IdentifierType IdentifierType `json:"identifierType"`
 }
 
-// GetValue returns NetflixActivityMetadataFragmentSubjectIdentifier.Value, and is useful for accessing the field via an interface.
-func (v *NetflixActivityMetadataFragmentSubjectIdentifier) GetValue() string { return v.Value }
+// GetValue returns NetflixActivityMetadataSubjectIdentifier.Value, and is useful for accessing the field via an interface.
+func (v *NetflixActivityMetadataSubjectIdentifier) GetValue() string { return v.Value }
 
-// GetIdentifierType returns NetflixActivityMetadataFragmentSubjectIdentifier.IdentifierType, and is useful for accessing the field via an interface.
-func (v *NetflixActivityMetadataFragmentSubjectIdentifier) GetIdentifierType() IdentifierType {
+// GetIdentifierType returns NetflixActivityMetadataSubjectIdentifier.IdentifierType, and is useful for accessing the field via an interface.
+func (v *NetflixActivityMetadataSubjectIdentifier) GetIdentifierType() IdentifierType {
 	return v.IdentifierType
 }
 
-// PlaystationActivityMetadataFragment includes the GraphQL fields of PlaystationActivityMetadata requested by the fragment PlaystationActivityMetadataFragment.
-type PlaystationActivityMetadataFragment struct {
-	Title        string                                                 `json:"title"`
-	Subject      []PlaystationActivityMetadataFragmentSubjectIdentifier `json:"subject"`
-	LastPlayedAt graphqlTypes.Date                                      `json:"lastPlayedAt"`
+// PlaystationActivityMetadata includes the GraphQL fields of PlaystationActivityMetadata requested by the fragment PlaystationActivityMetadata.
+type PlaystationActivityMetadata struct {
+	Title        string                                         `json:"title"`
+	Subject      []PlaystationActivityMetadataSubjectIdentifier `json:"subject"`
+	LastPlayedAt graphqlTypes.Date                              `json:"lastPlayedAt"`
 }
 
-// GetTitle returns PlaystationActivityMetadataFragment.Title, and is useful for accessing the field via an interface.
-func (v *PlaystationActivityMetadataFragment) GetTitle() string { return v.Title }
+// GetTitle returns PlaystationActivityMetadata.Title, and is useful for accessing the field via an interface.
+func (v *PlaystationActivityMetadata) GetTitle() string { return v.Title }
 
-// GetSubject returns PlaystationActivityMetadataFragment.Subject, and is useful for accessing the field via an interface.
-func (v *PlaystationActivityMetadataFragment) GetSubject() []PlaystationActivityMetadataFragmentSubjectIdentifier {
+// GetSubject returns PlaystationActivityMetadata.Subject, and is useful for accessing the field via an interface.
+func (v *PlaystationActivityMetadata) GetSubject() []PlaystationActivityMetadataSubjectIdentifier {
 	return v.Subject
 }
 
-// GetLastPlayedAt returns PlaystationActivityMetadataFragment.LastPlayedAt, and is useful for accessing the field via an interface.
-func (v *PlaystationActivityMetadataFragment) GetLastPlayedAt() graphqlTypes.Date {
-	return v.LastPlayedAt
-}
+// GetLastPlayedAt returns PlaystationActivityMetadata.LastPlayedAt, and is useful for accessing the field via an interface.
+func (v *PlaystationActivityMetadata) GetLastPlayedAt() graphqlTypes.Date { return v.LastPlayedAt }
 
-// PlaystationActivityMetadataFragmentSubjectIdentifier includes the requested fields of the GraphQL type Identifier.
-type PlaystationActivityMetadataFragmentSubjectIdentifier struct {
+// PlaystationActivityMetadataSubjectIdentifier includes the requested fields of the GraphQL type Identifier.
+type PlaystationActivityMetadataSubjectIdentifier struct {
 	Value          string         `json:"value"`
 	IdentifierType IdentifierType `json:"identifierType"`
 }
 
-// GetValue returns PlaystationActivityMetadataFragmentSubjectIdentifier.Value, and is useful for accessing the field via an interface.
-func (v *PlaystationActivityMetadataFragmentSubjectIdentifier) GetValue() string { return v.Value }
+// GetValue returns PlaystationActivityMetadataSubjectIdentifier.Value, and is useful for accessing the field via an interface.
+func (v *PlaystationActivityMetadataSubjectIdentifier) GetValue() string { return v.Value }
 
-// GetIdentifierType returns PlaystationActivityMetadataFragmentSubjectIdentifier.IdentifierType, and is useful for accessing the field via an interface.
-func (v *PlaystationActivityMetadataFragmentSubjectIdentifier) GetIdentifierType() IdentifierType {
+// GetIdentifierType returns PlaystationActivityMetadataSubjectIdentifier.IdentifierType, and is useful for accessing the field via an interface.
+func (v *PlaystationActivityMetadataSubjectIdentifier) GetIdentifierType() IdentifierType {
 	return v.IdentifierType
 }
 
@@ -333,91 +2025,89 @@ const (
 	TripStatusUnfulfilled TripStatus = "UNFULFILLED"
 )
 
-// UberActivityMetadataFragment includes the GraphQL fields of UberActivityMetadata requested by the fragment UberActivityMetadataFragment.
-type UberActivityMetadataFragment struct {
-	Subject       []UberActivityMetadataFragmentSubjectIdentifier `json:"subject"`
-	BeginTripTime time.Time                                       `json:"beginTripTime"`
-	DropoffTime   time.Time                                       `json:"dropoffTime"`
-	Cost          string                                          `json:"cost"`
-	City          string                                          `json:"city"`
-	Distance      string                                          `json:"distance"`
-	Status        TripStatus                                      `json:"status"`
+// UberActivityMetadata includes the GraphQL fields of UberActivityMetadata requested by the fragment UberActivityMetadata.
+type UberActivityMetadata struct {
+	Subject       []UberActivityMetadataSubjectIdentifier `json:"subject"`
+	BeginTripTime time.Time                               `json:"beginTripTime"`
+	DropoffTime   time.Time                               `json:"dropoffTime"`
+	Cost          string                                  `json:"cost"`
+	City          string                                  `json:"city"`
+	Distance      string                                  `json:"distance"`
+	Status        TripStatus                              `json:"status"`
 }
 
-// GetSubject returns UberActivityMetadataFragment.Subject, and is useful for accessing the field via an interface.
-func (v *UberActivityMetadataFragment) GetSubject() []UberActivityMetadataFragmentSubjectIdentifier {
-	return v.Subject
-}
+// GetSubject returns UberActivityMetadata.Subject, and is useful for accessing the field via an interface.
+func (v *UberActivityMetadata) GetSubject() []UberActivityMetadataSubjectIdentifier { return v.Subject }
 
-// GetBeginTripTime returns UberActivityMetadataFragment.BeginTripTime, and is useful for accessing the field via an interface.
-func (v *UberActivityMetadataFragment) GetBeginTripTime() time.Time { return v.BeginTripTime }
+// GetBeginTripTime returns UberActivityMetadata.BeginTripTime, and is useful for accessing the field via an interface.
+func (v *UberActivityMetadata) GetBeginTripTime() time.Time { return v.BeginTripTime }
 
-// GetDropoffTime returns UberActivityMetadataFragment.DropoffTime, and is useful for accessing the field via an interface.
-func (v *UberActivityMetadataFragment) GetDropoffTime() time.Time { return v.DropoffTime }
+// GetDropoffTime returns UberActivityMetadata.DropoffTime, and is useful for accessing the field via an interface.
+func (v *UberActivityMetadata) GetDropoffTime() time.Time { return v.DropoffTime }
 
-// GetCost returns UberActivityMetadataFragment.Cost, and is useful for accessing the field via an interface.
-func (v *UberActivityMetadataFragment) GetCost() string { return v.Cost }
+// GetCost returns UberActivityMetadata.Cost, and is useful for accessing the field via an interface.
+func (v *UberActivityMetadata) GetCost() string { return v.Cost }
 
-// GetCity returns UberActivityMetadataFragment.City, and is useful for accessing the field via an interface.
-func (v *UberActivityMetadataFragment) GetCity() string { return v.City }
+// GetCity returns UberActivityMetadata.City, and is useful for accessing the field via an interface.
+func (v *UberActivityMetadata) GetCity() string { return v.City }
 
-// GetDistance returns UberActivityMetadataFragment.Distance, and is useful for accessing the field via an interface.
-func (v *UberActivityMetadataFragment) GetDistance() string { return v.Distance }
+// GetDistance returns UberActivityMetadata.Distance, and is useful for accessing the field via an interface.
+func (v *UberActivityMetadata) GetDistance() string { return v.Distance }
 
-// GetStatus returns UberActivityMetadataFragment.Status, and is useful for accessing the field via an interface.
-func (v *UberActivityMetadataFragment) GetStatus() TripStatus { return v.Status }
+// GetStatus returns UberActivityMetadata.Status, and is useful for accessing the field via an interface.
+func (v *UberActivityMetadata) GetStatus() TripStatus { return v.Status }
 
-// UberActivityMetadataFragmentSubjectIdentifier includes the requested fields of the GraphQL type Identifier.
-type UberActivityMetadataFragmentSubjectIdentifier struct {
+// UberActivityMetadataSubjectIdentifier includes the requested fields of the GraphQL type Identifier.
+type UberActivityMetadataSubjectIdentifier struct {
 	Value          string         `json:"value"`
 	IdentifierType IdentifierType `json:"identifierType"`
 }
 
-// GetValue returns UberActivityMetadataFragmentSubjectIdentifier.Value, and is useful for accessing the field via an interface.
-func (v *UberActivityMetadataFragmentSubjectIdentifier) GetValue() string { return v.Value }
+// GetValue returns UberActivityMetadataSubjectIdentifier.Value, and is useful for accessing the field via an interface.
+func (v *UberActivityMetadataSubjectIdentifier) GetValue() string { return v.Value }
 
-// GetIdentifierType returns UberActivityMetadataFragmentSubjectIdentifier.IdentifierType, and is useful for accessing the field via an interface.
-func (v *UberActivityMetadataFragmentSubjectIdentifier) GetIdentifierType() IdentifierType {
+// GetIdentifierType returns UberActivityMetadataSubjectIdentifier.IdentifierType, and is useful for accessing the field via an interface.
+func (v *UberActivityMetadataSubjectIdentifier) GetIdentifierType() IdentifierType {
 	return v.IdentifierType
 }
 
-// YoutubeActivityMetadataFragment includes the GraphQL fields of YoutubeActivityMetadata requested by the fragment YoutubeActivityMetadataFragment.
-type YoutubeActivityMetadataFragment struct {
-	Title             string                                             `json:"title"`
-	Subject           []YoutubeActivityMetadataFragmentSubjectIdentifier `json:"subject"`
-	Date              graphqlTypes.Date                                  `json:"date"`
-	PercentageWatched int                                                `json:"percentageWatched"`
-	ContentType       ContentType                                        `json:"contentType"`
+// YoutubeActivityMetadata includes the GraphQL fields of YoutubeActivityMetadata requested by the fragment YoutubeActivityMetadata.
+type YoutubeActivityMetadata struct {
+	Title             string                                     `json:"title"`
+	Subject           []YoutubeActivityMetadataSubjectIdentifier `json:"subject"`
+	Date              graphqlTypes.Date                          `json:"date"`
+	PercentageWatched int                                        `json:"percentageWatched"`
+	ContentType       ContentType                                `json:"contentType"`
 }
 
-// GetTitle returns YoutubeActivityMetadataFragment.Title, and is useful for accessing the field via an interface.
-func (v *YoutubeActivityMetadataFragment) GetTitle() string { return v.Title }
+// GetTitle returns YoutubeActivityMetadata.Title, and is useful for accessing the field via an interface.
+func (v *YoutubeActivityMetadata) GetTitle() string { return v.Title }
 
-// GetSubject returns YoutubeActivityMetadataFragment.Subject, and is useful for accessing the field via an interface.
-func (v *YoutubeActivityMetadataFragment) GetSubject() []YoutubeActivityMetadataFragmentSubjectIdentifier {
+// GetSubject returns YoutubeActivityMetadata.Subject, and is useful for accessing the field via an interface.
+func (v *YoutubeActivityMetadata) GetSubject() []YoutubeActivityMetadataSubjectIdentifier {
 	return v.Subject
 }
 
-// GetDate returns YoutubeActivityMetadataFragment.Date, and is useful for accessing the field via an interface.
-func (v *YoutubeActivityMetadataFragment) GetDate() graphqlTypes.Date { return v.Date }
+// GetDate returns YoutubeActivityMetadata.Date, and is useful for accessing the field via an interface.
+func (v *YoutubeActivityMetadata) GetDate() graphqlTypes.Date { return v.Date }
 
-// GetPercentageWatched returns YoutubeActivityMetadataFragment.PercentageWatched, and is useful for accessing the field via an interface.
-func (v *YoutubeActivityMetadataFragment) GetPercentageWatched() int { return v.PercentageWatched }
+// GetPercentageWatched returns YoutubeActivityMetadata.PercentageWatched, and is useful for accessing the field via an interface.
+func (v *YoutubeActivityMetadata) GetPercentageWatched() int { return v.PercentageWatched }
 
-// GetContentType returns YoutubeActivityMetadataFragment.ContentType, and is useful for accessing the field via an interface.
-func (v *YoutubeActivityMetadataFragment) GetContentType() ContentType { return v.ContentType }
+// GetContentType returns YoutubeActivityMetadata.ContentType, and is useful for accessing the field via an interface.
+func (v *YoutubeActivityMetadata) GetContentType() ContentType { return v.ContentType }
 
-// YoutubeActivityMetadataFragmentSubjectIdentifier includes the requested fields of the GraphQL type Identifier.
-type YoutubeActivityMetadataFragmentSubjectIdentifier struct {
+// YoutubeActivityMetadataSubjectIdentifier includes the requested fields of the GraphQL type Identifier.
+type YoutubeActivityMetadataSubjectIdentifier struct {
 	Value          string         `json:"value"`
 	IdentifierType IdentifierType `json:"identifierType"`
 }
 
-// GetValue returns YoutubeActivityMetadataFragmentSubjectIdentifier.Value, and is useful for accessing the field via an interface.
-func (v *YoutubeActivityMetadataFragmentSubjectIdentifier) GetValue() string { return v.Value }
+// GetValue returns YoutubeActivityMetadataSubjectIdentifier.Value, and is useful for accessing the field via an interface.
+func (v *YoutubeActivityMetadataSubjectIdentifier) GetValue() string { return v.Value }
 
-// GetIdentifierType returns YoutubeActivityMetadataFragmentSubjectIdentifier.IdentifierType, and is useful for accessing the field via an interface.
-func (v *YoutubeActivityMetadataFragmentSubjectIdentifier) GetIdentifierType() IdentifierType {
+// GetIdentifierType returns YoutubeActivityMetadataSubjectIdentifier.IdentifierType, and is useful for accessing the field via an interface.
+func (v *YoutubeActivityMetadataSubjectIdentifier) GetIdentifierType() IdentifierType {
 	return v.IdentifierType
 }
 
@@ -489,1771 +2179,47 @@ func (v *__lookupTraitInput) GetDataKey() string { return v.DataKey }
 // GetTraitId returns __lookupTraitInput.TraitId, and is useful for accessing the field via an interface.
 func (v *__lookupTraitInput) GetTraitId() graphqlTypes.UUID { return v.TraitId }
 
-// getActivityGetActivityActivityResponse includes the requested fields of the GraphQL type ActivityResponse.
-type getActivityGetActivityActivityResponse struct {
-	Data  []getActivityGetActivityActivityResponseDataActivity `json:"data"`
-	Limit graphqlTypes.Int64                                   `json:"limit"`
-	Total graphqlTypes.Int64                                   `json:"total"`
-	Page  graphqlTypes.Int64                                   `json:"page"`
-}
-
-// GetData returns getActivityGetActivityActivityResponse.Data, and is useful for accessing the field via an interface.
-func (v *getActivityGetActivityActivityResponse) GetData() []getActivityGetActivityActivityResponseDataActivity {
-	return v.Data
-}
-
-// GetLimit returns getActivityGetActivityActivityResponse.Limit, and is useful for accessing the field via an interface.
-func (v *getActivityGetActivityActivityResponse) GetLimit() graphqlTypes.Int64 { return v.Limit }
-
-// GetTotal returns getActivityGetActivityActivityResponse.Total, and is useful for accessing the field via an interface.
-func (v *getActivityGetActivityActivityResponse) GetTotal() graphqlTypes.Int64 { return v.Total }
-
-// GetPage returns getActivityGetActivityActivityResponse.Page, and is useful for accessing the field via an interface.
-func (v *getActivityGetActivityActivityResponse) GetPage() graphqlTypes.Int64 { return v.Page }
-
-// getActivityGetActivityActivityResponseDataActivity includes the requested fields of the GraphQL type Activity.
-type getActivityGetActivityActivityResponseDataActivity struct {
-	Id       string                                                     `json:"id"`
-	Metadata getActivityGetActivityActivityResponseDataActivityMetadata `json:"-"`
-}
-
-// GetId returns getActivityGetActivityActivityResponseDataActivity.Id, and is useful for accessing the field via an interface.
-func (v *getActivityGetActivityActivityResponseDataActivity) GetId() string { return v.Id }
-
-// GetMetadata returns getActivityGetActivityActivityResponseDataActivity.Metadata, and is useful for accessing the field via an interface.
-func (v *getActivityGetActivityActivityResponseDataActivity) GetMetadata() getActivityGetActivityActivityResponseDataActivityMetadata {
-	return v.Metadata
-}
-
-func (v *getActivityGetActivityActivityResponseDataActivity) UnmarshalJSON(b []byte) error {
-
-	if string(b) == "null" {
-		return nil
-	}
-
-	var firstPass struct {
-		*getActivityGetActivityActivityResponseDataActivity
-		Metadata json.RawMessage `json:"metadata"`
-		graphql.NoUnmarshalJSON
-	}
-	firstPass.getActivityGetActivityActivityResponseDataActivity = v
-
-	err := json.Unmarshal(b, &firstPass)
-	if err != nil {
-		return err
-	}
-
-	{
-		dst := &v.Metadata
-		src := firstPass.Metadata
-		if len(src) != 0 && string(src) != "null" {
-			err = __unmarshalgetActivityGetActivityActivityResponseDataActivityMetadata(
-				src, dst)
-			if err != nil {
-				return fmt.Errorf(
-					"unable to unmarshal getActivityGetActivityActivityResponseDataActivity.Metadata: %w", err)
-			}
-		}
-	}
-	return nil
-}
-
-type __premarshalgetActivityGetActivityActivityResponseDataActivity struct {
-	Id string `json:"id"`
-
-	Metadata json.RawMessage `json:"metadata"`
-}
-
-func (v *getActivityGetActivityActivityResponseDataActivity) MarshalJSON() ([]byte, error) {
-	premarshaled, err := v.__premarshalJSON()
-	if err != nil {
-		return nil, err
-	}
-	return json.Marshal(premarshaled)
-}
-
-func (v *getActivityGetActivityActivityResponseDataActivity) __premarshalJSON() (*__premarshalgetActivityGetActivityActivityResponseDataActivity, error) {
-	var retval __premarshalgetActivityGetActivityActivityResponseDataActivity
-
-	retval.Id = v.Id
-	{
-
-		dst := &retval.Metadata
-		src := v.Metadata
-		var err error
-		*dst, err = __marshalgetActivityGetActivityActivityResponseDataActivityMetadata(
-			&src)
-		if err != nil {
-			return nil, fmt.Errorf(
-				"unable to marshal getActivityGetActivityActivityResponseDataActivity.Metadata: %w", err)
-		}
-	}
-	return &retval, nil
-}
-
-// getActivityGetActivityActivityResponseDataActivityMetadata includes the requested fields of the GraphQL interface ActivityMetadata.
-//
-// getActivityGetActivityActivityResponseDataActivityMetadata is implemented by the following types:
-// getActivityGetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata
-// getActivityGetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata
-// getActivityGetActivityActivityResponseDataActivityMetadataNetflixActivityMetadata
-// getActivityGetActivityActivityResponseDataActivityMetadataPlaystationActivityMetadata
-// getActivityGetActivityActivityResponseDataActivityMetadataUberActivityMetadata
-// getActivityGetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata
-type getActivityGetActivityActivityResponseDataActivityMetadata interface {
-	implementsGraphQLInterfacegetActivityGetActivityActivityResponseDataActivityMetadata()
-	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
-	GetTypename() string
-}
-
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata) implementsGraphQLInterfacegetActivityGetActivityActivityResponseDataActivityMetadata() {
-}
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata) implementsGraphQLInterfacegetActivityGetActivityActivityResponseDataActivityMetadata() {
-}
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataNetflixActivityMetadata) implementsGraphQLInterfacegetActivityGetActivityActivityResponseDataActivityMetadata() {
-}
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataPlaystationActivityMetadata) implementsGraphQLInterfacegetActivityGetActivityActivityResponseDataActivityMetadata() {
-}
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataUberActivityMetadata) implementsGraphQLInterfacegetActivityGetActivityActivityResponseDataActivityMetadata() {
-}
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata) implementsGraphQLInterfacegetActivityGetActivityActivityResponseDataActivityMetadata() {
-}
-
-func __unmarshalgetActivityGetActivityActivityResponseDataActivityMetadata(b []byte, v *getActivityGetActivityActivityResponseDataActivityMetadata) error {
-	if string(b) == "null" {
-		return nil
-	}
-
-	var tn struct {
-		TypeName string `json:"__typename"`
-	}
-	err := json.Unmarshal(b, &tn)
-	if err != nil {
-		return err
-	}
-
-	switch tn.TypeName {
-	case "AmazonActivityMetadata":
-		*v = new(getActivityGetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata)
-		return json.Unmarshal(b, *v)
-	case "InstacartActivityMetadata":
-		*v = new(getActivityGetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata)
-		return json.Unmarshal(b, *v)
-	case "NetflixActivityMetadata":
-		*v = new(getActivityGetActivityActivityResponseDataActivityMetadataNetflixActivityMetadata)
-		return json.Unmarshal(b, *v)
-	case "PlaystationActivityMetadata":
-		*v = new(getActivityGetActivityActivityResponseDataActivityMetadataPlaystationActivityMetadata)
-		return json.Unmarshal(b, *v)
-	case "UberActivityMetadata":
-		*v = new(getActivityGetActivityActivityResponseDataActivityMetadataUberActivityMetadata)
-		return json.Unmarshal(b, *v)
-	case "YoutubeActivityMetadata":
-		*v = new(getActivityGetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata)
-		return json.Unmarshal(b, *v)
-	case "":
-		return fmt.Errorf(
-			"response was missing ActivityMetadata.__typename")
-	default:
-		return fmt.Errorf(
-			`unexpected concrete type for getActivityGetActivityActivityResponseDataActivityMetadata: "%v"`, tn.TypeName)
-	}
-}
-
-func __marshalgetActivityGetActivityActivityResponseDataActivityMetadata(v *getActivityGetActivityActivityResponseDataActivityMetadata) ([]byte, error) {
-
-	var typename string
-	switch v := (*v).(type) {
-	case *getActivityGetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata:
-		typename = "AmazonActivityMetadata"
-
-		premarshaled, err := v.__premarshalJSON()
-		if err != nil {
-			return nil, err
-		}
-		result := struct {
-			TypeName string `json:"__typename"`
-			*__premarshalgetActivityGetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata
-		}{typename, premarshaled}
-		return json.Marshal(result)
-	case *getActivityGetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata:
-		typename = "InstacartActivityMetadata"
-
-		premarshaled, err := v.__premarshalJSON()
-		if err != nil {
-			return nil, err
-		}
-		result := struct {
-			TypeName string `json:"__typename"`
-			*__premarshalgetActivityGetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata
-		}{typename, premarshaled}
-		return json.Marshal(result)
-	case *getActivityGetActivityActivityResponseDataActivityMetadataNetflixActivityMetadata:
-		typename = "NetflixActivityMetadata"
-
-		premarshaled, err := v.__premarshalJSON()
-		if err != nil {
-			return nil, err
-		}
-		result := struct {
-			TypeName string `json:"__typename"`
-			*__premarshalgetActivityGetActivityActivityResponseDataActivityMetadataNetflixActivityMetadata
-		}{typename, premarshaled}
-		return json.Marshal(result)
-	case *getActivityGetActivityActivityResponseDataActivityMetadataPlaystationActivityMetadata:
-		typename = "PlaystationActivityMetadata"
-
-		premarshaled, err := v.__premarshalJSON()
-		if err != nil {
-			return nil, err
-		}
-		result := struct {
-			TypeName string `json:"__typename"`
-			*__premarshalgetActivityGetActivityActivityResponseDataActivityMetadataPlaystationActivityMetadata
-		}{typename, premarshaled}
-		return json.Marshal(result)
-	case *getActivityGetActivityActivityResponseDataActivityMetadataUberActivityMetadata:
-		typename = "UberActivityMetadata"
-
-		premarshaled, err := v.__premarshalJSON()
-		if err != nil {
-			return nil, err
-		}
-		result := struct {
-			TypeName string `json:"__typename"`
-			*__premarshalgetActivityGetActivityActivityResponseDataActivityMetadataUberActivityMetadata
-		}{typename, premarshaled}
-		return json.Marshal(result)
-	case *getActivityGetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata:
-		typename = "YoutubeActivityMetadata"
-
-		premarshaled, err := v.__premarshalJSON()
-		if err != nil {
-			return nil, err
-		}
-		result := struct {
-			TypeName string `json:"__typename"`
-			*__premarshalgetActivityGetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata
-		}{typename, premarshaled}
-		return json.Marshal(result)
-	case nil:
-		return []byte("null"), nil
-	default:
-		return nil, fmt.Errorf(
-			`unexpected concrete type for getActivityGetActivityActivityResponseDataActivityMetadata: "%T"`, v)
-	}
-}
-
-// getActivityGetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata includes the requested fields of the GraphQL type AmazonActivityMetadata.
-type getActivityGetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata struct {
-	Typename                       string `json:"__typename"`
-	AmazonActivityMetadataFragment `json:"-"`
-}
-
-// GetTypename returns getActivityGetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata.Typename, and is useful for accessing the field via an interface.
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata) GetTypename() string {
-	return v.Typename
-}
-
-// GetProductName returns getActivityGetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata.ProductName, and is useful for accessing the field via an interface.
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata) GetProductName() string {
-	return v.AmazonActivityMetadataFragment.ProductName
-}
-
-// GetSubject returns getActivityGetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata.Subject, and is useful for accessing the field via an interface.
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata) GetSubject() []AmazonActivityMetadataFragmentSubjectIdentifier {
-	return v.AmazonActivityMetadataFragment.Subject
-}
-
-// GetDate returns getActivityGetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata.Date, and is useful for accessing the field via an interface.
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata) GetDate() graphqlTypes.Date {
-	return v.AmazonActivityMetadataFragment.Date
-}
-
-// GetQuantityPurchased returns getActivityGetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata.QuantityPurchased, and is useful for accessing the field via an interface.
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata) GetQuantityPurchased() int {
-	return v.AmazonActivityMetadataFragment.QuantityPurchased
-}
-
-// GetTotalCost returns getActivityGetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata.TotalCost, and is useful for accessing the field via an interface.
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata) GetTotalCost() string {
-	return v.AmazonActivityMetadataFragment.TotalCost
-}
-
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata) UnmarshalJSON(b []byte) error {
-
-	if string(b) == "null" {
-		return nil
-	}
-
-	var firstPass struct {
-		*getActivityGetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata
-		graphql.NoUnmarshalJSON
-	}
-	firstPass.getActivityGetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata = v
-
-	err := json.Unmarshal(b, &firstPass)
-	if err != nil {
-		return err
-	}
-
-	err = json.Unmarshal(
-		b, &v.AmazonActivityMetadataFragment)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-type __premarshalgetActivityGetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata struct {
-	Typename string `json:"__typename"`
-
-	ProductName string `json:"productName"`
-
-	Subject []AmazonActivityMetadataFragmentSubjectIdentifier `json:"subject"`
-
-	Date graphqlTypes.Date `json:"date"`
-
-	QuantityPurchased int `json:"quantityPurchased"`
-
-	TotalCost string `json:"totalCost"`
-}
-
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata) MarshalJSON() ([]byte, error) {
-	premarshaled, err := v.__premarshalJSON()
-	if err != nil {
-		return nil, err
-	}
-	return json.Marshal(premarshaled)
-}
-
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata) __premarshalJSON() (*__premarshalgetActivityGetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata, error) {
-	var retval __premarshalgetActivityGetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata
-
-	retval.Typename = v.Typename
-	retval.ProductName = v.AmazonActivityMetadataFragment.ProductName
-	retval.Subject = v.AmazonActivityMetadataFragment.Subject
-	retval.Date = v.AmazonActivityMetadataFragment.Date
-	retval.QuantityPurchased = v.AmazonActivityMetadataFragment.QuantityPurchased
-	retval.TotalCost = v.AmazonActivityMetadataFragment.TotalCost
-	return &retval, nil
-}
-
-// getActivityGetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata includes the requested fields of the GraphQL type InstacartActivityMetadata.
-type getActivityGetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata struct {
-	Typename                          string `json:"__typename"`
-	InstacartActivityMetadataFragment `json:"-"`
-}
-
-// GetTypename returns getActivityGetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata.Typename, and is useful for accessing the field via an interface.
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata) GetTypename() string {
-	return v.Typename
-}
-
-// GetSubject returns getActivityGetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata.Subject, and is useful for accessing the field via an interface.
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata) GetSubject() []InstacartActivityMetadataFragmentSubjectIdentifier {
-	return v.InstacartActivityMetadataFragment.Subject
-}
-
-// GetRetailer returns getActivityGetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata.Retailer, and is useful for accessing the field via an interface.
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata) GetRetailer() string {
-	return v.InstacartActivityMetadataFragment.Retailer
-}
-
-// GetTotalOrderAmountSpent returns getActivityGetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata.TotalOrderAmountSpent, and is useful for accessing the field via an interface.
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata) GetTotalOrderAmountSpent() string {
-	return v.InstacartActivityMetadataFragment.TotalOrderAmountSpent
-}
-
-// GetDateOrdered returns getActivityGetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata.DateOrdered, and is useful for accessing the field via an interface.
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata) GetDateOrdered() graphqlTypes.Date {
-	return v.InstacartActivityMetadataFragment.DateOrdered
-}
-
-// GetDateDelivered returns getActivityGetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata.DateDelivered, and is useful for accessing the field via an interface.
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata) GetDateDelivered() graphqlTypes.Date {
-	return v.InstacartActivityMetadataFragment.DateDelivered
-}
-
-// GetStatusString returns getActivityGetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata.StatusString, and is useful for accessing the field via an interface.
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata) GetStatusString() string {
-	return v.InstacartActivityMetadataFragment.StatusString
-}
-
-// GetItems returns getActivityGetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata.Items, and is useful for accessing the field via an interface.
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata) GetItems() []InstacartActivityMetadataFragmentItemsInstacartOrderItem {
-	return v.InstacartActivityMetadataFragment.Items
-}
-
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata) UnmarshalJSON(b []byte) error {
-
-	if string(b) == "null" {
-		return nil
-	}
-
-	var firstPass struct {
-		*getActivityGetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata
-		graphql.NoUnmarshalJSON
-	}
-	firstPass.getActivityGetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata = v
-
-	err := json.Unmarshal(b, &firstPass)
-	if err != nil {
-		return err
-	}
-
-	err = json.Unmarshal(
-		b, &v.InstacartActivityMetadataFragment)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-type __premarshalgetActivityGetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata struct {
-	Typename string `json:"__typename"`
-
-	Subject []InstacartActivityMetadataFragmentSubjectIdentifier `json:"subject"`
-
-	Retailer string `json:"retailer"`
-
-	TotalOrderAmountSpent string `json:"totalOrderAmountSpent"`
-
-	DateOrdered graphqlTypes.Date `json:"dateOrdered"`
-
-	DateDelivered graphqlTypes.Date `json:"dateDelivered"`
-
-	StatusString string `json:"statusString"`
-
-	Items []InstacartActivityMetadataFragmentItemsInstacartOrderItem `json:"items"`
-}
-
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata) MarshalJSON() ([]byte, error) {
-	premarshaled, err := v.__premarshalJSON()
-	if err != nil {
-		return nil, err
-	}
-	return json.Marshal(premarshaled)
-}
-
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata) __premarshalJSON() (*__premarshalgetActivityGetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata, error) {
-	var retval __premarshalgetActivityGetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata
-
-	retval.Typename = v.Typename
-	retval.Subject = v.InstacartActivityMetadataFragment.Subject
-	retval.Retailer = v.InstacartActivityMetadataFragment.Retailer
-	retval.TotalOrderAmountSpent = v.InstacartActivityMetadataFragment.TotalOrderAmountSpent
-	retval.DateOrdered = v.InstacartActivityMetadataFragment.DateOrdered
-	retval.DateDelivered = v.InstacartActivityMetadataFragment.DateDelivered
-	retval.StatusString = v.InstacartActivityMetadataFragment.StatusString
-	retval.Items = v.InstacartActivityMetadataFragment.Items
-	return &retval, nil
-}
-
-// getActivityGetActivityActivityResponseDataActivityMetadataNetflixActivityMetadata includes the requested fields of the GraphQL type NetflixActivityMetadata.
-type getActivityGetActivityActivityResponseDataActivityMetadataNetflixActivityMetadata struct {
-	Typename                        string `json:"__typename"`
-	NetflixActivityMetadataFragment `json:"-"`
-}
-
-// GetTypename returns getActivityGetActivityActivityResponseDataActivityMetadataNetflixActivityMetadata.Typename, and is useful for accessing the field via an interface.
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataNetflixActivityMetadata) GetTypename() string {
-	return v.Typename
-}
-
-// GetTitle returns getActivityGetActivityActivityResponseDataActivityMetadataNetflixActivityMetadata.Title, and is useful for accessing the field via an interface.
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataNetflixActivityMetadata) GetTitle() string {
-	return v.NetflixActivityMetadataFragment.Title
-}
-
-// GetSubject returns getActivityGetActivityActivityResponseDataActivityMetadataNetflixActivityMetadata.Subject, and is useful for accessing the field via an interface.
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataNetflixActivityMetadata) GetSubject() []NetflixActivityMetadataFragmentSubjectIdentifier {
-	return v.NetflixActivityMetadataFragment.Subject
-}
-
-// GetDate returns getActivityGetActivityActivityResponseDataActivityMetadataNetflixActivityMetadata.Date, and is useful for accessing the field via an interface.
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataNetflixActivityMetadata) GetDate() graphqlTypes.Date {
-	return v.NetflixActivityMetadataFragment.Date
-}
-
-// GetLastPlayedAt returns getActivityGetActivityActivityResponseDataActivityMetadataNetflixActivityMetadata.LastPlayedAt, and is useful for accessing the field via an interface.
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataNetflixActivityMetadata) GetLastPlayedAt() graphqlTypes.Date {
-	return v.NetflixActivityMetadataFragment.LastPlayedAt
-}
-
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataNetflixActivityMetadata) UnmarshalJSON(b []byte) error {
-
-	if string(b) == "null" {
-		return nil
-	}
-
-	var firstPass struct {
-		*getActivityGetActivityActivityResponseDataActivityMetadataNetflixActivityMetadata
-		graphql.NoUnmarshalJSON
-	}
-	firstPass.getActivityGetActivityActivityResponseDataActivityMetadataNetflixActivityMetadata = v
-
-	err := json.Unmarshal(b, &firstPass)
-	if err != nil {
-		return err
-	}
-
-	err = json.Unmarshal(
-		b, &v.NetflixActivityMetadataFragment)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-type __premarshalgetActivityGetActivityActivityResponseDataActivityMetadataNetflixActivityMetadata struct {
-	Typename string `json:"__typename"`
-
-	Title string `json:"title"`
-
-	Subject []NetflixActivityMetadataFragmentSubjectIdentifier `json:"subject"`
-
-	Date graphqlTypes.Date `json:"date"`
-
-	LastPlayedAt graphqlTypes.Date `json:"lastPlayedAt"`
-}
-
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataNetflixActivityMetadata) MarshalJSON() ([]byte, error) {
-	premarshaled, err := v.__premarshalJSON()
-	if err != nil {
-		return nil, err
-	}
-	return json.Marshal(premarshaled)
-}
-
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataNetflixActivityMetadata) __premarshalJSON() (*__premarshalgetActivityGetActivityActivityResponseDataActivityMetadataNetflixActivityMetadata, error) {
-	var retval __premarshalgetActivityGetActivityActivityResponseDataActivityMetadataNetflixActivityMetadata
-
-	retval.Typename = v.Typename
-	retval.Title = v.NetflixActivityMetadataFragment.Title
-	retval.Subject = v.NetflixActivityMetadataFragment.Subject
-	retval.Date = v.NetflixActivityMetadataFragment.Date
-	retval.LastPlayedAt = v.NetflixActivityMetadataFragment.LastPlayedAt
-	return &retval, nil
-}
-
-// getActivityGetActivityActivityResponseDataActivityMetadataPlaystationActivityMetadata includes the requested fields of the GraphQL type PlaystationActivityMetadata.
-type getActivityGetActivityActivityResponseDataActivityMetadataPlaystationActivityMetadata struct {
-	Typename                            string `json:"__typename"`
-	PlaystationActivityMetadataFragment `json:"-"`
-}
-
-// GetTypename returns getActivityGetActivityActivityResponseDataActivityMetadataPlaystationActivityMetadata.Typename, and is useful for accessing the field via an interface.
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataPlaystationActivityMetadata) GetTypename() string {
-	return v.Typename
-}
-
-// GetTitle returns getActivityGetActivityActivityResponseDataActivityMetadataPlaystationActivityMetadata.Title, and is useful for accessing the field via an interface.
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataPlaystationActivityMetadata) GetTitle() string {
-	return v.PlaystationActivityMetadataFragment.Title
-}
-
-// GetSubject returns getActivityGetActivityActivityResponseDataActivityMetadataPlaystationActivityMetadata.Subject, and is useful for accessing the field via an interface.
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataPlaystationActivityMetadata) GetSubject() []PlaystationActivityMetadataFragmentSubjectIdentifier {
-	return v.PlaystationActivityMetadataFragment.Subject
-}
-
-// GetLastPlayedAt returns getActivityGetActivityActivityResponseDataActivityMetadataPlaystationActivityMetadata.LastPlayedAt, and is useful for accessing the field via an interface.
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataPlaystationActivityMetadata) GetLastPlayedAt() graphqlTypes.Date {
-	return v.PlaystationActivityMetadataFragment.LastPlayedAt
-}
-
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataPlaystationActivityMetadata) UnmarshalJSON(b []byte) error {
-
-	if string(b) == "null" {
-		return nil
-	}
-
-	var firstPass struct {
-		*getActivityGetActivityActivityResponseDataActivityMetadataPlaystationActivityMetadata
-		graphql.NoUnmarshalJSON
-	}
-	firstPass.getActivityGetActivityActivityResponseDataActivityMetadataPlaystationActivityMetadata = v
-
-	err := json.Unmarshal(b, &firstPass)
-	if err != nil {
-		return err
-	}
-
-	err = json.Unmarshal(
-		b, &v.PlaystationActivityMetadataFragment)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-type __premarshalgetActivityGetActivityActivityResponseDataActivityMetadataPlaystationActivityMetadata struct {
-	Typename string `json:"__typename"`
-
-	Title string `json:"title"`
-
-	Subject []PlaystationActivityMetadataFragmentSubjectIdentifier `json:"subject"`
-
-	LastPlayedAt graphqlTypes.Date `json:"lastPlayedAt"`
-}
-
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataPlaystationActivityMetadata) MarshalJSON() ([]byte, error) {
-	premarshaled, err := v.__premarshalJSON()
-	if err != nil {
-		return nil, err
-	}
-	return json.Marshal(premarshaled)
-}
-
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataPlaystationActivityMetadata) __premarshalJSON() (*__premarshalgetActivityGetActivityActivityResponseDataActivityMetadataPlaystationActivityMetadata, error) {
-	var retval __premarshalgetActivityGetActivityActivityResponseDataActivityMetadataPlaystationActivityMetadata
-
-	retval.Typename = v.Typename
-	retval.Title = v.PlaystationActivityMetadataFragment.Title
-	retval.Subject = v.PlaystationActivityMetadataFragment.Subject
-	retval.LastPlayedAt = v.PlaystationActivityMetadataFragment.LastPlayedAt
-	return &retval, nil
-}
-
-// getActivityGetActivityActivityResponseDataActivityMetadataUberActivityMetadata includes the requested fields of the GraphQL type UberActivityMetadata.
-type getActivityGetActivityActivityResponseDataActivityMetadataUberActivityMetadata struct {
-	Typename                     string `json:"__typename"`
-	UberActivityMetadataFragment `json:"-"`
-}
-
-// GetTypename returns getActivityGetActivityActivityResponseDataActivityMetadataUberActivityMetadata.Typename, and is useful for accessing the field via an interface.
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataUberActivityMetadata) GetTypename() string {
-	return v.Typename
-}
-
-// GetSubject returns getActivityGetActivityActivityResponseDataActivityMetadataUberActivityMetadata.Subject, and is useful for accessing the field via an interface.
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataUberActivityMetadata) GetSubject() []UberActivityMetadataFragmentSubjectIdentifier {
-	return v.UberActivityMetadataFragment.Subject
-}
-
-// GetBeginTripTime returns getActivityGetActivityActivityResponseDataActivityMetadataUberActivityMetadata.BeginTripTime, and is useful for accessing the field via an interface.
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataUberActivityMetadata) GetBeginTripTime() time.Time {
-	return v.UberActivityMetadataFragment.BeginTripTime
-}
-
-// GetDropoffTime returns getActivityGetActivityActivityResponseDataActivityMetadataUberActivityMetadata.DropoffTime, and is useful for accessing the field via an interface.
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataUberActivityMetadata) GetDropoffTime() time.Time {
-	return v.UberActivityMetadataFragment.DropoffTime
-}
-
-// GetCost returns getActivityGetActivityActivityResponseDataActivityMetadataUberActivityMetadata.Cost, and is useful for accessing the field via an interface.
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataUberActivityMetadata) GetCost() string {
-	return v.UberActivityMetadataFragment.Cost
-}
-
-// GetCity returns getActivityGetActivityActivityResponseDataActivityMetadataUberActivityMetadata.City, and is useful for accessing the field via an interface.
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataUberActivityMetadata) GetCity() string {
-	return v.UberActivityMetadataFragment.City
-}
-
-// GetDistance returns getActivityGetActivityActivityResponseDataActivityMetadataUberActivityMetadata.Distance, and is useful for accessing the field via an interface.
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataUberActivityMetadata) GetDistance() string {
-	return v.UberActivityMetadataFragment.Distance
-}
-
-// GetStatus returns getActivityGetActivityActivityResponseDataActivityMetadataUberActivityMetadata.Status, and is useful for accessing the field via an interface.
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataUberActivityMetadata) GetStatus() TripStatus {
-	return v.UberActivityMetadataFragment.Status
-}
-
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataUberActivityMetadata) UnmarshalJSON(b []byte) error {
-
-	if string(b) == "null" {
-		return nil
-	}
-
-	var firstPass struct {
-		*getActivityGetActivityActivityResponseDataActivityMetadataUberActivityMetadata
-		graphql.NoUnmarshalJSON
-	}
-	firstPass.getActivityGetActivityActivityResponseDataActivityMetadataUberActivityMetadata = v
-
-	err := json.Unmarshal(b, &firstPass)
-	if err != nil {
-		return err
-	}
-
-	err = json.Unmarshal(
-		b, &v.UberActivityMetadataFragment)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-type __premarshalgetActivityGetActivityActivityResponseDataActivityMetadataUberActivityMetadata struct {
-	Typename string `json:"__typename"`
-
-	Subject []UberActivityMetadataFragmentSubjectIdentifier `json:"subject"`
-
-	BeginTripTime time.Time `json:"beginTripTime"`
-
-	DropoffTime time.Time `json:"dropoffTime"`
-
-	Cost string `json:"cost"`
-
-	City string `json:"city"`
-
-	Distance string `json:"distance"`
-
-	Status TripStatus `json:"status"`
-}
-
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataUberActivityMetadata) MarshalJSON() ([]byte, error) {
-	premarshaled, err := v.__premarshalJSON()
-	if err != nil {
-		return nil, err
-	}
-	return json.Marshal(premarshaled)
-}
-
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataUberActivityMetadata) __premarshalJSON() (*__premarshalgetActivityGetActivityActivityResponseDataActivityMetadataUberActivityMetadata, error) {
-	var retval __premarshalgetActivityGetActivityActivityResponseDataActivityMetadataUberActivityMetadata
-
-	retval.Typename = v.Typename
-	retval.Subject = v.UberActivityMetadataFragment.Subject
-	retval.BeginTripTime = v.UberActivityMetadataFragment.BeginTripTime
-	retval.DropoffTime = v.UberActivityMetadataFragment.DropoffTime
-	retval.Cost = v.UberActivityMetadataFragment.Cost
-	retval.City = v.UberActivityMetadataFragment.City
-	retval.Distance = v.UberActivityMetadataFragment.Distance
-	retval.Status = v.UberActivityMetadataFragment.Status
-	return &retval, nil
-}
-
-// getActivityGetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata includes the requested fields of the GraphQL type YoutubeActivityMetadata.
-type getActivityGetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata struct {
-	Typename                        string `json:"__typename"`
-	YoutubeActivityMetadataFragment `json:"-"`
-}
-
-// GetTypename returns getActivityGetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata.Typename, and is useful for accessing the field via an interface.
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata) GetTypename() string {
-	return v.Typename
-}
-
-// GetTitle returns getActivityGetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata.Title, and is useful for accessing the field via an interface.
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata) GetTitle() string {
-	return v.YoutubeActivityMetadataFragment.Title
-}
-
-// GetSubject returns getActivityGetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata.Subject, and is useful for accessing the field via an interface.
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata) GetSubject() []YoutubeActivityMetadataFragmentSubjectIdentifier {
-	return v.YoutubeActivityMetadataFragment.Subject
-}
-
-// GetDate returns getActivityGetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata.Date, and is useful for accessing the field via an interface.
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata) GetDate() graphqlTypes.Date {
-	return v.YoutubeActivityMetadataFragment.Date
-}
-
-// GetPercentageWatched returns getActivityGetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata.PercentageWatched, and is useful for accessing the field via an interface.
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata) GetPercentageWatched() int {
-	return v.YoutubeActivityMetadataFragment.PercentageWatched
-}
-
-// GetContentType returns getActivityGetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata.ContentType, and is useful for accessing the field via an interface.
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata) GetContentType() ContentType {
-	return v.YoutubeActivityMetadataFragment.ContentType
-}
-
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata) UnmarshalJSON(b []byte) error {
-
-	if string(b) == "null" {
-		return nil
-	}
-
-	var firstPass struct {
-		*getActivityGetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata
-		graphql.NoUnmarshalJSON
-	}
-	firstPass.getActivityGetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata = v
-
-	err := json.Unmarshal(b, &firstPass)
-	if err != nil {
-		return err
-	}
-
-	err = json.Unmarshal(
-		b, &v.YoutubeActivityMetadataFragment)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-type __premarshalgetActivityGetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata struct {
-	Typename string `json:"__typename"`
-
-	Title string `json:"title"`
-
-	Subject []YoutubeActivityMetadataFragmentSubjectIdentifier `json:"subject"`
-
-	Date graphqlTypes.Date `json:"date"`
-
-	PercentageWatched int `json:"percentageWatched"`
-
-	ContentType ContentType `json:"contentType"`
-}
-
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata) MarshalJSON() ([]byte, error) {
-	premarshaled, err := v.__premarshalJSON()
-	if err != nil {
-		return nil, err
-	}
-	return json.Marshal(premarshaled)
-}
-
-func (v *getActivityGetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata) __premarshalJSON() (*__premarshalgetActivityGetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata, error) {
-	var retval __premarshalgetActivityGetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata
-
-	retval.Typename = v.Typename
-	retval.Title = v.YoutubeActivityMetadataFragment.Title
-	retval.Subject = v.YoutubeActivityMetadataFragment.Subject
-	retval.Date = v.YoutubeActivityMetadataFragment.Date
-	retval.PercentageWatched = v.YoutubeActivityMetadataFragment.PercentageWatched
-	retval.ContentType = v.YoutubeActivityMetadataFragment.ContentType
-	return &retval, nil
-}
-
 // getActivityResponse is returned by getActivity on success.
 type getActivityResponse struct {
-	GetActivity getActivityGetActivityActivityResponse `json:"getActivity"`
+	GetActivity GetActivityActivityResponse `json:"getActivity"`
 }
 
 // GetGetActivity returns getActivityResponse.GetActivity, and is useful for accessing the field via an interface.
-func (v *getActivityResponse) GetGetActivity() getActivityGetActivityActivityResponse {
-	return v.GetActivity
-}
-
-// getAppByPublicKeyGetAppByPublicKeyApplication includes the requested fields of the GraphQL type Application.
-type getAppByPublicKeyGetAppByPublicKeyApplication struct {
-	AppName      string             `json:"appName"`
-	PublicKey    string             `json:"publicKey"`
-	IconURL      string             `json:"iconURL"`
-	GandalfID    graphqlTypes.Int64 `json:"gandalfID"`
-	AppRegistrar string             `json:"appRegistrar"`
-}
-
-// GetAppName returns getAppByPublicKeyGetAppByPublicKeyApplication.AppName, and is useful for accessing the field via an interface.
-func (v *getAppByPublicKeyGetAppByPublicKeyApplication) GetAppName() string { return v.AppName }
-
-// GetPublicKey returns getAppByPublicKeyGetAppByPublicKeyApplication.PublicKey, and is useful for accessing the field via an interface.
-func (v *getAppByPublicKeyGetAppByPublicKeyApplication) GetPublicKey() string { return v.PublicKey }
-
-// GetIconURL returns getAppByPublicKeyGetAppByPublicKeyApplication.IconURL, and is useful for accessing the field via an interface.
-func (v *getAppByPublicKeyGetAppByPublicKeyApplication) GetIconURL() string { return v.IconURL }
-
-// GetGandalfID returns getAppByPublicKeyGetAppByPublicKeyApplication.GandalfID, and is useful for accessing the field via an interface.
-func (v *getAppByPublicKeyGetAppByPublicKeyApplication) GetGandalfID() graphqlTypes.Int64 {
-	return v.GandalfID
-}
-
-// GetAppRegistrar returns getAppByPublicKeyGetAppByPublicKeyApplication.AppRegistrar, and is useful for accessing the field via an interface.
-func (v *getAppByPublicKeyGetAppByPublicKeyApplication) GetAppRegistrar() string {
-	return v.AppRegistrar
-}
+func (v *getActivityResponse) GetGetActivity() GetActivityActivityResponse { return v.GetActivity }
 
 // getAppByPublicKeyResponse is returned by getAppByPublicKey on success.
 type getAppByPublicKeyResponse struct {
-	GetAppByPublicKey getAppByPublicKeyGetAppByPublicKeyApplication `json:"getAppByPublicKey"`
+	GetAppByPublicKey GetAppByPublicKeyApplication `json:"getAppByPublicKey"`
 }
 
 // GetGetAppByPublicKey returns getAppByPublicKeyResponse.GetAppByPublicKey, and is useful for accessing the field via an interface.
-func (v *getAppByPublicKeyResponse) GetGetAppByPublicKey() getAppByPublicKeyGetAppByPublicKeyApplication {
+func (v *getAppByPublicKeyResponse) GetGetAppByPublicKey() GetAppByPublicKeyApplication {
 	return v.GetAppByPublicKey
 }
 
-// getTraitsGetTraitsTrait includes the requested fields of the GraphQL type Trait.
-type getTraitsGetTraitsTrait struct {
-	Id        graphqlTypes.UUID `json:"id"`
-	Source    Source            `json:"source"`
-	Label     TraitLabel        `json:"label"`
-	Value     string            `json:"value"`
-	Timestamp time.Time         `json:"timestamp"`
-}
-
-// GetId returns getTraitsGetTraitsTrait.Id, and is useful for accessing the field via an interface.
-func (v *getTraitsGetTraitsTrait) GetId() graphqlTypes.UUID { return v.Id }
-
-// GetSource returns getTraitsGetTraitsTrait.Source, and is useful for accessing the field via an interface.
-func (v *getTraitsGetTraitsTrait) GetSource() Source { return v.Source }
-
-// GetLabel returns getTraitsGetTraitsTrait.Label, and is useful for accessing the field via an interface.
-func (v *getTraitsGetTraitsTrait) GetLabel() TraitLabel { return v.Label }
-
-// GetValue returns getTraitsGetTraitsTrait.Value, and is useful for accessing the field via an interface.
-func (v *getTraitsGetTraitsTrait) GetValue() string { return v.Value }
-
-// GetTimestamp returns getTraitsGetTraitsTrait.Timestamp, and is useful for accessing the field via an interface.
-func (v *getTraitsGetTraitsTrait) GetTimestamp() time.Time { return v.Timestamp }
-
 // getTraitsResponse is returned by getTraits on success.
 type getTraitsResponse struct {
-	GetTraits []getTraitsGetTraitsTrait `json:"getTraits"`
+	GetTraits []GetTraitsTrait `json:"getTraits"`
 }
 
 // GetGetTraits returns getTraitsResponse.GetTraits, and is useful for accessing the field via an interface.
-func (v *getTraitsResponse) GetGetTraits() []getTraitsGetTraitsTrait { return v.GetTraits }
-
-// lookupActivityLookupActivity includes the requested fields of the GraphQL type Activity.
-type lookupActivityLookupActivity struct {
-	Id       string                               `json:"id"`
-	Metadata lookupActivityLookupActivityMetadata `json:"-"`
-}
-
-// GetId returns lookupActivityLookupActivity.Id, and is useful for accessing the field via an interface.
-func (v *lookupActivityLookupActivity) GetId() string { return v.Id }
-
-// GetMetadata returns lookupActivityLookupActivity.Metadata, and is useful for accessing the field via an interface.
-func (v *lookupActivityLookupActivity) GetMetadata() lookupActivityLookupActivityMetadata {
-	return v.Metadata
-}
-
-func (v *lookupActivityLookupActivity) UnmarshalJSON(b []byte) error {
-
-	if string(b) == "null" {
-		return nil
-	}
-
-	var firstPass struct {
-		*lookupActivityLookupActivity
-		Metadata json.RawMessage `json:"metadata"`
-		graphql.NoUnmarshalJSON
-	}
-	firstPass.lookupActivityLookupActivity = v
-
-	err := json.Unmarshal(b, &firstPass)
-	if err != nil {
-		return err
-	}
-
-	{
-		dst := &v.Metadata
-		src := firstPass.Metadata
-		if len(src) != 0 && string(src) != "null" {
-			err = __unmarshallookupActivityLookupActivityMetadata(
-				src, dst)
-			if err != nil {
-				return fmt.Errorf(
-					"unable to unmarshal lookupActivityLookupActivity.Metadata: %w", err)
-			}
-		}
-	}
-	return nil
-}
-
-type __premarshallookupActivityLookupActivity struct {
-	Id string `json:"id"`
-
-	Metadata json.RawMessage `json:"metadata"`
-}
-
-func (v *lookupActivityLookupActivity) MarshalJSON() ([]byte, error) {
-	premarshaled, err := v.__premarshalJSON()
-	if err != nil {
-		return nil, err
-	}
-	return json.Marshal(premarshaled)
-}
-
-func (v *lookupActivityLookupActivity) __premarshalJSON() (*__premarshallookupActivityLookupActivity, error) {
-	var retval __premarshallookupActivityLookupActivity
-
-	retval.Id = v.Id
-	{
-
-		dst := &retval.Metadata
-		src := v.Metadata
-		var err error
-		*dst, err = __marshallookupActivityLookupActivityMetadata(
-			&src)
-		if err != nil {
-			return nil, fmt.Errorf(
-				"unable to marshal lookupActivityLookupActivity.Metadata: %w", err)
-		}
-	}
-	return &retval, nil
-}
-
-// lookupActivityLookupActivityMetadata includes the requested fields of the GraphQL interface ActivityMetadata.
-//
-// lookupActivityLookupActivityMetadata is implemented by the following types:
-// lookupActivityLookupActivityMetadataAmazonActivityMetadata
-// lookupActivityLookupActivityMetadataInstacartActivityMetadata
-// lookupActivityLookupActivityMetadataNetflixActivityMetadata
-// lookupActivityLookupActivityMetadataPlaystationActivityMetadata
-// lookupActivityLookupActivityMetadataUberActivityMetadata
-// lookupActivityLookupActivityMetadataYoutubeActivityMetadata
-type lookupActivityLookupActivityMetadata interface {
-	implementsGraphQLInterfacelookupActivityLookupActivityMetadata()
-	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
-	GetTypename() string
-}
-
-func (v *lookupActivityLookupActivityMetadataAmazonActivityMetadata) implementsGraphQLInterfacelookupActivityLookupActivityMetadata() {
-}
-func (v *lookupActivityLookupActivityMetadataInstacartActivityMetadata) implementsGraphQLInterfacelookupActivityLookupActivityMetadata() {
-}
-func (v *lookupActivityLookupActivityMetadataNetflixActivityMetadata) implementsGraphQLInterfacelookupActivityLookupActivityMetadata() {
-}
-func (v *lookupActivityLookupActivityMetadataPlaystationActivityMetadata) implementsGraphQLInterfacelookupActivityLookupActivityMetadata() {
-}
-func (v *lookupActivityLookupActivityMetadataUberActivityMetadata) implementsGraphQLInterfacelookupActivityLookupActivityMetadata() {
-}
-func (v *lookupActivityLookupActivityMetadataYoutubeActivityMetadata) implementsGraphQLInterfacelookupActivityLookupActivityMetadata() {
-}
-
-func __unmarshallookupActivityLookupActivityMetadata(b []byte, v *lookupActivityLookupActivityMetadata) error {
-	if string(b) == "null" {
-		return nil
-	}
-
-	var tn struct {
-		TypeName string `json:"__typename"`
-	}
-	err := json.Unmarshal(b, &tn)
-	if err != nil {
-		return err
-	}
-
-	switch tn.TypeName {
-	case "AmazonActivityMetadata":
-		*v = new(lookupActivityLookupActivityMetadataAmazonActivityMetadata)
-		return json.Unmarshal(b, *v)
-	case "InstacartActivityMetadata":
-		*v = new(lookupActivityLookupActivityMetadataInstacartActivityMetadata)
-		return json.Unmarshal(b, *v)
-	case "NetflixActivityMetadata":
-		*v = new(lookupActivityLookupActivityMetadataNetflixActivityMetadata)
-		return json.Unmarshal(b, *v)
-	case "PlaystationActivityMetadata":
-		*v = new(lookupActivityLookupActivityMetadataPlaystationActivityMetadata)
-		return json.Unmarshal(b, *v)
-	case "UberActivityMetadata":
-		*v = new(lookupActivityLookupActivityMetadataUberActivityMetadata)
-		return json.Unmarshal(b, *v)
-	case "YoutubeActivityMetadata":
-		*v = new(lookupActivityLookupActivityMetadataYoutubeActivityMetadata)
-		return json.Unmarshal(b, *v)
-	case "":
-		return fmt.Errorf(
-			"response was missing ActivityMetadata.__typename")
-	default:
-		return fmt.Errorf(
-			`unexpected concrete type for lookupActivityLookupActivityMetadata: "%v"`, tn.TypeName)
-	}
-}
-
-func __marshallookupActivityLookupActivityMetadata(v *lookupActivityLookupActivityMetadata) ([]byte, error) {
-
-	var typename string
-	switch v := (*v).(type) {
-	case *lookupActivityLookupActivityMetadataAmazonActivityMetadata:
-		typename = "AmazonActivityMetadata"
-
-		premarshaled, err := v.__premarshalJSON()
-		if err != nil {
-			return nil, err
-		}
-		result := struct {
-			TypeName string `json:"__typename"`
-			*__premarshallookupActivityLookupActivityMetadataAmazonActivityMetadata
-		}{typename, premarshaled}
-		return json.Marshal(result)
-	case *lookupActivityLookupActivityMetadataInstacartActivityMetadata:
-		typename = "InstacartActivityMetadata"
-
-		premarshaled, err := v.__premarshalJSON()
-		if err != nil {
-			return nil, err
-		}
-		result := struct {
-			TypeName string `json:"__typename"`
-			*__premarshallookupActivityLookupActivityMetadataInstacartActivityMetadata
-		}{typename, premarshaled}
-		return json.Marshal(result)
-	case *lookupActivityLookupActivityMetadataNetflixActivityMetadata:
-		typename = "NetflixActivityMetadata"
-
-		premarshaled, err := v.__premarshalJSON()
-		if err != nil {
-			return nil, err
-		}
-		result := struct {
-			TypeName string `json:"__typename"`
-			*__premarshallookupActivityLookupActivityMetadataNetflixActivityMetadata
-		}{typename, premarshaled}
-		return json.Marshal(result)
-	case *lookupActivityLookupActivityMetadataPlaystationActivityMetadata:
-		typename = "PlaystationActivityMetadata"
-
-		premarshaled, err := v.__premarshalJSON()
-		if err != nil {
-			return nil, err
-		}
-		result := struct {
-			TypeName string `json:"__typename"`
-			*__premarshallookupActivityLookupActivityMetadataPlaystationActivityMetadata
-		}{typename, premarshaled}
-		return json.Marshal(result)
-	case *lookupActivityLookupActivityMetadataUberActivityMetadata:
-		typename = "UberActivityMetadata"
-
-		premarshaled, err := v.__premarshalJSON()
-		if err != nil {
-			return nil, err
-		}
-		result := struct {
-			TypeName string `json:"__typename"`
-			*__premarshallookupActivityLookupActivityMetadataUberActivityMetadata
-		}{typename, premarshaled}
-		return json.Marshal(result)
-	case *lookupActivityLookupActivityMetadataYoutubeActivityMetadata:
-		typename = "YoutubeActivityMetadata"
-
-		premarshaled, err := v.__premarshalJSON()
-		if err != nil {
-			return nil, err
-		}
-		result := struct {
-			TypeName string `json:"__typename"`
-			*__premarshallookupActivityLookupActivityMetadataYoutubeActivityMetadata
-		}{typename, premarshaled}
-		return json.Marshal(result)
-	case nil:
-		return []byte("null"), nil
-	default:
-		return nil, fmt.Errorf(
-			`unexpected concrete type for lookupActivityLookupActivityMetadata: "%T"`, v)
-	}
-}
-
-// lookupActivityLookupActivityMetadataAmazonActivityMetadata includes the requested fields of the GraphQL type AmazonActivityMetadata.
-type lookupActivityLookupActivityMetadataAmazonActivityMetadata struct {
-	Typename                       string `json:"__typename"`
-	AmazonActivityMetadataFragment `json:"-"`
-}
-
-// GetTypename returns lookupActivityLookupActivityMetadataAmazonActivityMetadata.Typename, and is useful for accessing the field via an interface.
-func (v *lookupActivityLookupActivityMetadataAmazonActivityMetadata) GetTypename() string {
-	return v.Typename
-}
-
-// GetProductName returns lookupActivityLookupActivityMetadataAmazonActivityMetadata.ProductName, and is useful for accessing the field via an interface.
-func (v *lookupActivityLookupActivityMetadataAmazonActivityMetadata) GetProductName() string {
-	return v.AmazonActivityMetadataFragment.ProductName
-}
-
-// GetSubject returns lookupActivityLookupActivityMetadataAmazonActivityMetadata.Subject, and is useful for accessing the field via an interface.
-func (v *lookupActivityLookupActivityMetadataAmazonActivityMetadata) GetSubject() []AmazonActivityMetadataFragmentSubjectIdentifier {
-	return v.AmazonActivityMetadataFragment.Subject
-}
-
-// GetDate returns lookupActivityLookupActivityMetadataAmazonActivityMetadata.Date, and is useful for accessing the field via an interface.
-func (v *lookupActivityLookupActivityMetadataAmazonActivityMetadata) GetDate() graphqlTypes.Date {
-	return v.AmazonActivityMetadataFragment.Date
-}
-
-// GetQuantityPurchased returns lookupActivityLookupActivityMetadataAmazonActivityMetadata.QuantityPurchased, and is useful for accessing the field via an interface.
-func (v *lookupActivityLookupActivityMetadataAmazonActivityMetadata) GetQuantityPurchased() int {
-	return v.AmazonActivityMetadataFragment.QuantityPurchased
-}
-
-// GetTotalCost returns lookupActivityLookupActivityMetadataAmazonActivityMetadata.TotalCost, and is useful for accessing the field via an interface.
-func (v *lookupActivityLookupActivityMetadataAmazonActivityMetadata) GetTotalCost() string {
-	return v.AmazonActivityMetadataFragment.TotalCost
-}
-
-func (v *lookupActivityLookupActivityMetadataAmazonActivityMetadata) UnmarshalJSON(b []byte) error {
-
-	if string(b) == "null" {
-		return nil
-	}
-
-	var firstPass struct {
-		*lookupActivityLookupActivityMetadataAmazonActivityMetadata
-		graphql.NoUnmarshalJSON
-	}
-	firstPass.lookupActivityLookupActivityMetadataAmazonActivityMetadata = v
-
-	err := json.Unmarshal(b, &firstPass)
-	if err != nil {
-		return err
-	}
-
-	err = json.Unmarshal(
-		b, &v.AmazonActivityMetadataFragment)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-type __premarshallookupActivityLookupActivityMetadataAmazonActivityMetadata struct {
-	Typename string `json:"__typename"`
-
-	ProductName string `json:"productName"`
-
-	Subject []AmazonActivityMetadataFragmentSubjectIdentifier `json:"subject"`
-
-	Date graphqlTypes.Date `json:"date"`
-
-	QuantityPurchased int `json:"quantityPurchased"`
-
-	TotalCost string `json:"totalCost"`
-}
-
-func (v *lookupActivityLookupActivityMetadataAmazonActivityMetadata) MarshalJSON() ([]byte, error) {
-	premarshaled, err := v.__premarshalJSON()
-	if err != nil {
-		return nil, err
-	}
-	return json.Marshal(premarshaled)
-}
-
-func (v *lookupActivityLookupActivityMetadataAmazonActivityMetadata) __premarshalJSON() (*__premarshallookupActivityLookupActivityMetadataAmazonActivityMetadata, error) {
-	var retval __premarshallookupActivityLookupActivityMetadataAmazonActivityMetadata
-
-	retval.Typename = v.Typename
-	retval.ProductName = v.AmazonActivityMetadataFragment.ProductName
-	retval.Subject = v.AmazonActivityMetadataFragment.Subject
-	retval.Date = v.AmazonActivityMetadataFragment.Date
-	retval.QuantityPurchased = v.AmazonActivityMetadataFragment.QuantityPurchased
-	retval.TotalCost = v.AmazonActivityMetadataFragment.TotalCost
-	return &retval, nil
-}
-
-// lookupActivityLookupActivityMetadataInstacartActivityMetadata includes the requested fields of the GraphQL type InstacartActivityMetadata.
-type lookupActivityLookupActivityMetadataInstacartActivityMetadata struct {
-	Typename                          string `json:"__typename"`
-	InstacartActivityMetadataFragment `json:"-"`
-}
-
-// GetTypename returns lookupActivityLookupActivityMetadataInstacartActivityMetadata.Typename, and is useful for accessing the field via an interface.
-func (v *lookupActivityLookupActivityMetadataInstacartActivityMetadata) GetTypename() string {
-	return v.Typename
-}
-
-// GetSubject returns lookupActivityLookupActivityMetadataInstacartActivityMetadata.Subject, and is useful for accessing the field via an interface.
-func (v *lookupActivityLookupActivityMetadataInstacartActivityMetadata) GetSubject() []InstacartActivityMetadataFragmentSubjectIdentifier {
-	return v.InstacartActivityMetadataFragment.Subject
-}
-
-// GetRetailer returns lookupActivityLookupActivityMetadataInstacartActivityMetadata.Retailer, and is useful for accessing the field via an interface.
-func (v *lookupActivityLookupActivityMetadataInstacartActivityMetadata) GetRetailer() string {
-	return v.InstacartActivityMetadataFragment.Retailer
-}
-
-// GetTotalOrderAmountSpent returns lookupActivityLookupActivityMetadataInstacartActivityMetadata.TotalOrderAmountSpent, and is useful for accessing the field via an interface.
-func (v *lookupActivityLookupActivityMetadataInstacartActivityMetadata) GetTotalOrderAmountSpent() string {
-	return v.InstacartActivityMetadataFragment.TotalOrderAmountSpent
-}
-
-// GetDateOrdered returns lookupActivityLookupActivityMetadataInstacartActivityMetadata.DateOrdered, and is useful for accessing the field via an interface.
-func (v *lookupActivityLookupActivityMetadataInstacartActivityMetadata) GetDateOrdered() graphqlTypes.Date {
-	return v.InstacartActivityMetadataFragment.DateOrdered
-}
-
-// GetDateDelivered returns lookupActivityLookupActivityMetadataInstacartActivityMetadata.DateDelivered, and is useful for accessing the field via an interface.
-func (v *lookupActivityLookupActivityMetadataInstacartActivityMetadata) GetDateDelivered() graphqlTypes.Date {
-	return v.InstacartActivityMetadataFragment.DateDelivered
-}
-
-// GetStatusString returns lookupActivityLookupActivityMetadataInstacartActivityMetadata.StatusString, and is useful for accessing the field via an interface.
-func (v *lookupActivityLookupActivityMetadataInstacartActivityMetadata) GetStatusString() string {
-	return v.InstacartActivityMetadataFragment.StatusString
-}
-
-// GetItems returns lookupActivityLookupActivityMetadataInstacartActivityMetadata.Items, and is useful for accessing the field via an interface.
-func (v *lookupActivityLookupActivityMetadataInstacartActivityMetadata) GetItems() []InstacartActivityMetadataFragmentItemsInstacartOrderItem {
-	return v.InstacartActivityMetadataFragment.Items
-}
-
-func (v *lookupActivityLookupActivityMetadataInstacartActivityMetadata) UnmarshalJSON(b []byte) error {
-
-	if string(b) == "null" {
-		return nil
-	}
-
-	var firstPass struct {
-		*lookupActivityLookupActivityMetadataInstacartActivityMetadata
-		graphql.NoUnmarshalJSON
-	}
-	firstPass.lookupActivityLookupActivityMetadataInstacartActivityMetadata = v
-
-	err := json.Unmarshal(b, &firstPass)
-	if err != nil {
-		return err
-	}
-
-	err = json.Unmarshal(
-		b, &v.InstacartActivityMetadataFragment)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-type __premarshallookupActivityLookupActivityMetadataInstacartActivityMetadata struct {
-	Typename string `json:"__typename"`
-
-	Subject []InstacartActivityMetadataFragmentSubjectIdentifier `json:"subject"`
-
-	Retailer string `json:"retailer"`
-
-	TotalOrderAmountSpent string `json:"totalOrderAmountSpent"`
-
-	DateOrdered graphqlTypes.Date `json:"dateOrdered"`
-
-	DateDelivered graphqlTypes.Date `json:"dateDelivered"`
-
-	StatusString string `json:"statusString"`
-
-	Items []InstacartActivityMetadataFragmentItemsInstacartOrderItem `json:"items"`
-}
-
-func (v *lookupActivityLookupActivityMetadataInstacartActivityMetadata) MarshalJSON() ([]byte, error) {
-	premarshaled, err := v.__premarshalJSON()
-	if err != nil {
-		return nil, err
-	}
-	return json.Marshal(premarshaled)
-}
-
-func (v *lookupActivityLookupActivityMetadataInstacartActivityMetadata) __premarshalJSON() (*__premarshallookupActivityLookupActivityMetadataInstacartActivityMetadata, error) {
-	var retval __premarshallookupActivityLookupActivityMetadataInstacartActivityMetadata
-
-	retval.Typename = v.Typename
-	retval.Subject = v.InstacartActivityMetadataFragment.Subject
-	retval.Retailer = v.InstacartActivityMetadataFragment.Retailer
-	retval.TotalOrderAmountSpent = v.InstacartActivityMetadataFragment.TotalOrderAmountSpent
-	retval.DateOrdered = v.InstacartActivityMetadataFragment.DateOrdered
-	retval.DateDelivered = v.InstacartActivityMetadataFragment.DateDelivered
-	retval.StatusString = v.InstacartActivityMetadataFragment.StatusString
-	retval.Items = v.InstacartActivityMetadataFragment.Items
-	return &retval, nil
-}
-
-// lookupActivityLookupActivityMetadataNetflixActivityMetadata includes the requested fields of the GraphQL type NetflixActivityMetadata.
-type lookupActivityLookupActivityMetadataNetflixActivityMetadata struct {
-	Typename                        string `json:"__typename"`
-	NetflixActivityMetadataFragment `json:"-"`
-}
-
-// GetTypename returns lookupActivityLookupActivityMetadataNetflixActivityMetadata.Typename, and is useful for accessing the field via an interface.
-func (v *lookupActivityLookupActivityMetadataNetflixActivityMetadata) GetTypename() string {
-	return v.Typename
-}
-
-// GetTitle returns lookupActivityLookupActivityMetadataNetflixActivityMetadata.Title, and is useful for accessing the field via an interface.
-func (v *lookupActivityLookupActivityMetadataNetflixActivityMetadata) GetTitle() string {
-	return v.NetflixActivityMetadataFragment.Title
-}
-
-// GetSubject returns lookupActivityLookupActivityMetadataNetflixActivityMetadata.Subject, and is useful for accessing the field via an interface.
-func (v *lookupActivityLookupActivityMetadataNetflixActivityMetadata) GetSubject() []NetflixActivityMetadataFragmentSubjectIdentifier {
-	return v.NetflixActivityMetadataFragment.Subject
-}
-
-// GetDate returns lookupActivityLookupActivityMetadataNetflixActivityMetadata.Date, and is useful for accessing the field via an interface.
-func (v *lookupActivityLookupActivityMetadataNetflixActivityMetadata) GetDate() graphqlTypes.Date {
-	return v.NetflixActivityMetadataFragment.Date
-}
-
-// GetLastPlayedAt returns lookupActivityLookupActivityMetadataNetflixActivityMetadata.LastPlayedAt, and is useful for accessing the field via an interface.
-func (v *lookupActivityLookupActivityMetadataNetflixActivityMetadata) GetLastPlayedAt() graphqlTypes.Date {
-	return v.NetflixActivityMetadataFragment.LastPlayedAt
-}
-
-func (v *lookupActivityLookupActivityMetadataNetflixActivityMetadata) UnmarshalJSON(b []byte) error {
-
-	if string(b) == "null" {
-		return nil
-	}
-
-	var firstPass struct {
-		*lookupActivityLookupActivityMetadataNetflixActivityMetadata
-		graphql.NoUnmarshalJSON
-	}
-	firstPass.lookupActivityLookupActivityMetadataNetflixActivityMetadata = v
-
-	err := json.Unmarshal(b, &firstPass)
-	if err != nil {
-		return err
-	}
-
-	err = json.Unmarshal(
-		b, &v.NetflixActivityMetadataFragment)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-type __premarshallookupActivityLookupActivityMetadataNetflixActivityMetadata struct {
-	Typename string `json:"__typename"`
-
-	Title string `json:"title"`
-
-	Subject []NetflixActivityMetadataFragmentSubjectIdentifier `json:"subject"`
-
-	Date graphqlTypes.Date `json:"date"`
-
-	LastPlayedAt graphqlTypes.Date `json:"lastPlayedAt"`
-}
-
-func (v *lookupActivityLookupActivityMetadataNetflixActivityMetadata) MarshalJSON() ([]byte, error) {
-	premarshaled, err := v.__premarshalJSON()
-	if err != nil {
-		return nil, err
-	}
-	return json.Marshal(premarshaled)
-}
-
-func (v *lookupActivityLookupActivityMetadataNetflixActivityMetadata) __premarshalJSON() (*__premarshallookupActivityLookupActivityMetadataNetflixActivityMetadata, error) {
-	var retval __premarshallookupActivityLookupActivityMetadataNetflixActivityMetadata
-
-	retval.Typename = v.Typename
-	retval.Title = v.NetflixActivityMetadataFragment.Title
-	retval.Subject = v.NetflixActivityMetadataFragment.Subject
-	retval.Date = v.NetflixActivityMetadataFragment.Date
-	retval.LastPlayedAt = v.NetflixActivityMetadataFragment.LastPlayedAt
-	return &retval, nil
-}
-
-// lookupActivityLookupActivityMetadataPlaystationActivityMetadata includes the requested fields of the GraphQL type PlaystationActivityMetadata.
-type lookupActivityLookupActivityMetadataPlaystationActivityMetadata struct {
-	Typename                            string `json:"__typename"`
-	PlaystationActivityMetadataFragment `json:"-"`
-}
-
-// GetTypename returns lookupActivityLookupActivityMetadataPlaystationActivityMetadata.Typename, and is useful for accessing the field via an interface.
-func (v *lookupActivityLookupActivityMetadataPlaystationActivityMetadata) GetTypename() string {
-	return v.Typename
-}
-
-// GetTitle returns lookupActivityLookupActivityMetadataPlaystationActivityMetadata.Title, and is useful for accessing the field via an interface.
-func (v *lookupActivityLookupActivityMetadataPlaystationActivityMetadata) GetTitle() string {
-	return v.PlaystationActivityMetadataFragment.Title
-}
-
-// GetSubject returns lookupActivityLookupActivityMetadataPlaystationActivityMetadata.Subject, and is useful for accessing the field via an interface.
-func (v *lookupActivityLookupActivityMetadataPlaystationActivityMetadata) GetSubject() []PlaystationActivityMetadataFragmentSubjectIdentifier {
-	return v.PlaystationActivityMetadataFragment.Subject
-}
-
-// GetLastPlayedAt returns lookupActivityLookupActivityMetadataPlaystationActivityMetadata.LastPlayedAt, and is useful for accessing the field via an interface.
-func (v *lookupActivityLookupActivityMetadataPlaystationActivityMetadata) GetLastPlayedAt() graphqlTypes.Date {
-	return v.PlaystationActivityMetadataFragment.LastPlayedAt
-}
-
-func (v *lookupActivityLookupActivityMetadataPlaystationActivityMetadata) UnmarshalJSON(b []byte) error {
-
-	if string(b) == "null" {
-		return nil
-	}
-
-	var firstPass struct {
-		*lookupActivityLookupActivityMetadataPlaystationActivityMetadata
-		graphql.NoUnmarshalJSON
-	}
-	firstPass.lookupActivityLookupActivityMetadataPlaystationActivityMetadata = v
-
-	err := json.Unmarshal(b, &firstPass)
-	if err != nil {
-		return err
-	}
-
-	err = json.Unmarshal(
-		b, &v.PlaystationActivityMetadataFragment)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-type __premarshallookupActivityLookupActivityMetadataPlaystationActivityMetadata struct {
-	Typename string `json:"__typename"`
-
-	Title string `json:"title"`
-
-	Subject []PlaystationActivityMetadataFragmentSubjectIdentifier `json:"subject"`
-
-	LastPlayedAt graphqlTypes.Date `json:"lastPlayedAt"`
-}
-
-func (v *lookupActivityLookupActivityMetadataPlaystationActivityMetadata) MarshalJSON() ([]byte, error) {
-	premarshaled, err := v.__premarshalJSON()
-	if err != nil {
-		return nil, err
-	}
-	return json.Marshal(premarshaled)
-}
-
-func (v *lookupActivityLookupActivityMetadataPlaystationActivityMetadata) __premarshalJSON() (*__premarshallookupActivityLookupActivityMetadataPlaystationActivityMetadata, error) {
-	var retval __premarshallookupActivityLookupActivityMetadataPlaystationActivityMetadata
-
-	retval.Typename = v.Typename
-	retval.Title = v.PlaystationActivityMetadataFragment.Title
-	retval.Subject = v.PlaystationActivityMetadataFragment.Subject
-	retval.LastPlayedAt = v.PlaystationActivityMetadataFragment.LastPlayedAt
-	return &retval, nil
-}
-
-// lookupActivityLookupActivityMetadataUberActivityMetadata includes the requested fields of the GraphQL type UberActivityMetadata.
-type lookupActivityLookupActivityMetadataUberActivityMetadata struct {
-	Typename                     string `json:"__typename"`
-	UberActivityMetadataFragment `json:"-"`
-}
-
-// GetTypename returns lookupActivityLookupActivityMetadataUberActivityMetadata.Typename, and is useful for accessing the field via an interface.
-func (v *lookupActivityLookupActivityMetadataUberActivityMetadata) GetTypename() string {
-	return v.Typename
-}
-
-// GetSubject returns lookupActivityLookupActivityMetadataUberActivityMetadata.Subject, and is useful for accessing the field via an interface.
-func (v *lookupActivityLookupActivityMetadataUberActivityMetadata) GetSubject() []UberActivityMetadataFragmentSubjectIdentifier {
-	return v.UberActivityMetadataFragment.Subject
-}
-
-// GetBeginTripTime returns lookupActivityLookupActivityMetadataUberActivityMetadata.BeginTripTime, and is useful for accessing the field via an interface.
-func (v *lookupActivityLookupActivityMetadataUberActivityMetadata) GetBeginTripTime() time.Time {
-	return v.UberActivityMetadataFragment.BeginTripTime
-}
-
-// GetDropoffTime returns lookupActivityLookupActivityMetadataUberActivityMetadata.DropoffTime, and is useful for accessing the field via an interface.
-func (v *lookupActivityLookupActivityMetadataUberActivityMetadata) GetDropoffTime() time.Time {
-	return v.UberActivityMetadataFragment.DropoffTime
-}
-
-// GetCost returns lookupActivityLookupActivityMetadataUberActivityMetadata.Cost, and is useful for accessing the field via an interface.
-func (v *lookupActivityLookupActivityMetadataUberActivityMetadata) GetCost() string {
-	return v.UberActivityMetadataFragment.Cost
-}
-
-// GetCity returns lookupActivityLookupActivityMetadataUberActivityMetadata.City, and is useful for accessing the field via an interface.
-func (v *lookupActivityLookupActivityMetadataUberActivityMetadata) GetCity() string {
-	return v.UberActivityMetadataFragment.City
-}
-
-// GetDistance returns lookupActivityLookupActivityMetadataUberActivityMetadata.Distance, and is useful for accessing the field via an interface.
-func (v *lookupActivityLookupActivityMetadataUberActivityMetadata) GetDistance() string {
-	return v.UberActivityMetadataFragment.Distance
-}
-
-// GetStatus returns lookupActivityLookupActivityMetadataUberActivityMetadata.Status, and is useful for accessing the field via an interface.
-func (v *lookupActivityLookupActivityMetadataUberActivityMetadata) GetStatus() TripStatus {
-	return v.UberActivityMetadataFragment.Status
-}
-
-func (v *lookupActivityLookupActivityMetadataUberActivityMetadata) UnmarshalJSON(b []byte) error {
-
-	if string(b) == "null" {
-		return nil
-	}
-
-	var firstPass struct {
-		*lookupActivityLookupActivityMetadataUberActivityMetadata
-		graphql.NoUnmarshalJSON
-	}
-	firstPass.lookupActivityLookupActivityMetadataUberActivityMetadata = v
-
-	err := json.Unmarshal(b, &firstPass)
-	if err != nil {
-		return err
-	}
-
-	err = json.Unmarshal(
-		b, &v.UberActivityMetadataFragment)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-type __premarshallookupActivityLookupActivityMetadataUberActivityMetadata struct {
-	Typename string `json:"__typename"`
-
-	Subject []UberActivityMetadataFragmentSubjectIdentifier `json:"subject"`
-
-	BeginTripTime time.Time `json:"beginTripTime"`
-
-	DropoffTime time.Time `json:"dropoffTime"`
-
-	Cost string `json:"cost"`
-
-	City string `json:"city"`
-
-	Distance string `json:"distance"`
-
-	Status TripStatus `json:"status"`
-}
-
-func (v *lookupActivityLookupActivityMetadataUberActivityMetadata) MarshalJSON() ([]byte, error) {
-	premarshaled, err := v.__premarshalJSON()
-	if err != nil {
-		return nil, err
-	}
-	return json.Marshal(premarshaled)
-}
-
-func (v *lookupActivityLookupActivityMetadataUberActivityMetadata) __premarshalJSON() (*__premarshallookupActivityLookupActivityMetadataUberActivityMetadata, error) {
-	var retval __premarshallookupActivityLookupActivityMetadataUberActivityMetadata
-
-	retval.Typename = v.Typename
-	retval.Subject = v.UberActivityMetadataFragment.Subject
-	retval.BeginTripTime = v.UberActivityMetadataFragment.BeginTripTime
-	retval.DropoffTime = v.UberActivityMetadataFragment.DropoffTime
-	retval.Cost = v.UberActivityMetadataFragment.Cost
-	retval.City = v.UberActivityMetadataFragment.City
-	retval.Distance = v.UberActivityMetadataFragment.Distance
-	retval.Status = v.UberActivityMetadataFragment.Status
-	return &retval, nil
-}
-
-// lookupActivityLookupActivityMetadataYoutubeActivityMetadata includes the requested fields of the GraphQL type YoutubeActivityMetadata.
-type lookupActivityLookupActivityMetadataYoutubeActivityMetadata struct {
-	Typename                        string `json:"__typename"`
-	YoutubeActivityMetadataFragment `json:"-"`
-}
-
-// GetTypename returns lookupActivityLookupActivityMetadataYoutubeActivityMetadata.Typename, and is useful for accessing the field via an interface.
-func (v *lookupActivityLookupActivityMetadataYoutubeActivityMetadata) GetTypename() string {
-	return v.Typename
-}
-
-// GetTitle returns lookupActivityLookupActivityMetadataYoutubeActivityMetadata.Title, and is useful for accessing the field via an interface.
-func (v *lookupActivityLookupActivityMetadataYoutubeActivityMetadata) GetTitle() string {
-	return v.YoutubeActivityMetadataFragment.Title
-}
-
-// GetSubject returns lookupActivityLookupActivityMetadataYoutubeActivityMetadata.Subject, and is useful for accessing the field via an interface.
-func (v *lookupActivityLookupActivityMetadataYoutubeActivityMetadata) GetSubject() []YoutubeActivityMetadataFragmentSubjectIdentifier {
-	return v.YoutubeActivityMetadataFragment.Subject
-}
-
-// GetDate returns lookupActivityLookupActivityMetadataYoutubeActivityMetadata.Date, and is useful for accessing the field via an interface.
-func (v *lookupActivityLookupActivityMetadataYoutubeActivityMetadata) GetDate() graphqlTypes.Date {
-	return v.YoutubeActivityMetadataFragment.Date
-}
-
-// GetPercentageWatched returns lookupActivityLookupActivityMetadataYoutubeActivityMetadata.PercentageWatched, and is useful for accessing the field via an interface.
-func (v *lookupActivityLookupActivityMetadataYoutubeActivityMetadata) GetPercentageWatched() int {
-	return v.YoutubeActivityMetadataFragment.PercentageWatched
-}
-
-// GetContentType returns lookupActivityLookupActivityMetadataYoutubeActivityMetadata.ContentType, and is useful for accessing the field via an interface.
-func (v *lookupActivityLookupActivityMetadataYoutubeActivityMetadata) GetContentType() ContentType {
-	return v.YoutubeActivityMetadataFragment.ContentType
-}
-
-func (v *lookupActivityLookupActivityMetadataYoutubeActivityMetadata) UnmarshalJSON(b []byte) error {
-
-	if string(b) == "null" {
-		return nil
-	}
-
-	var firstPass struct {
-		*lookupActivityLookupActivityMetadataYoutubeActivityMetadata
-		graphql.NoUnmarshalJSON
-	}
-	firstPass.lookupActivityLookupActivityMetadataYoutubeActivityMetadata = v
-
-	err := json.Unmarshal(b, &firstPass)
-	if err != nil {
-		return err
-	}
-
-	err = json.Unmarshal(
-		b, &v.YoutubeActivityMetadataFragment)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-type __premarshallookupActivityLookupActivityMetadataYoutubeActivityMetadata struct {
-	Typename string `json:"__typename"`
-
-	Title string `json:"title"`
-
-	Subject []YoutubeActivityMetadataFragmentSubjectIdentifier `json:"subject"`
-
-	Date graphqlTypes.Date `json:"date"`
-
-	PercentageWatched int `json:"percentageWatched"`
-
-	ContentType ContentType `json:"contentType"`
-}
-
-func (v *lookupActivityLookupActivityMetadataYoutubeActivityMetadata) MarshalJSON() ([]byte, error) {
-	premarshaled, err := v.__premarshalJSON()
-	if err != nil {
-		return nil, err
-	}
-	return json.Marshal(premarshaled)
-}
-
-func (v *lookupActivityLookupActivityMetadataYoutubeActivityMetadata) __premarshalJSON() (*__premarshallookupActivityLookupActivityMetadataYoutubeActivityMetadata, error) {
-	var retval __premarshallookupActivityLookupActivityMetadataYoutubeActivityMetadata
-
-	retval.Typename = v.Typename
-	retval.Title = v.YoutubeActivityMetadataFragment.Title
-	retval.Subject = v.YoutubeActivityMetadataFragment.Subject
-	retval.Date = v.YoutubeActivityMetadataFragment.Date
-	retval.PercentageWatched = v.YoutubeActivityMetadataFragment.PercentageWatched
-	retval.ContentType = v.YoutubeActivityMetadataFragment.ContentType
-	return &retval, nil
-}
+func (v *getTraitsResponse) GetGetTraits() []GetTraitsTrait { return v.GetTraits }
 
 // lookupActivityResponse is returned by lookupActivity on success.
 type lookupActivityResponse struct {
-	LookupActivity lookupActivityLookupActivity `json:"lookupActivity"`
+	LookupActivity LookupActivity `json:"lookupActivity"`
 }
 
 // GetLookupActivity returns lookupActivityResponse.LookupActivity, and is useful for accessing the field via an interface.
-func (v *lookupActivityResponse) GetLookupActivity() lookupActivityLookupActivity {
-	return v.LookupActivity
-}
-
-// lookupTraitLookupTrait includes the requested fields of the GraphQL type Trait.
-type lookupTraitLookupTrait struct {
-	Id        graphqlTypes.UUID `json:"id"`
-	Source    Source            `json:"source"`
-	Label     TraitLabel        `json:"label"`
-	Value     string            `json:"value"`
-	Timestamp time.Time         `json:"timestamp"`
-}
-
-// GetId returns lookupTraitLookupTrait.Id, and is useful for accessing the field via an interface.
-func (v *lookupTraitLookupTrait) GetId() graphqlTypes.UUID { return v.Id }
-
-// GetSource returns lookupTraitLookupTrait.Source, and is useful for accessing the field via an interface.
-func (v *lookupTraitLookupTrait) GetSource() Source { return v.Source }
-
-// GetLabel returns lookupTraitLookupTrait.Label, and is useful for accessing the field via an interface.
-func (v *lookupTraitLookupTrait) GetLabel() TraitLabel { return v.Label }
-
-// GetValue returns lookupTraitLookupTrait.Value, and is useful for accessing the field via an interface.
-func (v *lookupTraitLookupTrait) GetValue() string { return v.Value }
-
-// GetTimestamp returns lookupTraitLookupTrait.Timestamp, and is useful for accessing the field via an interface.
-func (v *lookupTraitLookupTrait) GetTimestamp() time.Time { return v.Timestamp }
+func (v *lookupActivityResponse) GetLookupActivity() LookupActivity { return v.LookupActivity }
 
 // lookupTraitResponse is returned by lookupTrait on success.
 type lookupTraitResponse struct {
-	LookupTrait lookupTraitLookupTrait `json:"lookupTrait"`
+	LookupTrait LookupTrait `json:"lookupTrait"`
 }
 
 // GetLookupTrait returns lookupTraitResponse.LookupTrait, and is useful for accessing the field via an interface.
-func (v *lookupTraitResponse) GetLookupTrait() lookupTraitLookupTrait { return v.LookupTrait }
+func (v *lookupTraitResponse) GetLookupTrait() LookupTrait { return v.LookupTrait }
 
 // The query or mutation executed by getActivity.
 const getActivity_Operation = `
@@ -2265,12 +2231,12 @@ query getActivity ($dataKey: String!, $source: Source!, $limit: Int64!, $page: I
 					id
 					metadata {
 						__typename
-						... NetflixActivityMetadataFragment
-						... PlaystationActivityMetadataFragment
-						... AmazonActivityMetadataFragment
-						... YoutubeActivityMetadataFragment
-						... UberActivityMetadataFragment
-						... InstacartActivityMetadataFragment
+						... NetflixActivityMetadata
+						... PlaystationActivityMetadata
+						... AmazonActivityMetadata
+						... YoutubeActivityMetadata
+						... UberActivityMetadata
+						... InstacartActivityMetadata
 					}
 				}
 			}
@@ -2280,7 +2246,7 @@ query getActivity ($dataKey: String!, $source: Source!, $limit: Int64!, $page: I
 		}
 	}
 }
-fragment NetflixActivityMetadataFragment on NetflixActivityMetadata {
+fragment NetflixActivityMetadata on NetflixActivityMetadata {
 	title
 	subject {
 		... on Identifier {
@@ -2291,7 +2257,7 @@ fragment NetflixActivityMetadataFragment on NetflixActivityMetadata {
 	date
 	lastPlayedAt
 }
-fragment PlaystationActivityMetadataFragment on PlaystationActivityMetadata {
+fragment PlaystationActivityMetadata on PlaystationActivityMetadata {
 	title
 	subject {
 		... on Identifier {
@@ -2301,7 +2267,7 @@ fragment PlaystationActivityMetadataFragment on PlaystationActivityMetadata {
 	}
 	lastPlayedAt
 }
-fragment AmazonActivityMetadataFragment on AmazonActivityMetadata {
+fragment AmazonActivityMetadata on AmazonActivityMetadata {
 	productName
 	subject {
 		... on Identifier {
@@ -2313,7 +2279,7 @@ fragment AmazonActivityMetadataFragment on AmazonActivityMetadata {
 	quantityPurchased
 	totalCost
 }
-fragment YoutubeActivityMetadataFragment on YoutubeActivityMetadata {
+fragment YoutubeActivityMetadata on YoutubeActivityMetadata {
 	title
 	subject {
 		... on Identifier {
@@ -2325,7 +2291,7 @@ fragment YoutubeActivityMetadataFragment on YoutubeActivityMetadata {
 	percentageWatched
 	contentType
 }
-fragment UberActivityMetadataFragment on UberActivityMetadata {
+fragment UberActivityMetadata on UberActivityMetadata {
 	subject {
 		... on Identifier {
 			value
@@ -2339,7 +2305,7 @@ fragment UberActivityMetadataFragment on UberActivityMetadata {
 	distance
 	status
 }
-fragment InstacartActivityMetadataFragment on InstacartActivityMetadata {
+fragment InstacartActivityMetadata on InstacartActivityMetadata {
 	subject {
 		... on Identifier {
 			value
@@ -2397,8 +2363,7 @@ func (eye EyeOfSauron) GetActivity(
 
 	req.Header.Set("X-Gandalf-Signature", signatureB64)
 
-	var data_ getActivityResponse
-	resp_ := &graphql.Response{Data: &data_}
+	var resp_ getActivityResponse
 
 	if err_ := eye.client.Run(
 		ctx_,
@@ -2408,7 +2373,7 @@ func (eye EyeOfSauron) GetActivity(
 		return nil, fmt.Errorf("failed to execute request: %v", err_)
 	}
 
-	return &data_, nil
+	return &resp_, nil
 }
 
 // The query or mutation executed by getAppByPublicKey.
@@ -2454,8 +2419,7 @@ func (eye EyeOfSauron) GetAppByPublicKey(
 
 	req.Header.Set("X-Gandalf-Signature", signatureB64)
 
-	var data_ getAppByPublicKeyResponse
-	resp_ := &graphql.Response{Data: &data_}
+	var resp_ getAppByPublicKeyResponse
 
 	if err_ := eye.client.Run(
 		ctx_,
@@ -2465,7 +2429,7 @@ func (eye EyeOfSauron) GetAppByPublicKey(
 		return nil, fmt.Errorf("failed to execute request: %v", err_)
 	}
 
-	return &data_, nil
+	return &resp_, nil
 }
 
 // The query or mutation executed by getTraits.
@@ -2515,8 +2479,7 @@ func (eye EyeOfSauron) GetTraits(
 
 	req.Header.Set("X-Gandalf-Signature", signatureB64)
 
-	var data_ getTraitsResponse
-	resp_ := &graphql.Response{Data: &data_}
+	var resp_ getTraitsResponse
 
 	if err_ := eye.client.Run(
 		ctx_,
@@ -2526,7 +2489,7 @@ func (eye EyeOfSauron) GetTraits(
 		return nil, fmt.Errorf("failed to execute request: %v", err_)
 	}
 
-	return &data_, nil
+	return &resp_, nil
 }
 
 // The query or mutation executed by lookupActivity.
@@ -2537,17 +2500,17 @@ query lookupActivity ($dataKey: String!, $activityId: UUID!) {
 			id
 			metadata {
 				__typename
-				... NetflixActivityMetadataFragment
-				... PlaystationActivityMetadataFragment
-				... AmazonActivityMetadataFragment
-				... YoutubeActivityMetadataFragment
-				... UberActivityMetadataFragment
-				... InstacartActivityMetadataFragment
+				... NetflixActivityMetadata
+				... PlaystationActivityMetadata
+				... AmazonActivityMetadata
+				... YoutubeActivityMetadata
+				... UberActivityMetadata
+				... InstacartActivityMetadata
 			}
 		}
 	}
 }
-fragment NetflixActivityMetadataFragment on NetflixActivityMetadata {
+fragment NetflixActivityMetadata on NetflixActivityMetadata {
 	title
 	subject {
 		... on Identifier {
@@ -2558,7 +2521,7 @@ fragment NetflixActivityMetadataFragment on NetflixActivityMetadata {
 	date
 	lastPlayedAt
 }
-fragment PlaystationActivityMetadataFragment on PlaystationActivityMetadata {
+fragment PlaystationActivityMetadata on PlaystationActivityMetadata {
 	title
 	subject {
 		... on Identifier {
@@ -2568,7 +2531,7 @@ fragment PlaystationActivityMetadataFragment on PlaystationActivityMetadata {
 	}
 	lastPlayedAt
 }
-fragment AmazonActivityMetadataFragment on AmazonActivityMetadata {
+fragment AmazonActivityMetadata on AmazonActivityMetadata {
 	productName
 	subject {
 		... on Identifier {
@@ -2580,7 +2543,7 @@ fragment AmazonActivityMetadataFragment on AmazonActivityMetadata {
 	quantityPurchased
 	totalCost
 }
-fragment YoutubeActivityMetadataFragment on YoutubeActivityMetadata {
+fragment YoutubeActivityMetadata on YoutubeActivityMetadata {
 	title
 	subject {
 		... on Identifier {
@@ -2592,7 +2555,7 @@ fragment YoutubeActivityMetadataFragment on YoutubeActivityMetadata {
 	percentageWatched
 	contentType
 }
-fragment UberActivityMetadataFragment on UberActivityMetadata {
+fragment UberActivityMetadata on UberActivityMetadata {
 	subject {
 		... on Identifier {
 			value
@@ -2606,7 +2569,7 @@ fragment UberActivityMetadataFragment on UberActivityMetadata {
 	distance
 	status
 }
-fragment InstacartActivityMetadataFragment on InstacartActivityMetadata {
+fragment InstacartActivityMetadata on InstacartActivityMetadata {
 	subject {
 		... on Identifier {
 			value
@@ -2660,8 +2623,7 @@ func (eye EyeOfSauron) LookupActivity(
 
 	req.Header.Set("X-Gandalf-Signature", signatureB64)
 
-	var data_ lookupActivityResponse
-	resp_ := &graphql.Response{Data: &data_}
+	var resp_ lookupActivityResponse
 
 	if err_ := eye.client.Run(
 		ctx_,
@@ -2671,7 +2633,7 @@ func (eye EyeOfSauron) LookupActivity(
 		return nil, fmt.Errorf("failed to execute request: %v", err_)
 	}
 
-	return &data_, nil
+	return &resp_, nil
 }
 
 // The query or mutation executed by lookupTrait.
@@ -2719,8 +2681,7 @@ func (eye EyeOfSauron) LookupTrait(
 
 	req.Header.Set("X-Gandalf-Signature", signatureB64)
 
-	var data_ lookupTraitResponse
-	resp_ := &graphql.Response{Data: &data_}
+	var resp_ lookupTraitResponse
 
 	if err_ := eye.client.Run(
 		ctx_,
@@ -2730,5 +2691,5 @@ func (eye EyeOfSauron) LookupTrait(
 		return nil, fmt.Errorf("failed to execute request: %v", err_)
 	}
 
-	return &data_, nil
+	return &resp_, nil
 }
