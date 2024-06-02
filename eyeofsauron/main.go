@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
 
@@ -53,6 +54,13 @@ type Value struct {
 	DeprecationReason string `json:"deprecationReason"`
 }
 
+func runCommand(name string, arg ...string) error {
+	cmd := exec.Command(name, arg...)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	return cmd.Run()
+}
+
 func main() {
 	var folder string
 	flag.StringVar(&folder, "folder", "", "Set the destination folder for the generated files")
@@ -68,6 +76,18 @@ func main() {
 		fmt.Println("Error: folder flag is required")
 		flag.Usage()
 		os.Exit(1)
+	}
+
+	replaceDirective := "github.com/Khan/genqlient@v0.7.0=github.com/gandalf-network/genqlient@v0.0.0-20240602155823-670b8ef32925"
+
+	// Run the go mod edit command to replace the module version
+	if err := runCommand("go", "mod", "edit", "-replace", replaceDirective); err != nil {
+		log.Fatalf("failed to run go mod edit: %v", err)
+	}
+
+	// Run go mod tidy to update the go.sum file
+	if err := runCommand("go", "mod", "tidy"); err != nil {
+		log.Fatalf("failed to run go mod tidy: %v", err)
 	}
 
 	// Join the CWD with the provided folder path

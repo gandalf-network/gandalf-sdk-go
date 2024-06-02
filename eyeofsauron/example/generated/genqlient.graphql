@@ -26,6 +26,30 @@ fragment UberActivityMetadata on UberActivityMetadata {
   status
 }
 
+fragment YoutubeActivityMetadata on YoutubeActivityMetadata {
+  title
+  subject {
+    ... on Identifier {
+      value
+      identifierType
+    }
+  }
+  date
+  percentageWatched
+  contentType
+}
+
+fragment PlaystationActivityMetadata on PlaystationActivityMetadata {
+  title
+  subject {
+    ... on Identifier {
+      value
+      identifierType
+    }
+  }
+  lastPlayedAt
+}
+
 fragment InstacartActivityMetadata on InstacartActivityMetadata {
   subject {
     ... on Identifier {
@@ -47,30 +71,6 @@ fragment InstacartActivityMetadata on InstacartActivityMetadata {
       quantityPurchased
     }
   }
-}
-
-fragment PlaystationActivityMetadata on PlaystationActivityMetadata {
-  title
-  subject {
-    ... on Identifier {
-      value
-      identifierType
-    }
-  }
-  lastPlayedAt
-}
-
-fragment YoutubeActivityMetadata on YoutubeActivityMetadata {
-  title
-  subject {
-    ... on Identifier {
-      value
-      identifierType
-    }
-  }
-  date
-  percentageWatched
-  contentType
 }
 
 fragment NetflixActivityMetadata on NetflixActivityMetadata {
