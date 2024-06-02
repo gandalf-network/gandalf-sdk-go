@@ -1,5 +1,16 @@
-fragment AmazonActivityMetadata on AmazonActivityMetadata {
-  productName
+fragment PlaystationActivityMetadata on PlaystationActivityMetadata {
+  title
+  subject {
+    ... on Identifier {
+      value
+      identifierType
+    }
+  }
+  lastPlayedAt
+}
+
+fragment NetflixActivityMetadata on NetflixActivityMetadata {
+  title
   subject {
     ... on Identifier {
       value
@@ -7,8 +18,30 @@ fragment AmazonActivityMetadata on AmazonActivityMetadata {
     }
   }
   date
-  quantityPurchased
-  totalCost
+  lastPlayedAt
+}
+
+fragment InstacartActivityMetadata on InstacartActivityMetadata {
+  subject {
+    ... on Identifier {
+      value
+      identifierType
+    }
+  }
+  retailer
+  totalOrderAmountSpent
+  dateOrdered
+  dateDelivered
+  statusString
+  items {
+    ... on InstacartOrderItem {
+      itemID
+      productName
+      unitPrice
+      status
+      quantityPurchased
+    }
+  }
 }
 
 fragment UberActivityMetadata on UberActivityMetadata {
@@ -39,42 +72,8 @@ fragment YoutubeActivityMetadata on YoutubeActivityMetadata {
   contentType
 }
 
-fragment PlaystationActivityMetadata on PlaystationActivityMetadata {
-  title
-  subject {
-    ... on Identifier {
-      value
-      identifierType
-    }
-  }
-  lastPlayedAt
-}
-
-fragment InstacartActivityMetadata on InstacartActivityMetadata {
-  subject {
-    ... on Identifier {
-      value
-      identifierType
-    }
-  }
-  retailer
-  totalOrderAmountSpent
-  dateOrdered
-  dateDelivered
-  statusString
-  items {
-    ... on InstacartOrderItem {
-      itemID
-      productName
-      unitPrice
-      status
-      quantityPurchased
-    }
-  }
-}
-
-fragment NetflixActivityMetadata on NetflixActivityMetadata {
-  title
+fragment AmazonActivityMetadata on AmazonActivityMetadata {
+  productName
   subject {
     ... on Identifier {
       value
@@ -82,7 +81,8 @@ fragment NetflixActivityMetadata on NetflixActivityMetadata {
     }
   }
   date
-  lastPlayedAt
+  quantityPurchased
+  totalCost
 }
 
 query getActivity($dataKey: String!, $source: Source!, $limit: Int64!, $page: Int64!) {

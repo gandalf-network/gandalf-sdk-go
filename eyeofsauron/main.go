@@ -10,8 +10,7 @@ import (
 	"strings"
 
 	"github.com/Khan/genqlient/generate"
-
-	graphqlClient "github.com/machinebox/graphql"
+	graphqlClient "github.com/gandalf-network/gandalf-sdk-go/eyeofsauron/graphql"
 )
 
 // IntrospectionResult represents the schema structure received from the GraphQL introspection query
@@ -70,7 +69,6 @@ func main() {
 		flag.Usage()
 		os.Exit(1)
 	}
-	fmt.Println("H__O")
 
 	// Join the CWD with the provided folder path
 	folder = filepath.Join(cwd, folder)

@@ -23,6 +23,5 @@ require (
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
 
-replace github.com/machinebox/graphql => github.com/machinebox/graphql v0.2.3-0.20181106130121-3a9253180225
 
-replace github.com/Khan/genqlient v0.7.0 => github.com/gandalf-network/genqlient v0.0.0-20240602164016-6dfd436f2b5b
+replace github.com/Khan/genqlient v0.7.0 => ./../../genqlient
