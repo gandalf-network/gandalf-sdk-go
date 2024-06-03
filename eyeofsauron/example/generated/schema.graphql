@@ -116,8 +116,6 @@ type Query {
   getActivity(dataKey: String!, source: Source!, limit: Int64!, page: Int64!): ActivityResponse!
   lookupActivity(dataKey: String!, activityId: UUID!): Activity!
   getAppByPublicKey(publicKey: String!): Application!
-  getTraits(dataKey: String!, source: Source!, labels: [TraitLabel]!): [Trait]!
-  lookupTrait(dataKey: String!, traitId: UUID!): Trait!
 }
 
 enum Source {
@@ -127,34 +125,11 @@ enum Source {
   AMAZON
   UBER
   INSTACART
-  INSTAGRAM
-  X
 }
 
 scalar String
 
 scalar Time
-
-type Trait {
-  id: UUID!
-  source: Source!
-  label: TraitLabel!
-  value: String!
-  timestamp: Time!
-}
-
-enum TraitLabel {
-  PRIME_SUBSCRIBER
-  RATING
-  TRIP_COUNT
-  ACCOUNT_CREATED_ON
-  PLAN
-  GENIUS_LEVEL
-  FOLLOWER_COUNT
-  FOLLOWING_COUNT
-  USERNAME
-  POST_COUNT
-}
 
 enum TripStatus {
   CANCELED

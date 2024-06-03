@@ -19,6 +19,7 @@ import (
 	graphql2 "github.com/gandalf-network/gandalf-sdk-go/eyeofsauron/graphql"
 	"github.com/gandalf-network/gandalf-sdk-go/eyeofsauron/graphqlTypes"
 	"github.com/gandalf-network/genqlient/graphql"
+	"github.com/google/uuid"
 )
 
 type EyeOfSauron struct {
@@ -27,7 +28,7 @@ type EyeOfSauron struct {
 }
 
 func NewEyeOfSauron(privateKey string) (*EyeOfSauron, error) {
-	client := graphql2.NewClient("http://localhost:1000/public/gql")
+	client := graphql2.NewClient("https://sauron.gandalf.network/public/gql")
 	privKey, err := HexToECDSAPrivateKey(privateKey)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse private key: %v", err)
@@ -972,30 +973,6 @@ func (v *GetAppByPublicKeyApplication) GetGandalfID() graphqlTypes.Int64 { retur
 // GetAppRegistrar returns GetAppByPublicKeyApplication.AppRegistrar, and is useful for accessing the field via an interface.
 func (v *GetAppByPublicKeyApplication) GetAppRegistrar() string { return v.AppRegistrar }
 
-// GetTraitsTrait includes the requested fields of the GraphQL type Trait.
-type GetTraitsTrait struct {
-	Id        graphqlTypes.UUID `json:"id"`
-	Source    Source            `json:"source"`
-	Label     TraitLabel        `json:"label"`
-	Value     string            `json:"value"`
-	Timestamp time.Time         `json:"timestamp"`
-}
-
-// GetId returns GetTraitsTrait.Id, and is useful for accessing the field via an interface.
-func (v *GetTraitsTrait) GetId() graphqlTypes.UUID { return v.Id }
-
-// GetSource returns GetTraitsTrait.Source, and is useful for accessing the field via an interface.
-func (v *GetTraitsTrait) GetSource() Source { return v.Source }
-
-// GetLabel returns GetTraitsTrait.Label, and is useful for accessing the field via an interface.
-func (v *GetTraitsTrait) GetLabel() TraitLabel { return v.Label }
-
-// GetValue returns GetTraitsTrait.Value, and is useful for accessing the field via an interface.
-func (v *GetTraitsTrait) GetValue() string { return v.Value }
-
-// GetTimestamp returns GetTraitsTrait.Timestamp, and is useful for accessing the field via an interface.
-func (v *GetTraitsTrait) GetTimestamp() time.Time { return v.Timestamp }
-
 type IdentifierType string
 
 const (
@@ -1897,30 +1874,6 @@ func (v *LookupActivityMetadataYoutubeActivityMetadata) __premarshalJSON() (*__p
 	return &retval, nil
 }
 
-// LookupTrait includes the requested fields of the GraphQL type Trait.
-type LookupTrait struct {
-	Id        graphqlTypes.UUID `json:"id"`
-	Source    Source            `json:"source"`
-	Label     TraitLabel        `json:"label"`
-	Value     string            `json:"value"`
-	Timestamp time.Time         `json:"timestamp"`
-}
-
-// GetId returns LookupTrait.Id, and is useful for accessing the field via an interface.
-func (v *LookupTrait) GetId() graphqlTypes.UUID { return v.Id }
-
-// GetSource returns LookupTrait.Source, and is useful for accessing the field via an interface.
-func (v *LookupTrait) GetSource() Source { return v.Source }
-
-// GetLabel returns LookupTrait.Label, and is useful for accessing the field via an interface.
-func (v *LookupTrait) GetLabel() TraitLabel { return v.Label }
-
-// GetValue returns LookupTrait.Value, and is useful for accessing the field via an interface.
-func (v *LookupTrait) GetValue() string { return v.Value }
-
-// GetTimestamp returns LookupTrait.Timestamp, and is useful for accessing the field via an interface.
-func (v *LookupTrait) GetTimestamp() time.Time { return v.Timestamp }
-
 // NetflixActivityMetadata includes the GraphQL fields of NetflixActivityMetadata requested by the fragment NetflixActivityMetadata.
 type NetflixActivityMetadata struct {
 	Title        string                                     `json:"title"`
@@ -1998,23 +1951,6 @@ const (
 	SourceAmazon      Source = "AMAZON"
 	SourceUber        Source = "UBER"
 	SourceInstacart   Source = "INSTACART"
-	SourceInstagram   Source = "INSTAGRAM"
-	SourceX           Source = "X"
-)
-
-type TraitLabel string
-
-const (
-	TraitLabelPrimeSubscriber  TraitLabel = "PRIME_SUBSCRIBER"
-	TraitLabelRating           TraitLabel = "RATING"
-	TraitLabelTripCount        TraitLabel = "TRIP_COUNT"
-	TraitLabelAccountCreatedOn TraitLabel = "ACCOUNT_CREATED_ON"
-	TraitLabelPlan             TraitLabel = "PLAN"
-	TraitLabelGeniusLevel      TraitLabel = "GENIUS_LEVEL"
-	TraitLabelFollowerCount    TraitLabel = "FOLLOWER_COUNT"
-	TraitLabelFollowingCount   TraitLabel = "FOLLOWING_COUNT"
-	TraitLabelUsername         TraitLabel = "USERNAME"
-	TraitLabelPostCount        TraitLabel = "POST_COUNT"
 )
 
 type TripStatus string
@@ -2139,45 +2075,17 @@ type __getAppByPublicKeyInput struct {
 // GetPublicKey returns __getAppByPublicKeyInput.PublicKey, and is useful for accessing the field via an interface.
 func (v *__getAppByPublicKeyInput) GetPublicKey() string { return v.PublicKey }
 
-// __getTraitsInput is used internally by genqlient
-type __getTraitsInput struct {
-	DataKey string       `json:"dataKey"`
-	Source  Source       `json:"source"`
-	Labels  []TraitLabel `json:"labels"`
-}
-
-// GetDataKey returns __getTraitsInput.DataKey, and is useful for accessing the field via an interface.
-func (v *__getTraitsInput) GetDataKey() string { return v.DataKey }
-
-// GetSource returns __getTraitsInput.Source, and is useful for accessing the field via an interface.
-func (v *__getTraitsInput) GetSource() Source { return v.Source }
-
-// GetLabels returns __getTraitsInput.Labels, and is useful for accessing the field via an interface.
-func (v *__getTraitsInput) GetLabels() []TraitLabel { return v.Labels }
-
 // __lookupActivityInput is used internally by genqlient
 type __lookupActivityInput struct {
-	DataKey    string            `json:"dataKey"`
-	ActivityId graphqlTypes.UUID `json:"activityId"`
+	DataKey    string    `json:"dataKey"`
+	ActivityId uuid.UUID `json:"activityId"`
 }
 
 // GetDataKey returns __lookupActivityInput.DataKey, and is useful for accessing the field via an interface.
 func (v *__lookupActivityInput) GetDataKey() string { return v.DataKey }
 
 // GetActivityId returns __lookupActivityInput.ActivityId, and is useful for accessing the field via an interface.
-func (v *__lookupActivityInput) GetActivityId() graphqlTypes.UUID { return v.ActivityId }
-
-// __lookupTraitInput is used internally by genqlient
-type __lookupTraitInput struct {
-	DataKey string            `json:"dataKey"`
-	TraitId graphqlTypes.UUID `json:"traitId"`
-}
-
-// GetDataKey returns __lookupTraitInput.DataKey, and is useful for accessing the field via an interface.
-func (v *__lookupTraitInput) GetDataKey() string { return v.DataKey }
-
-// GetTraitId returns __lookupTraitInput.TraitId, and is useful for accessing the field via an interface.
-func (v *__lookupTraitInput) GetTraitId() graphqlTypes.UUID { return v.TraitId }
+func (v *__lookupActivityInput) GetActivityId() uuid.UUID { return v.ActivityId }
 
 // getActivityResponse is returned by getActivity on success.
 type getActivityResponse struct {
@@ -2197,14 +2105,6 @@ func (v *getAppByPublicKeyResponse) GetGetAppByPublicKey() GetAppByPublicKeyAppl
 	return v.GetAppByPublicKey
 }
 
-// getTraitsResponse is returned by getTraits on success.
-type getTraitsResponse struct {
-	GetTraits []GetTraitsTrait `json:"getTraits"`
-}
-
-// GetGetTraits returns getTraitsResponse.GetTraits, and is useful for accessing the field via an interface.
-func (v *getTraitsResponse) GetGetTraits() []GetTraitsTrait { return v.GetTraits }
-
 // lookupActivityResponse is returned by lookupActivity on success.
 type lookupActivityResponse struct {
 	LookupActivity LookupActivity `json:"lookupActivity"`
@@ -2212,14 +2112,6 @@ type lookupActivityResponse struct {
 
 // GetLookupActivity returns lookupActivityResponse.LookupActivity, and is useful for accessing the field via an interface.
 func (v *lookupActivityResponse) GetLookupActivity() LookupActivity { return v.LookupActivity }
-
-// lookupTraitResponse is returned by lookupTrait on success.
-type lookupTraitResponse struct {
-	LookupTrait LookupTrait `json:"lookupTrait"`
-}
-
-// GetLookupTrait returns lookupTraitResponse.LookupTrait, and is useful for accessing the field via an interface.
-func (v *lookupTraitResponse) GetLookupTrait() LookupTrait { return v.LookupTrait }
 
 // The query or mutation executed by getActivity.
 const getActivity_Operation = `
@@ -2432,66 +2324,6 @@ func (eye EyeOfSauron) GetAppByPublicKey(
 	return &resp_, nil
 }
 
-// The query or mutation executed by getTraits.
-const getTraits_Operation = `
-query getTraits ($dataKey: String!, $source: Source!, $labels: [TraitLabel]!) {
-	getTraits(dataKey: $dataKey, source: $source, labels: $labels) {
-		... on Trait {
-			id
-			source
-			label
-			value
-			timestamp
-		}
-	}
-}
-`
-
-func (eye EyeOfSauron) GetTraits(
-	ctx_ context.Context,
-	dataKey string,
-	source Source,
-	labels []TraitLabel,
-) (*getTraitsResponse, error) {
-	req := graphql2.NewRequest(getTraits_Operation)
-
-	req.Var("dataKey", dataKey)
-	req.Var("source", source)
-	req.Var("labels", labels)
-	requestBodyObj := struct {
-		Query     string                 `json:"query"`
-		Variables map[string]interface{} `json:"variables"`
-	}{
-		Query:     req.Query(),
-		Variables: req.Vars(),
-	}
-
-	var requestBody bytes.Buffer
-	if err := json.NewEncoder(&requestBody).Encode(requestBodyObj); err != nil {
-		return nil, fmt.Errorf("unable to encode body %s", err)
-	}
-
-	var err_ error
-	signatureB64, err_ := SignMessageAsBase64(eye.privateKey, requestBody.Bytes())
-	if err_ != nil {
-		return nil, fmt.Errorf("unable to generate signature: %v", err_)
-	}
-
-	req.Header.Set("X-Gandalf-Signature", signatureB64)
-
-	var resp_ getTraitsResponse
-
-	if err_ := eye.client.Run(
-		ctx_,
-		req,
-		&resp_,
-	); err_ != nil {
-		return nil, fmt.Errorf("failed to execute request: %v", err_)
-	}
-
-	return &resp_, nil
-}
-
 // The query or mutation executed by lookupActivity.
 const lookupActivity_Operation = `
 query lookupActivity ($dataKey: String!, $activityId: UUID!) {
@@ -2596,7 +2428,7 @@ fragment InstacartActivityMetadata on InstacartActivityMetadata {
 func (eye EyeOfSauron) LookupActivity(
 	ctx_ context.Context,
 	dataKey string,
-	activityId graphqlTypes.UUID,
+	activityId uuid.UUID,
 ) (*lookupActivityResponse, error) {
 	req := graphql2.NewRequest(lookupActivity_Operation)
 
@@ -2624,64 +2456,6 @@ func (eye EyeOfSauron) LookupActivity(
 	req.Header.Set("X-Gandalf-Signature", signatureB64)
 
 	var resp_ lookupActivityResponse
-
-	if err_ := eye.client.Run(
-		ctx_,
-		req,
-		&resp_,
-	); err_ != nil {
-		return nil, fmt.Errorf("failed to execute request: %v", err_)
-	}
-
-	return &resp_, nil
-}
-
-// The query or mutation executed by lookupTrait.
-const lookupTrait_Operation = `
-query lookupTrait ($dataKey: String!, $traitId: UUID!) {
-	lookupTrait(dataKey: $dataKey, traitId: $traitId) {
-		... on Trait {
-			id
-			source
-			label
-			value
-			timestamp
-		}
-	}
-}
-`
-
-func (eye EyeOfSauron) LookupTrait(
-	ctx_ context.Context,
-	dataKey string,
-	traitId graphqlTypes.UUID,
-) (*lookupTraitResponse, error) {
-	req := graphql2.NewRequest(lookupTrait_Operation)
-
-	req.Var("dataKey", dataKey)
-	req.Var("traitId", traitId)
-	requestBodyObj := struct {
-		Query     string                 `json:"query"`
-		Variables map[string]interface{} `json:"variables"`
-	}{
-		Query:     req.Query(),
-		Variables: req.Vars(),
-	}
-
-	var requestBody bytes.Buffer
-	if err := json.NewEncoder(&requestBody).Encode(requestBodyObj); err != nil {
-		return nil, fmt.Errorf("unable to encode body %s", err)
-	}
-
-	var err_ error
-	signatureB64, err_ := SignMessageAsBase64(eye.privateKey, requestBody.Bytes())
-	if err_ != nil {
-		return nil, fmt.Errorf("unable to generate signature: %v", err_)
-	}
-
-	req.Header.Set("X-Gandalf-Signature", signatureB64)
-
-	var resp_ lookupTraitResponse
 
 	if err_ := eye.client.Run(
 		ctx_,

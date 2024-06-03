@@ -1,30 +1,4 @@
-fragment PlaystationActivityMetadata on PlaystationActivityMetadata {
-  title
-  subject {
-    ... on Identifier {
-      value
-      identifierType
-    }
-  }
-  lastPlayedAt
-}
-
-fragment UberActivityMetadata on UberActivityMetadata {
-  subject {
-    ... on Identifier {
-      value
-      identifierType
-    }
-  }
-  beginTripTime
-  dropoffTime
-  cost
-  city
-  distance
-  status
-}
-
-fragment YoutubeActivityMetadata on YoutubeActivityMetadata {
+fragment NetflixActivityMetadata on NetflixActivityMetadata {
   title
   subject {
     ... on Identifier {
@@ -33,8 +7,7 @@ fragment YoutubeActivityMetadata on YoutubeActivityMetadata {
     }
   }
   date
-  percentageWatched
-  contentType
+  lastPlayedAt
 }
 
 fragment AmazonActivityMetadata on AmazonActivityMetadata {
@@ -48,6 +21,19 @@ fragment AmazonActivityMetadata on AmazonActivityMetadata {
   date
   quantityPurchased
   totalCost
+}
+
+fragment YoutubeActivityMetadata on YoutubeActivityMetadata {
+  title
+  subject {
+    ... on Identifier {
+      value
+      identifierType
+    }
+  }
+  date
+  percentageWatched
+  contentType
 }
 
 fragment InstacartActivityMetadata on InstacartActivityMetadata {
@@ -73,7 +59,7 @@ fragment InstacartActivityMetadata on InstacartActivityMetadata {
   }
 }
 
-fragment NetflixActivityMetadata on NetflixActivityMetadata {
+fragment PlaystationActivityMetadata on PlaystationActivityMetadata {
   title
   subject {
     ... on Identifier {
@@ -81,8 +67,22 @@ fragment NetflixActivityMetadata on NetflixActivityMetadata {
       identifierType
     }
   }
-  date
   lastPlayedAt
+}
+
+fragment UberActivityMetadata on UberActivityMetadata {
+  subject {
+    ... on Identifier {
+      value
+      identifierType
+    }
+  }
+  beginTripTime
+  dropoffTime
+  cost
+  city
+  distance
+  status
 }
 
 query getActivity($dataKey: String!, $source: Source!, $limit: Int64!, $page: Int64!) {
@@ -132,30 +132,6 @@ query getAppByPublicKey($publicKey: String!) {
       iconURL
       gandalfID
       appRegistrar
-    }
-  }
-}
-
-query getTraits($dataKey: String!, $source: Source!, $labels: [TraitLabel]!) {
-  getTraits(dataKey: $dataKey, source: $source, labels: $labels) {
-    ... on Trait {
-      id
-      source
-      label
-      value
-      timestamp
-    }
-  }
-}
-
-query lookupTrait($dataKey: String!, $traitId: UUID!) {
-  lookupTrait(dataKey: $dataKey, traitId: $traitId) {
-    ... on Trait {
-      id
-      source
-      label
-      value
-      timestamp
     }
   }
 }

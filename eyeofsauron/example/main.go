@@ -7,7 +7,7 @@ import (
 	"log"
 
 	"github.com/gandalf-network/gandalf-sdk-go/eyeofsauron/example/generated"
-	"github.com/gandalf-network/gandalf-sdk-go/eyeofsauron/graphqlTypes"
+	"github.com/google/uuid"
 )
 
 func main() {
@@ -28,10 +28,11 @@ func main() {
 	}
 
 	for _, activity := range response.GetGetActivity().Data {
+		activityID, _ := uuid.Parse(activity.Id)
 		response, err := eye.LookupActivity(
 			context.Background(),
 			"BG7u85FMLGnYnUv2ZsFTAXrGT2Xw3TikrBHm2kYz31qq",
-			graphqlTypes.UUID(activity.Id),
+			activityID,
 		)
 
 		if err != nil {

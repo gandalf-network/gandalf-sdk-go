@@ -11,7 +11,7 @@ bindings:
   Date:
     type: github.com/gandalf-network/gandalf-sdk-go/eyeofsauron/graphqlTypes.Date
   UUID:
-    type: github.com/gandalf-network/gandalf-sdk-go/eyeofsauron/graphqlTypes.UUID
+    type: github.com/google/uuid.UUID
   Time:
     type: time.Time
 `
