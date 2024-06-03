@@ -1,34 +1,34 @@
-# gandalf-sdk-go
+# Gandalf SDK for Go
+
 The Gandalf SDK for Go provides two main libraries: `EyeOfSauron` for interacting with GraphQL APIs and `Connect` for generating valid Connect URLs for account linking.
 
+## EyeOfSauron
 
-## EyeOfSauron 
 `EyeOfSauron` completely abstracts away the complexity of authentication and interacting with GraphQL APIs.
 
 ### Installation
 
+To install the `EyeOfSauron` package, use the following command:
+
 ```bash
-
 go get github.com/gandalf-network/gandalf-sdk-go/eyeofsauron
-
 ```
 
 ### Usage
 
+To generate the necessary files, use the following command:
+
 ```bash
-
 go get github.com/gandalf-network/gandalf-sdk-go/eyeofsauron -f ./example/generated
-
 ```
 
 #### Flags
 
-- -f, --folder [folder]: Set the destination folder for the generated files
-
+- `-f, --folder [folder]`: Set the destination folder for the generated files.
 
 ### Using the Generated Files
 
-Once you have successfully generated the necessary files and installed the required dependencies using eyeofsauron, you can proceed to use these files to interact with the API.
+Once you have successfully generated the necessary files and installed the required dependencies using `EyeOfSauron`, you can proceed to use these files to interact with the API.
 
 #### Initialization
 
@@ -42,12 +42,11 @@ import (
 )
 
 func main() {
-	eye, err := generated.NewEyeOfSauron("<YOUR_GANDALF_PRIVATE_KEY>")
+	eye, err := generated.NewEyeOfSauron()
 	if err != nil {
 		log.Fatalf("failed to run gandalf client: %s", err)
 	}
 }
-
 ```
 
 #### Get Activity
@@ -66,7 +65,7 @@ import (
 
 func getActivity() {
     // Initialization
-    eye, err := generated.NewEyeOfSauron("<YOUR_GANDALF_PRIVATE_KEY>")
+    eye, err := generated.NewEyeOfSauron()
 	if err != nil {
 		log.Fatalf("failed to initialize gandalf client: %s", err)
 	}
@@ -117,15 +116,11 @@ func printJSON(v interface{}) {
 	}
 	fmt.Println(string(jsonData))
 }
-
-
 ```
 
 #### Lookup Activity
 
-
 ```go
-// main.go
 package main
 
 import (
@@ -139,7 +134,7 @@ import (
 
 func lookupActivity() {
     // Initialization
-    eye, err := generated.NewEyeOfSauron("<YOUR_GANDALF_PRIVATE_KEY>")
+    eye, err := generated.NewEyeOfSauron()
 	if err != nil {
 		log.Fatalf("failed to initialize gandalf client: %s", err)
 	}
@@ -187,9 +182,8 @@ func printJSON(v interface{}) {
 	}
 	fmt.Println(string(jsonData))
 }
-
-
 ```
+
 ## Connect
 
 `Connect` is a library in Go that makes it easier to generate valid Connect URLs that let your users link their accounts to Gandalf. To use this library, follow the installation and usage instructions provided in the documentation.
