@@ -4,7 +4,7 @@ The Gandalf SDK for Go provides two main libraries: `EyeOfSauron` for interactin
 
 ## EyeOfSauron
 
-`EyeOfSauron` completely abstracts away the complexity of authentication and interacting with GraphQL APIs.
+`EyeOfSauron` completely abstracts away the complexity of authentication and interacting with Gandalf GraphQL APIs.
 
 ### Installation
 
