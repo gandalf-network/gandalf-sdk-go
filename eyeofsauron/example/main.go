@@ -7,8 +7,6 @@ import (
 	"log"
 
 	"github.com/gandalf-network/gandalf-sdk-go/eyeofsauron/example/generated"
-	"github.com/gandalf-network/gandalf-sdk-go/eyeofsauron/graphqlTypes"
-	"github.com/google/uuid"
 )
 
 func main() {
@@ -27,19 +25,6 @@ func main() {
 	if err != nil {
 		log.Fatalf("failed to run gandalf client: %s", err)
 	}
-
-	response2, err := eye.LookupActivity(
-		context.Background(),
-		"MY_DATA_KEY",
-		graphqlTypes.UUID{},
-	)
-	if err != nil {
-		log.Fatalf("failed to run gandalf client: %s", err)
-	}
-
-	
-	printMetadata(response2.LookupActivity.GetMetadata())
-
 
 	for _, activity := range response.GetGetActivity().Data {
 		metadata := activity.GetMetadata()
