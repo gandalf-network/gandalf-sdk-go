@@ -42,7 +42,7 @@ import (
 )
 
 func main() {
-	eye, err := generated.NewEyeOfSauron()
+	eye, err := generated.NewEyeOfSauron("<YOUR_GANDALF_PRIVATE_KEY")
 	if err != nil {
 		log.Fatalf("failed to run gandalf client: %s", err)
 	}
@@ -65,7 +65,7 @@ import (
 
 func getActivity() {
     // Initialization
-    eye, err := generated.NewEyeOfSauron()
+    eye, err := generated.NewEyeOfSauron("<YOUR_GANDALF_PRIVATE_KEY")
 	if err != nil {
 		log.Fatalf("failed to initialize gandalf client: %s", err)
 	}
@@ -134,7 +134,7 @@ import (
 
 func lookupActivity() {
     // Initialization
-    eye, err := generated.NewEyeOfSauron()
+    eye, err := generated.NewEyeOfSauron("<YOUR_GANDALF_PRIVATE_KEY")
 	if err != nil {
 		log.Fatalf("failed to initialize gandalf client: %s", err)
 	}
