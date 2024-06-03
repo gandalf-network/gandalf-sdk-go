@@ -7,6 +7,7 @@ import (
 	"log"
 
 	"github.com/gandalf-network/gandalf-sdk-go/eyeofsauron/example/generated"
+	"github.com/gandalf-network/gandalf-sdk-go/eyeofsauron/graphqlTypes"
 )
 
 func main() {
@@ -27,12 +28,20 @@ func main() {
 	}
 
 	for _, activity := range response.GetGetActivity().Data {
-		metadata := activity.GetMetadata()
-		printMetadata(metadata)
+		response, err := eye.LookupActivity(
+			context.Background(),
+			"BG7u85FMLGnYnUv2ZsFTAXrGT2Xw3TikrBHm2kYz31qq",
+			graphqlTypes.UUID(activity.Id),
+		)
+
+		if err != nil {
+			log.Fatalf("unable to look up activity: %s", err)
+		}
+		printLookupActivityMetadata(response.LookupActivity.GetMetadata())
 	}
 }
 
-func printMetadata(metadata interface{}) {
+func printGetActivityMetadata(metadata interface{}) {
 	switch meta := metadata.(type) {
 	case *generated.GetActivityActivityResponseDataActivityMetadataAmazonActivityMetadata:
 		fmt.Println("Amazon Activity Metadata:")
@@ -50,6 +59,31 @@ func printMetadata(metadata interface{}) {
 		fmt.Println("Uber Activity Metadata:")
 		printJSON(meta.UberActivityMetadata)
 	case *generated.GetActivityActivityResponseDataActivityMetadataYoutubeActivityMetadata:
+		fmt.Println("YouTube Activity Metadata:")
+		printJSON(meta.YoutubeActivityMetadata)
+	default:
+		log.Printf("Unknown metadata type: %T\n", meta)
+	}
+}
+
+func printLookupActivityMetadata(metadata interface{}) {
+	switch meta := metadata.(type) {
+	case *generated.LookupActivityMetadataAmazonActivityMetadata:
+		fmt.Println("Amazon Activity Metadata:")
+		printJSON(meta.AmazonActivityMetadata)
+	case *generated.LookupActivityMetadataInstacartActivityMetadata:
+		fmt.Println("Instacart Activity Metadata:")
+		printJSON(meta.InstacartActivityMetadata)
+	case *generated.LookupActivityMetadataNetflixActivityMetadata:
+		fmt.Println("Netflix Activity Metadata:")
+		printJSON(meta.NetflixActivityMetadata)
+	case *generated.LookupActivityMetadataPlaystationActivityMetadata:
+		fmt.Println("Playstation Activity Metadata:")
+		printJSON(meta.PlaystationActivityMetadata)
+	case *generated.LookupActivityMetadataUberActivityMetadata:
+		fmt.Println("Uber Activity Metadata:")
+		printJSON(meta.UberActivityMetadata)
+	case *generated.LookupActivityMetadataYoutubeActivityMetadata:
 		fmt.Println("YouTube Activity Metadata:")
 		printJSON(meta.YoutubeActivityMetadata)
 	default:

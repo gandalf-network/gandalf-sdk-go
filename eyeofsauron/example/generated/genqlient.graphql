@@ -1,3 +1,29 @@
+fragment PlaystationActivityMetadata on PlaystationActivityMetadata {
+  title
+  subject {
+    ... on Identifier {
+      value
+      identifierType
+    }
+  }
+  lastPlayedAt
+}
+
+fragment UberActivityMetadata on UberActivityMetadata {
+  subject {
+    ... on Identifier {
+      value
+      identifierType
+    }
+  }
+  beginTripTime
+  dropoffTime
+  cost
+  city
+  distance
+  status
+}
+
 fragment YoutubeActivityMetadata on YoutubeActivityMetadata {
   title
   subject {
@@ -56,32 +82,6 @@ fragment NetflixActivityMetadata on NetflixActivityMetadata {
     }
   }
   date
-  lastPlayedAt
-}
-
-fragment UberActivityMetadata on UberActivityMetadata {
-  subject {
-    ... on Identifier {
-      value
-      identifierType
-    }
-  }
-  beginTripTime
-  dropoffTime
-  cost
-  city
-  distance
-  status
-}
-
-fragment PlaystationActivityMetadata on PlaystationActivityMetadata {
-  title
-  subject {
-    ... on Identifier {
-      value
-      identifierType
-    }
-  }
   lastPlayedAt
 }
 
