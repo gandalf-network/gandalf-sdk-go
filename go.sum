@@ -23,8 +23,10 @@ github.com/decred/dcrd/dcrec/secp256k1/v4 v4.0.1 h1:YLtO71vCjJRCBcrPMtQ9nqBsqpA1
 github.com/decred/dcrd/dcrec/secp256k1/v4 v4.0.1/go.mod h1:hyedUtir6IdtD/7lIxGeCxkaw7y45JueMRL4DIyJDKs=
 github.com/dgryski/trifles v0.0.0-20200323201526-dd97f9abfb48 h1:fRzb/w+pyskVMQ+UbP35JkH8yB7MYb4q/qhBarqZE6g=
 github.com/dgryski/trifles v0.0.0-20200323201526-dd97f9abfb48/go.mod h1:if7Fbed8SFyPtHLHbg49SI7NAdJiC5WIA09pe59rfAA=
-github.com/gandalf-network/genqlient v1.0.1 h1:10kAnunMXoBWV5DtNtGz9/7+y9kIYZ5ASJ2vBiEDT40=
-github.com/gandalf-network/genqlient v1.0.1/go.mod h1:psNwR/HdMPm9ELCr4ApfcUj4+cenzDbZkPBUl6JYEi0=
+github.com/gandalf-network/genqlient v1.0.2 h1:ahF1C/q7On09W2So8tD9oye4HB4sD3M3boZxmAl93Tw=
+github.com/gandalf-network/genqlient v1.0.2/go.mod h1:psNwR/HdMPm9ELCr4ApfcUj4+cenzDbZkPBUl6JYEi0=
+github.com/google/uuid v1.6.0 h1:NIvaJDMOsjHA8n1jAhLSgzrAzy1Hgr+hNrb57e+94F0=
+github.com/google/uuid v1.6.0/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
 github.com/pkg/errors v0.9.1 h1:FEBLx1zS214owpjy7qsBeixbURkuhQAwrK5UwLGTwt4=
 github.com/pkg/errors v0.9.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
