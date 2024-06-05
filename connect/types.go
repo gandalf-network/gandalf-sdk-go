@@ -1,4 +1,4 @@
-package main
+package connect
 
 
 type GandalfErrorCode int
@@ -10,8 +10,20 @@ type GandalfError struct {
 }
 
 type Application struct {
-	GandalfID int64
+	// The human-readable name of the application.
+	AppName string `json:"appName"`
+	// A public key associated with the application, used for cryptographic operations such as
+	// verifying the identity of the application.
+	PublicKey string `json:"publicKey"`
+	// The URL pointing to the icon graphic for the application. This URL should link to an image
+	// that visually represents the application, aiding in its identification and branding.
+	IconURL string `json:"iconURL"`
+	// A unique identifier assigned to the application upon registration.
+	GandalfID int64 `json:"gandalfID"`
+	// The address of the user who registered the application.
+	AppRegistrar string `json:"appRegistrar"`
 }
+// type Application map[string]interface{}
 
 type SupportedService struct {
 	Name              string `json:"name"`
@@ -20,7 +32,7 @@ type SupportedService struct {
 	DeprecationReason string `json:"deprecationReason"`
 }
 
-type SupportedServices []SupportedService
+type SupportedServices []Value
 
 type Service struct {
 	Name string
