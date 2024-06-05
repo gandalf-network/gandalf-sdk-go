@@ -1,4 +1,4 @@
-package main
+package connect
 
 import (
 	"context"
@@ -103,7 +103,7 @@ func validatePublicKey(publicKey string) bool {
 	return publicKeyRequest(publicKey)
 }
 
-func getSupportedServices() interface{} {
+func getSupportedServices() []Value {
 	gqlSchema := introspectSauron()
 	for _, val := range gqlSchema.Schema.Types {
 		if val.Kind == "ENUM" && val.Name == "Source" {
@@ -114,10 +114,10 @@ func getSupportedServices() interface{} {
 }
 
 func validateInputServices(input Services) (map[string]Service, error) {
-	supportedServicesInterface := getSupportedServices()
-	supportedServices := supportedServicesInterface.(SupportedServices)
+	// supportedServicesInterface := getSupportedServices()
+	supportedServices := getSupportedServices()
 	
-	serviceMap := make(map[string]SupportedService)
+	serviceMap := make(map[string]Value)
 	for _, val := range supportedServices {
 		serviceMap[val.Name] = val
 	}
@@ -159,25 +159,41 @@ func validateInputServices(input Services) (map[string]Service, error) {
 func publicKeyRequest(publicKey string) bool {
 	graphqlRequest := graphqlClient.NewRequest(`
 	query GetAppByPublicKey($publicKey: String!) {
-	  getAppByPublicKey(publicKey: $publicKey) {
-		  appName
-		  gandalfID
+	  getAppByPublicKey(
+		publicKey: $publicKey
+		) {
+		appName
+		gandalfID
 	  }
 	}
   `)
   
-  	graphqlRequest.Var("publicKey", publicKey)
-
+	graphqlRequest.Var("publicKey", publicKey)
   	client := graphqlClient.NewClient(SAURON_BASE_URL)
 
 	ctx := context.Background()
 
-	var respData Application
+	var graphqlResponse map[string]interface{}
 
-	if err := client.Run(ctx, graphqlRequest, &respData); err != nil {
-		log.Fatalf("Error making introspection query: %v", err)
+	if err := client.Run(ctx, graphqlRequest, &graphqlResponse); err != nil {
+		log.Fatalf("Error making publicKey request query: %v", err)
 	}
 
+	responseData, ok := graphqlResponse["getAppByPublicKey"].(map[string]interface{})
+	if !ok {
+		log.Fatalf("Unexpected response structure: %v", graphqlResponse)
+	}
+
+	body, err := json.Marshal(responseData)
+	if err != nil {
+		return false
+	}
+
+	var respData Application
+	err = json.Unmarshal(body, &respData)
+	if err != nil {
+		return false
+	}
 	return respData.GandalfID > 0
 }
 
@@ -185,7 +201,7 @@ func runValidation(publicKey string, redirectURL string, input Services) (map[st
 	isPublicKeyValid := validatePublicKey(publicKey)
 	if !isPublicKeyValid {
 		return nil, &GandalfError{
-			Message: "Public key does not exist",
+			Message: "Invalid public key",
 			Code:    InvalidPublicKey,
 		}
 	}
