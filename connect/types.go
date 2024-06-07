@@ -1,5 +1,21 @@
 package connect
 
+
+type Connect struct {
+	PublicKey   		string
+	RedirectURL 		string
+	Platform 			PlatformType
+	VerificationStatus 	bool
+	Data 				InputData
+}
+
+type Config struct {
+	PublicKey   string
+	RedirectURL string
+	Platform    PlatformType
+	Data 		InputData
+}
+
 type PlatformType string
 
 const (

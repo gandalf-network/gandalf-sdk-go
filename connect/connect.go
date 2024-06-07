@@ -17,9 +17,9 @@ import (
 
 var (
 	IOS_APP_CLIP_BASE_URL = "https://appclip.apple.com/id?p=network.gandalf.connect.Clip"
-	ANDROID_APP_CLIP_BASE_URL   = os.Getenv("ANDROID_APP_CLIP_BASE_URL")
+	ANDROID_APP_CLIP_BASE_URL   =  os.Getenv("ANDROID_APP_CLIP_BASE_URL")
 	UNIVERSAL_APP_CLIP_BASE_URL = os.Getenv("UNIVERSAL_APP_CLIP_BASE_URL")
-	SAURON_BASE_URL = os.Getenv("SAURON_BASE_URL")
+	SAURON_BASE_URL = "https://sauron.gandalf.network/public/gql"
 )
 
 
@@ -38,23 +38,15 @@ func (e *GandalfError) Error() string {
 }
 
 
-type Connect struct {
-	PublicKey   string
-	RedirectURL string
-	Platform 	PlatformType
-	VerificationStatus bool
-	Data InputData
-}
-
-func NewConnect(publicKey string, redirectURL string, platform PlatformType, data InputData) (*Connect, error) {
-	if publicKey == "" || redirectURL == "" {
+func NewConnect(config Config) (*Connect, error) {
+	if config.PublicKey == "" || config.RedirectURL == "" {
 		return nil, fmt.Errorf("invalid parameters")
 	}
 
-	if platform == "" {
-		platform = PlatformTypeIOS
+	if config.Platform == "" {
+		config.Platform = PlatformTypeIOS
 	}
-	return &Connect{PublicKey: publicKey, RedirectURL: redirectURL, Data: data}, nil
+	return &Connect{PublicKey: config.PublicKey, RedirectURL: config.RedirectURL, Data: config.Data, Platform: config.Platform}, nil
 }
 
 func (c *Connect) GenerateURL() (string, error) {
@@ -75,15 +67,15 @@ func (c *Connect) GenerateURL() (string, error) {
 	return url, nil
 }
 
-func (c *Connect) GenerateQRCode(input InputData) (string, error) {
-	if input == nil {
+func (c *Connect) GenerateQRCode() (string, error) {
+	if c.Data == nil {
 		return "", &GandalfError{
 			Message: "Invalid input parameters",
 			Code:    QRCodeGenNotSupported,
 		}
 	}
 
-	services, err := runValidation(c.PublicKey, c.RedirectURL, input, c.VerificationStatus)
+	services, err := runValidation(c.PublicKey, c.RedirectURL, c.Data, c.VerificationStatus)
 	if err != nil {
 		return "", err
 	}
@@ -310,19 +302,12 @@ func (c *Connect) encodeComponents(data, redirectUrl string, publicKey string) (
 	}
 
 	base64Data := base64.StdEncoding.EncodeToString([]byte(data))
-	parsedURL, err := url.Parse(baseURL)
-	if err != nil {
-		return "", fmt.Errorf("error parsing base URL: %w", err)
-	}
 
-	query := parsedURL.Query()
-	query.Set("publicKey", publicKey)
-	query.Set("redirectUrl", redirectUrl)
-	query.Set("data", base64Data)
+	encodedServices := url.QueryEscape(string(base64Data))
+	encodedRedirectURL := url.QueryEscape(redirectUrl)
+	encodedPublicKey := url.QueryEscape(publicKey)
 
-	parsedURL.RawQuery = query.Encode()
-	
-	return parsedURL.String(), nil
+	return fmt.Sprintf("%s&services=%s&redirectUrl=%s&publicKey=%s", baseURL, encodedServices, encodedRedirectURL, encodedPublicKey), nil
 }
 
 func servicesToJSON(services InputData) []byte {
