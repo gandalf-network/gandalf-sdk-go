@@ -12,25 +12,31 @@ const redirectURL = "https://example.com"
 
 
 func main() {
-	qrCodeServices := connect.Services{
-		{Name: "Netflix", Status: true},
-		{Name: "Playstation", Status: false},
+	services := connect.InputData{
+		"netflix": connect.Service{
+			Traits:     []string{"rating"},
+			Activities: []string{"watch"},
+		},
 	}
-	qrCodeURL, err := connect.GenerateQRCode(publicKey, redirectURL, qrCodeServices)
+	
+	conn, err := connect.NewConnect(publicKey, redirectURL, connect.PlatformTypeIOS, services)
+	if err != nil {
+		log.Fatalf("An error occurred with initializing connect: %v", err)
+	}
+
+
+	url, err := conn.GenerateURL()
+	if err != nil {
+		log.Fatalf("An error occurred generating url: %v", err)
+	}
+	fmt.Println("URL => ", url)
+	
+	
+	qrCodeURL, err := conn.GenerateQRCode(services)
 	if err != nil {
 		log.Fatalf("An error occurred generating QR Code url: %v", err)
 	}
-
 	fmt.Println("QR Code URL => ", qrCodeURL)
 
-	services := connect.Services{
-		{Name: "Netflix", Status: false},
-		{Name: "Playstation", Status: true},
-	}
-	url, err := connect.GenerateURL(publicKey, redirectURL, services)
-	if err != nil {
-		log.Fatalf("An error occurred url: %v", err)
-	}
 
-	fmt.Println("URL => ", url)
 }

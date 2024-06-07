@@ -2,19 +2,27 @@ package connect
 
 import (
 	"context"
-	"encoding/json"
 	"encoding/base64"
+	"encoding/json"
 	"fmt"
 	"log"
-	"strings"
 	"net/url"
-	"github.com/skip2/go-qrcode"
+	"os"
+	"strings"
 
+	"github.com/gandalf-network/gandalf-sdk-go/eyeofsauron/constants"
+	"github.com/skip2/go-qrcode"
 	graphqlClient "github.com/gandalf-network/gandalf-sdk-go/eyeofsauron/graphql"
 )
 
-const APP_CLIP_BASE_URL = "https://appclip.apple.com/id?p=network.gandalf.connect.Clip"
-const SAURON_BASE_URL = "https://sauron.gandalf.network/public/gql"
+var (
+	IOS_APP_CLIP_BASE_URL = "https://appclip.apple.com/id?p=network.gandalf.connect.Clip"
+	ANDROID_APP_CLIP_BASE_URL   = os.Getenv("ANDROID_APP_CLIP_BASE_URL")
+	UNIVERSAL_APP_CLIP_BASE_URL = os.Getenv("UNIVERSAL_APP_CLIP_BASE_URL")
+	SAURON_BASE_URL = os.Getenv("SAURON_BASE_URL")
+)
+
+
 
 const (
 	InvalidService GandalfErrorCode = iota
@@ -22,38 +30,72 @@ const (
 	InvalidRedirectURL
 	QRCodeGenNotSupported
 	QRCodeNotGenerated
+	EncodingError
 )
 
 func (e *GandalfError) Error() string {
 	return fmt.Sprintf("%s (code: %d)", e.Message, e.Code)
 }
 
-func GenerateURL(publicKey string, redirectURL string, input Services) (string, error) {
-	services, err := runValidation(publicKey, redirectURL, input)
+
+type Connect struct {
+	PublicKey   string
+	RedirectURL string
+	Platform 	PlatformType
+	VerificationStatus bool
+	Data InputData
+}
+
+func NewConnect(publicKey string, redirectURL string, platform PlatformType, data InputData) (*Connect, error) {
+	if publicKey == "" || redirectURL == "" {
+		return nil, fmt.Errorf("invalid parameters")
+	}
+
+	if platform == "" {
+		platform = PlatformTypeIOS
+	}
+	return &Connect{PublicKey: publicKey, RedirectURL: redirectURL, Data: data}, nil
+}
+
+func (c *Connect) GenerateURL() (string, error) {
+	services, err := runValidation(c.PublicKey, c.RedirectURL, c.Data, c.VerificationStatus)
 	if err != nil {
 		return "", err
 	}
 
 	servicesJSON := servicesToJSON(services)
 
-	return encodeComponents(servicesJSON, publicKey, redirectURL), nil
+	url, err := c.encodeComponents(string(servicesJSON), c.RedirectURL, c.PublicKey)
+	if err != nil {
+		return "", &GandalfError{
+			Message: "Encoding Error",
+			Code: EncodingError,
+		}
+	}
+	return url, nil
 }
 
-func GenerateQRCode(publicKey string, redirectURL string, input Services) (string, error) {
-	if publicKey == "" || redirectURL == "" || input == nil {
+func (c *Connect) GenerateQRCode(input InputData) (string, error) {
+	if input == nil {
 		return "", &GandalfError{
 			Message: "Invalid input parameters",
 			Code:    QRCodeGenNotSupported,
 		}
 	}
 
-	services, err := runValidation(publicKey, redirectURL, input)
+	services, err := runValidation(c.PublicKey, c.RedirectURL, input, c.VerificationStatus)
 	if err != nil {
 		return "", err
 	}
 
 	servicesJSON := servicesToJSON(services)
-	appClipURL := encodeComponents(servicesJSON, redirectURL, publicKey)
+	appClipURL, err := c.encodeComponents(string(servicesJSON), c.RedirectURL, c.PublicKey)
+	if err != nil {
+		return "", &GandalfError{
+			Message: "Encoding Error",
+			Code: EncodingError,
+		}
+	}
 
 	qrCode, err := qrcode.New(appClipURL, qrcode.Medium)
 	if err != nil {
@@ -76,7 +118,7 @@ func GenerateQRCode(publicKey string, redirectURL string, input Services) (strin
 
 func introspectSauron() IntrospectionResult {
 	client := graphqlClient.NewClient(SAURON_BASE_URL)
-	req := graphqlClient.NewRequest(introspectionQuery)
+	req := graphqlClient.NewRequest(constants.IntrospectionQuery)
 
 	ctx := context.Background()
 
@@ -113,29 +155,52 @@ func getSupportedServices() []Value {
 	return nil
 }
 
-func validateInputServices(input Services) (map[string]Service, error) {
-	// supportedServicesInterface := getSupportedServices()
-	supportedServices := getSupportedServices()
+func validateInputData(input InputData) (InputData, error) {
+	services := getSupportedServices()
 	
-	serviceMap := make(map[string]Value)
-	for _, val := range supportedServices {
-		serviceMap[val.Name] = val
+	cleanServices := make(InputData)
+	unsupportedServices := []string{}
+
+	keys := make([]string, 0, len(input))
+	for key := range input {
+		keys = append(keys, key)
 	}
 
-	var unsupportedServices []string
-	requiredServices := 0
-	cleanedServices :=  make(map[string]Service)
-	for _, val := range input {
-		key := strings.ToUpper(val.Name)
-		if _, found := serviceMap[key]; !found {
+	if len(keys) > 1 {
+		return nil, &GandalfError{
+			Message: "Only one service is supported per Connect URL",
+			Code:    InvalidService,
+		}
+	}
+
+	for _, key := range keys {
+		lowerKey := strings.ToUpper(key)
+		if !contains(services, lowerKey) {
 			unsupportedServices = append(unsupportedServices, key)
 			continue
 		}
-		
-		if val.Name != "" {
-			requiredServices++
+
+		value := input[key]
+		switch v := value.(type) {
+		case bool:
+			if !v {
+				return nil, &GandalfError{
+					Message: "At least one service has to be required",
+					Code:    InvalidService,
+				}
+			}
+			cleanServices[lowerKey] = v
+		case Service:
+			if err := validateInputService(v); err != nil {
+				return nil, err
+			}
+			cleanServices[lowerKey] = v
+		default:
+			return nil, &GandalfError{
+				Message: fmt.Sprintf("Unsupported value type for key %s", key),
+				Code:    InvalidService,
+			}
 		}
-		cleanedServices[key] = val
 	}
 
 	if len(unsupportedServices) > 0 {
@@ -145,15 +210,26 @@ func validateInputServices(input Services) (map[string]Service, error) {
 		}
 	}
 
-	if requiredServices < 1 {
-		return nil, &GandalfError{
-			Message: "At least one service has to be required",
+	return cleanServices, nil
+}
+
+func contains(slice []Value, item string) bool {
+	for _, v := range slice {
+		if v.Name == item {
+			return true
+		}
+	}
+	return false
+}
+
+func validateInputService(input Service) error {
+	if (len(input.Activities) < 1) && (len(input.Traits) < 1) {
+		return &GandalfError{
+			Message: "At least one trait or activity is required",
 			Code:    InvalidService,
 		}
 	}
-
-	return cleanedServices, nil
-
+	return nil
 }
 
 func publicKeyRequest(publicKey string) bool {
@@ -197,43 +273,60 @@ func publicKeyRequest(publicKey string) bool {
 	return respData.GandalfID > 0
 }
 
-func runValidation(publicKey string, redirectURL string, input Services) (map[string]Service, error) {
-	isPublicKeyValid := validatePublicKey(publicKey)
-	if !isPublicKeyValid {
-		return nil, &GandalfError{
-			Message: "Invalid public key",
-			Code:    InvalidPublicKey,
+func runValidation(publicKey string, redirectURL string, input InputData, verificationStatus bool) (InputData, error) {
+	if !verificationStatus {
+		isPublicKeyValid := validatePublicKey(publicKey)
+		if !isPublicKeyValid {
+			return nil, &GandalfError{
+				Message: "Invalid public key",
+				Code:    InvalidPublicKey,
+			}
 		}
-	}
 
-	err := validateRedirectURL(redirectURL)
-	if err != nil {
-		fmt.Println("Error:", err)
-		return nil, err
-	}
+		err := validateRedirectURL(redirectURL)
+		if err != nil {
+			return nil, err
+		}
 
-	services, err := validateInputServices(input)
-	if err != nil {
-		return nil, err
+		services, err := validateInputData(input)
+		if err != nil {
+			return nil, err
+		}
+		return services, nil
 	}
-	return services, nil
+	return nil, nil
 }
 
-func encodeComponents(servicesJSON []byte, publicKey string, redirectURL string) string {
-	encodedServices := url.QueryEscape(string(servicesJSON))
-	encodedRedirectURL := url.QueryEscape(redirectURL)
-	encodedPublicKey := url.QueryEscape(publicKey)
 
-	return fmt.Sprintf("%s&services=%s&redirectUrl=%s&publicKey=%s", APP_CLIP_BASE_URL, encodedServices, encodedRedirectURL, encodedPublicKey)
-}
-
-func servicesToJSON(services map[string]Service) []byte {
-	var servicesSlice []Service
-	for _, service := range services {
-		servicesSlice = append(servicesSlice, service)
+func (c *Connect) encodeComponents(data, redirectUrl string, publicKey string) (string, error) {
+	var baseURL string
+	switch c.Platform {
+	case PlatformTypeAndroid:
+		baseURL = ANDROID_APP_CLIP_BASE_URL
+	case PlatformUniversal:
+		baseURL = UNIVERSAL_APP_CLIP_BASE_URL
+	default:
+		baseURL = IOS_APP_CLIP_BASE_URL
 	}
 
-	servicesJSON, err := json.Marshal(servicesSlice)
+	base64Data := base64.StdEncoding.EncodeToString([]byte(data))
+	parsedURL, err := url.Parse(baseURL)
+	if err != nil {
+		return "", fmt.Errorf("error parsing base URL: %w", err)
+	}
+
+	query := parsedURL.Query()
+	query.Set("publicKey", publicKey)
+	query.Set("redirectUrl", redirectUrl)
+	query.Set("data", base64Data)
+
+	parsedURL.RawQuery = query.Encode()
+	
+	return parsedURL.String(), nil
+}
+
+func servicesToJSON(services InputData) []byte {
+	servicesJSON, err := json.Marshal(services)
 	if err != nil {
 		log.Fatalf("Error marshaling JSON: %v", err)
 	}
