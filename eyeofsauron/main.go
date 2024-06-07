@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	graphqlClient "github.com/gandalf-network/gandalf-sdk-go/eyeofsauron/graphql"
+	"github.com/gandalf-network/gandalf-sdk-go/eyeofsauron/constants"
 	"github.com/gandalf-network/genqlient/generate"
 )
 
@@ -74,7 +75,7 @@ func main() {
 	folder = filepath.Join(cwd, folder)
 
 	client := graphqlClient.NewClient("https://sauron.gandalf.network/public/gql")
-	req := graphqlClient.NewRequest(introspectionQuery)
+	req := graphqlClient.NewRequest(constants.IntrospectionQuery)
 
 	ctx := context.Background()
 
@@ -98,7 +99,7 @@ func main() {
 	writeToFile(filepath.Join(folder, "genqlient.graphql"), stringBuilder.String())
 
 	var gqlgenConfigFilename = filepath.Join(folder, "genqlient.yaml")
-	writeToFile(gqlgenConfigFilename, gqlgenConfig)
+	writeToFile(gqlgenConfigFilename, constants.GQLGenConfig)
 
 	var config *generate.Config
 

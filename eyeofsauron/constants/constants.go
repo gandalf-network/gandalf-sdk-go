@@ -1,6 +1,6 @@
-package main
+package constants
 
-const gqlgenConfig = `
+const GQLGenConfig = `
 schema: schema.graphql
 operations:
 - genqlient.graphql
@@ -16,7 +16,7 @@ bindings:
     type: time.Time
 `
 
-const introspectionQuery = `
+const IntrospectionQuery = `
 	query {
 		__schema {
 			types {

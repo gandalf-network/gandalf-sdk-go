@@ -1,5 +1,12 @@
 package connect
 
+type PlatformType string
+
+const (
+	PlatformTypeIOS PlatformType = "ios"
+	PlatformTypeAndroid PlatformType = "android"
+	PlatformUniversal PlatformType = "universal"
+)
 
 type GandalfErrorCode int
 
@@ -32,14 +39,14 @@ type SupportedService struct {
 	DeprecationReason string `json:"deprecationReason"`
 }
 
-type SupportedServices []Value
-
 type Service struct {
-	Name string
-	Status bool
+	Traits     []string `json:"traits,omitempty"`
+	Activities []string `json:"activities,omitempty"`
 }
 
-type Services []Service
+type InputData map[string]interface{}
+
+type SupportedServices []Value
 
 // Type represents a GraphQL type with various properties like kind, name, description, etc.
 type Type struct {
@@ -79,97 +86,3 @@ type IntrospectionResult struct {
 		Types []Type `json:"types"`
 	} `json:"__schema"`
 }
-
-const introspectionQuery = `
-	query {
-		__schema {
-			types {
-				kind
-				name
-				description
-				fields(includeDeprecated: true) {
-					name
-					description
-					args {
-						name
-						description
-						type {
-							kind
-							name
-							ofType {
-								kind
-								name
-								ofType {
-									kind
-									name
-									ofType {
-										kind
-										name
-									}
-								}
-							}
-						}
-						defaultValue
-					}
-					type {
-						kind
-						name
-						ofType {
-							kind
-							name
-							ofType {
-								kind
-								name
-								ofType {
-									kind
-									name
-								}
-							}
-						}
-					}
-					isDeprecated
-					deprecationReason
-				}
-				inputFields {
-					name
-					description
-					type {
-						kind
-						name
-						ofType {
-							kind
-							name
-							ofType {
-								kind
-								name
-							}
-						}
-					}
-					defaultValue
-				}
-				interfaces {
-					kind
-					name
-					ofType {
-						kind
-						name
-					}
-				}
-				enumValues(includeDeprecated: true) {
-					name
-					description
-					isDeprecated
-					deprecationReason
-				}
-				possibleTypes {
-					kind
-					name
-					ofType {
-						kind
-						name
-					}
-				}
-			}
-		}
-	}
-`
