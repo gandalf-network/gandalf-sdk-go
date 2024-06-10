@@ -307,7 +307,7 @@ func (c *Connect) encodeComponents(data, redirectUrl string, publicKey string) (
 	encodedRedirectURL := url.QueryEscape(redirectUrl)
 	encodedPublicKey := url.QueryEscape(publicKey)
 
-	return fmt.Sprintf("%s&services=%s&redirectUrl=%s&publicKey=%s", baseURL, encodedServices, encodedRedirectURL, encodedPublicKey), nil
+	return fmt.Sprintf("%s&data=%s&redirectUrl=%s&publicKey=%s", baseURL, encodedServices, encodedRedirectURL, encodedPublicKey), nil
 }
 
 func servicesToJSON(services InputData) []byte {
