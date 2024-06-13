@@ -187,3 +187,47 @@ func printJSON(v interface{}) {
 ## Connect
 
 `Connect` is a library in Go that makes it easier to generate valid Connect URLs that let your users link their accounts to Gandalf. To use this library, follow the installation and usage instructions provided in the documentation.
+
+```go
+const publicKey = "0x036518f1c7a10fc77f835becc0aca9916c54505f771c82d87dd5943bb01ba5ca08";
+const redirectURL = "https://example.com"
+
+
+func main() {
+	// Define the input data
+	services := connect.InputData{
+		"netflix": connect.Service{
+			Traits:     []string{"rating"},
+			Activities: []string{"watch"},
+		},
+	}
+
+	// Define the config parameters
+	config := connect.Config{
+		PublicKey:   publicKey,
+		RedirectURL: redirectURL,
+		Data:    	 services,
+	}
+	
+	// Initialization
+	conn, err := connect.NewConnect(config)
+	if err != nil {
+		log.Fatalf("An error occurred with initializing connect: %v", err)
+	}
+
+	// Call the GenerateURL method
+	url, err := conn.GenerateURL()
+	if err != nil {
+		log.Fatalf("An error occurred generating url: %v", err)
+	}
+	fmt.Println("URL => ", url)
+	
+	
+	// Call the GenerateQRCode method
+	qrCode, err := conn.GenerateQRCode()
+	if err != nil {
+		log.Fatalf("An error occurred generating QR Code url: %v", err)
+	}
+	fmt.Println("Base64 QR Code => ", qrCode)
+}
+```

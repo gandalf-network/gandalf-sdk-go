@@ -22,8 +22,6 @@ var (
 	SAURON_BASE_URL = "https://sauron.gandalf.network/public/gql"
 )
 
-
-
 const (
 	InvalidService GandalfErrorCode = iota
 	InvalidPublicKey
@@ -244,12 +242,14 @@ func publicKeyRequest(publicKey string) bool {
 	var graphqlResponse map[string]interface{}
 
 	if err := client.Run(ctx, graphqlRequest, &graphqlResponse); err != nil {
-		log.Fatalf("Error making publicKey request query: %v", err)
+		log.Printf("Error making publicKey request query: %v", err)
+		return false
 	}
 
 	responseData, ok := graphqlResponse["getAppByPublicKey"].(map[string]interface{})
 	if !ok {
-		log.Fatalf("Unexpected response structure: %v", graphqlResponse)
+		log.Printf("Unexpected response structure: %v", graphqlResponse)
+		return false
 	}
 
 	body, err := json.Marshal(responseData)
