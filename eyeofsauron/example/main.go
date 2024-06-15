@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/gandalf-network/gandalf-sdk-go/eyeofsauron/generated"
+	"github.com/gandalf-network/gandalf-sdk-go/eyeofsauron/example/generated"
 	"github.com/google/uuid"
 )
 
