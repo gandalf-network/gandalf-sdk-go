@@ -19,7 +19,7 @@ go get github.com/gandalf-network/gandalf-sdk-go/eyeofsauron
 To generate the necessary files, use the following command:
 
 ```bash
-go run github.com/gandalf-network/gandalf-sdk-go/eyeofsauron
+go run github.com/gandalf-network/gandalf-sdk-go/eyeofsauron -f generated
 ```
 
 #### Flags
@@ -38,7 +38,7 @@ package main
 import (
 	"log"
 
-	"github.com/gandalf-network/gandalf-sdk-go/eyeofsauron/example/generated"
+	"github.com/gandalf-network/gandalf-sdk-go/eyeofsauron/generated"
 )
 
 func main() {
@@ -60,7 +60,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/gandalf-network/gandalf-sdk-go/eyeofsauron/example/generated"
+	"github.com/gandalf-network/gandalf-sdk-go/eyeofsauron/generated"
 )
 
 func getActivity() {
@@ -129,7 +129,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/gandalf-network/gandalf-sdk-go/eyeofsauron/example/generated"
+	"github.com/gandalf-network/gandalf-sdk-go/eyeofsauron/generated"
 )
 
 func lookupActivity() {
