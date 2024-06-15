@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"log"
 	"net/url"
-	"os"
 	"strings"
 
 	"github.com/gandalf-network/gandalf-sdk-go/eyeofsauron/constants"
@@ -17,8 +16,8 @@ import (
 
 var (
 	IOS_APP_CLIP_BASE_URL = "https://appclip.apple.com/id?p=network.gandalf.connect.Clip"
-	ANDROID_APP_CLIP_BASE_URL   =  os.Getenv("ANDROID_APP_CLIP_BASE_URL")
-	UNIVERSAL_APP_CLIP_BASE_URL = os.Getenv("UNIVERSAL_APP_CLIP_BASE_URL")
+	ANDROID_APP_CLIP_BASE_URL   =  "https://auth.gandalf.network"
+	UNIVERSAL_APP_CLIP_BASE_URL = "https://auth.gandalf.network"
 	SAURON_BASE_URL = "https://sauron.gandalf.network/public/gql"
 )
 
@@ -307,7 +306,7 @@ func (c *Connect) encodeComponents(data, redirectUrl string, publicKey string) (
 	encodedRedirectURL := url.QueryEscape(redirectUrl)
 	encodedPublicKey := url.QueryEscape(publicKey)
 
-	return fmt.Sprintf("%s&data=%s&redirectUrl=%s&publicKey=%s", baseURL, encodedServices, encodedRedirectURL, encodedPublicKey), nil
+	return fmt.Sprintf("%s?data=%s&redirectUrl=%s&publicKey=%s", baseURL, encodedServices, encodedRedirectURL, encodedPublicKey), nil
 }
 
 func servicesToJSON(services InputData) []byte {

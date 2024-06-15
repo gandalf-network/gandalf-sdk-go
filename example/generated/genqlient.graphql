@@ -1,0 +1,218 @@
+fragment YoutubeActivityMetadata on YoutubeActivityMetadata {
+  title
+  subject {
+    ... on Identifier {
+      value
+      identifierType
+    }
+  }
+  date
+  percentageWatched
+  contentType
+}
+
+fragment AmazonActivityMetadata on AmazonActivityMetadata {
+  productName
+  subject {
+    ... on Identifier {
+      value
+      identifierType
+    }
+  }
+  date
+  quantityPurchased
+  totalCost
+}
+
+fragment UberActivityMetadata on UberActivityMetadata {
+  subject {
+    ... on Identifier {
+      value
+      identifierType
+    }
+  }
+  beginTripTime
+  dropoffTime
+  cost
+  city
+  distance
+  status
+}
+
+fragment BookingActivityMetadata on BookingActivityMetadata {
+  subject {
+    ... on Identifier {
+      value
+      identifierType
+    }
+  }
+  bookingID
+  price
+  bookings {
+    ... on BookingItem {
+      startDateTime
+      endDateTime
+      address
+      depatureLocation
+      arrivalLocation
+      layoverLocations {
+      String
+      }
+      activityType
+    }
+  }
+}
+
+fragment PlaystationActivityMetadata on PlaystationActivityMetadata {
+  title
+  subject {
+    ... on Identifier {
+      value
+      identifierType
+    }
+  }
+  lastPlayedAt
+}
+
+fragment NetflixActivityMetadata on NetflixActivityMetadata {
+  title
+  subject {
+    ... on Identifier {
+      value
+      identifierType
+    }
+  }
+  date
+  lastPlayedAt
+}
+
+fragment UberEatsActivityMetadata on UberEatsActivityMetadata {
+  subject {
+    ... on Identifier {
+      value
+      identifierType
+    }
+  }
+  date
+  restaurant
+  currency
+  totalPrice
+  status
+  items {
+    ... on UberEatsOrderItem {
+      name
+      price
+      quantityPurchased
+      customizations {
+    ... on UberEatsOrderItemCustomizations {
+      customization
+      value
+      quantity
+    }
+      }
+    }
+  }
+}
+
+fragment InstacartActivityMetadata on InstacartActivityMetadata {
+  subject {
+    ... on Identifier {
+      value
+      identifierType
+    }
+  }
+  retailer
+  totalOrderAmountSpent
+  dateOrdered
+  dateDelivered
+  statusString
+  items {
+    ... on InstacartOrderItem {
+      itemID
+      productName
+      unitPrice
+      status
+      quantityPurchased
+    }
+  }
+}
+
+query getActivity($dataKey: String!, $activityType: [ActivityType], $source: Source!, $limit: Int64!, $page: Int64!) {
+  getActivity(dataKey: $dataKey, activityType: $activityType, source: $source, limit: $limit, page: $page) {
+    ... on ActivityResponse {
+      data {
+    ... on Activity {
+      id
+      metadata {
+        ...NetflixActivityMetadata
+        ...PlaystationActivityMetadata
+        ...AmazonActivityMetadata
+        ...BookingActivityMetadata
+        ...YoutubeActivityMetadata
+        ...UberActivityMetadata
+        ...InstacartActivityMetadata
+        ...UberEatsActivityMetadata
+      }
+    }
+      }
+      limit
+      total
+      page
+    }
+  }
+}
+
+query lookupActivity($dataKey: String!, $activityId: UUID!) {
+  lookupActivity(dataKey: $dataKey, activityId: $activityId) {
+    ... on Activity {
+      id
+      metadata {
+        ...NetflixActivityMetadata
+        ...PlaystationActivityMetadata
+        ...AmazonActivityMetadata
+        ...BookingActivityMetadata
+        ...YoutubeActivityMetadata
+        ...UberActivityMetadata
+        ...InstacartActivityMetadata
+        ...UberEatsActivityMetadata
+      }
+    }
+  }
+}
+
+query getAppByPublicKey($publicKey: String!) {
+  getAppByPublicKey(publicKey: $publicKey) {
+    ... on Application {
+      appName
+      publicKey
+      iconURL
+      gandalfID
+      appRegistrar
+    }
+  }
+}
+
+query getTraits($dataKey: String!, $source: Source!, $labels: [TraitLabel]!) {
+  getTraits(dataKey: $dataKey, source: $source, labels: $labels) {
+    ... on Trait {
+      id
+      source
+      label
+      value
+      timestamp
+    }
+  }
+}
+
+query lookupTrait($dataKey: String!, $traitId: UUID!) {
+  lookupTrait(dataKey: $dataKey, traitId: $traitId) {
+    ... on Trait {
+      id
+      source
+      label
+      value
+      timestamp
+    }
+  }
+}
+
