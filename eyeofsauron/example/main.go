@@ -1,7 +1,6 @@
 package main
 
 import (
-	
 	"context"
 	"encoding/json"
 	"fmt"
@@ -12,38 +11,37 @@ import (
 )
 
 func main() {
-	// eye, err := generated.NewEyeOfSauron("0x366a5ae7c7575f8cb0e3832ad53e668061e0ad800b94ffb75fd5b6d241a83e56")
-	// if err != nil {
-	// 	log.Fatalf("failed to run gandalf client: %s", err)
-	// }
+	eye, err := generated.NewEyeOfSauron("0x366a5ae7c7575f8cb0e3832ad53e668061e0ad800b94ffb75fd5b6d241a83e56")
+	if err != nil {
+		log.Fatalf("failed to run gandalf client: %s", err)
+	}
 
+	response, err := eye.GetActivity(
+		context.Background(),
+		"3pLT1hCieyPQQb876i24D34Qf8y6Yyke5m4rhPRhV67D",
+		[]generated.ActivityType{generated.ActivityTypeWatch},
+		generated.SourceNetflix,
+		100,
+		1,
+	)
 
-	// response, err := eye.GetActivity(
-	// 	context.Background(),
-	// 	"BG7u85FMLGnYnUv2ZsFTAXrGT2Xw3TikrBHm2kYz31qq",
-	// 	[]generated.ActivityType{generated.ActivityTypePlay},
-	// 	generated.SourceNetflix,
-	// 	100,
-	// 	1,
-	// )
+	if err != nil {
+		log.Fatalf("failed to run gandalf client: %s", err)
+	}
 
-	// if err != nil {
-	// 	log.Fatalf("failed to run gandalf client: %s", err)
-	// }
+	for _, activity := range response.GetGetActivity().Data {
+		activityID, _ := uuid.Parse(activity.Id)
+		response, err := eye.LookupActivity(
+			context.Background(),
+			"3pLT1hCieyPQQb876i24D34Qf8y6Yyke5m4rhPRhV67D",
+			activityID,
+		)
 
-	// for _, activity := range response.GetGetActivity().Data {
-	// 	activityID, _ := uuid.Parse(activity.Id)
-	// 	response, err := eye.LookupActivity(
-	// 		context.Background(),
-	// 		"BG7u85FMLGnYnUv2ZsFTAXrGT2Xw3TikrBHm2kYz31qq",
-	// 		activityID,
-	// 	)
-
-	// 	if err != nil {
-	// 		log.Fatalf("unable to look up activity: %s", err)
-	// 	}
-	// 	printLookupActivityMetadata(response.LookupActivity.GetMetadata())
-	// }
+		if err != nil {
+			log.Fatalf("unable to look up activity: %s", err)
+		}
+		printLookupActivityMetadata(response.LookupActivity.GetMetadata())
+	}
 
 	getTrait()
 	lookupTrait()
@@ -110,7 +108,7 @@ func printJSON(v interface{}) {
 
 func getTrait() {
 	// Initialization
-    eye, err := generated.NewEyeOfSauron("8c48ad0e5892d51d8e2e411a77a1d73ebe764b619c846d1cab3dc45ee172e8ca")
+	eye, err := generated.NewEyeOfSauron("8c48ad0e5892d51d8e2e411a77a1d73ebe764b619c846d1cab3dc45ee172e8ca")
 	if err != nil {
 		log.Fatalf("failed to run gandalf client: %s", err)
 	}
