@@ -64,7 +64,11 @@ import (
 	"github.com/gandalf-network/gandalf-sdk-go/eyeofsauron/generated"
 )
 
-func getActivity() {
+func main() {
+	// initialize eyeofsauron object
+	...
+
+
     // Get activity
     response, err := eye.GetActivity(
 		context.Background(),
@@ -128,7 +132,10 @@ import (
 	"github.com/gandalf-network/gandalf-sdk-go/eyeofsauron/generated"
 )
 
-func lookupActivity() {
+func main() {
+	// initialize eyeofsauron object
+	...
+
     // Lookup activity
     response, err := eye.LookupActivity(
 		context.Background(),
@@ -178,6 +185,9 @@ func printJSON(v interface{}) {
 ### Get Traits
 ```go
 func main() {
+	// initialize eyeofsauron object
+	...
+
 	response, err := eye.GetTraits(context.Background(), "MY_DATA_KEY", generated.SourceNetflix, []generated.TraitLabel{generated.TraitLabelPlan})
 	if err != nil {
 		log.Fatalf("failed to get traits: %s", err)
@@ -189,7 +199,10 @@ func main() {
 
 ### Lookup Traits
 ```go
-func lookupTraits() {
+func main() {
+	// initialize eyeofsauron object
+	...
+	
 	traitID, err := uuid.Parse("MY_TRAIT_ID")
 	if err != nil {
 		log.Fatalf("failed to parse string to uuid")
