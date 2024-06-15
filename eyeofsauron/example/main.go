@@ -19,10 +19,12 @@ func main() {
 	response, err := eye.GetActivity(
 		context.Background(),
 		"BG7u85FMLGnYnUv2ZsFTAXrGT2Xw3TikrBHm2kYz31qq",
+		[]generated.ActivityType{generated.ActivityTypePlay},
 		generated.SourceNetflix,
 		100,
 		1,
 	)
+
 	if err != nil {
 		log.Fatalf("failed to run gandalf client: %s", err)
 	}
