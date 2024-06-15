@@ -33,7 +33,7 @@ func main() {
 		log.Fatalf("An error occurred with initializing connect: %v", err)
 	}
 
-
+	// Generate URL
 	url, err := conn.GenerateURL()
 	if err != nil {
 		log.Fatalf("An error occurred generating url: %v", err)
@@ -41,6 +41,7 @@ func main() {
 	fmt.Println("URL => ", url)
 	
 	
+	// Generate QRCode
 	qrCode, err := conn.GenerateQRCode()
 	if err != nil {
 		log.Fatalf("An error occurred generating QR Code url: %v", err)
@@ -66,28 +67,15 @@ func main() {
 	fmt.Printf("Decoded QR code saved to %s\n", outputFile)
 
 
-	// Define the input data
-	servicess := connect.InputData{
-		"netflix": connect.Service{
-			Traits:     []string{"rating"},
-			Activities: []string{"watch"},
-		},
-	}
+	// Set Android Platform
+	config.Platform = connect.PlatformTypeAndroid
 
-	// Define the config parameters
-	configg := connect.Config{
-		PublicKey:   publicKey,
-		RedirectURL: redirectURL,
-		Data:    	 servicess,
-		Platform: 	 connect.PlatformTypeAndroid,
-	}
-
-	conn, err = connect.NewConnect(configg)
+	conn, err = connect.NewConnect(config)
 	if err != nil {
 		log.Fatalf("An error occurred with initializing connect: %v", err)
 	}
 
-	// Call the GenerateURL method for Android
+	// GenerateURL method for Android
 	androidUrl, err := conn.GenerateURL()
 	if err != nil {
 		log.Fatalf("An error occurred generating url: %v", err)
