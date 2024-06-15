@@ -4,7 +4,6 @@ go 1.22.1
 
 require (
 	github.com/btcsuite/btcd/btcec/v2 v2.3.3
-	github.com/davecgh/go-spew v1.1.1
 	github.com/gandalf-network/genqlient v1.0.2
 	github.com/google/uuid v1.6.0
 	github.com/pkg/errors v0.9.1

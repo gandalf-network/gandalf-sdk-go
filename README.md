@@ -39,6 +39,7 @@ import (
 	"log"
 
 	"github.com/gandalf-network/gandalf-sdk-go/eyeofsauron/example/generated"
+	"github.com/gandalf-network/gandalf-sdk-go/connect"
 )
 
 func main() {
@@ -59,21 +60,14 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-
-	"github.com/gandalf-network/gandalf-sdk-go/eyeofsauron/example/generated"
 )
 
-func main() {
-    // Initialization
-    eye, err := generated.NewEyeOfSauron("<YOUR_GANDALF_PRIVATE_KEY")
-	if err != nil {
-		log.Fatalf("failed to initialize gandalf client: %s", err)
-	}
-
+func getActivity() {
     // Get activity
     response, err := eye.GetActivity(
 		context.Background(),
 		"MY_DATA_KEY",
+		[]generated.ActivityType{generated.ActivityTypeWatch},
 		generated.SourceNetflix,
 		10,
 		1,
@@ -132,13 +126,7 @@ import (
 	"github.com/gandalf-network/gandalf-sdk-go/eyeofsauron/example/generated"
 )
 
-func main() {
-    // Initialization
-    eye, err := generated.NewEyeOfSauron("<YOUR_GANDALF_PRIVATE_KEY")
-	if err != nil {
-		log.Fatalf("failed to initialize gandalf client: %s", err)
-	}
-
+func lookupActivity() {
     // Lookup activity
     response, err := eye.LookupActivity(
 		context.Background(),
@@ -188,13 +176,7 @@ func printJSON(v interface{}) {
 ### Get Traits
 ```go
 func main() {
-	// Initialization
-    eye, err := generated.NewEyeOfSauron("8c48ad0e5892d51d8e2e411a77a1d73ebe764b619c846d1cab3dc45ee172e8ca")
-	if err != nil {
-		log.Fatalf("failed to run gandalf client: %s", err)
-	}
-
-	response, err := eye.GetTraits(context.Background(), "3pLT1hCieyPQQb876i24D34Qf8y6Yyke5m4rhPRhV67D", generated.SourceNetflix, []generated.TraitLabel{generated.TraitLabelPlan})
+	response, err := eye.GetTraits(context.Background(), "MY_DATA_KEY", generated.SourceNetflix, []generated.TraitLabel{generated.TraitLabelPlan})
 	if err != nil {
 		log.Fatalf("failed to get traits: %s", err)
 	}
@@ -205,17 +187,12 @@ func main() {
 
 ### Lookup Traits
 ```go
-func main() {
-	eye, err := generated.NewEyeOfSauron("8c48ad0e5892d51d8e2e411a77a1d73ebe764b619c846d1cab3dc45ee172e8ca")
-	if err != nil {
-		log.Fatalf("failed to run gandalf client: %s", err)
-	}
-
-	traitID, err := uuid.Parse("e55bf3a6-66a5-4902-b7f2-34e352b65d52")
+func lookupTraits() {
+	traitID, err := uuid.Parse("MY_TRAIT_ID")
 	if err != nil {
 		log.Fatalf("failed to parse string to uuid")
 	}
-	response, err := eye.LookupTrait(context.Background(), "3pLT1hCieyPQQb876i24D34Qf8y6Yyke5m4rhPRhV67D", traitID)
+	response, err := eye.LookupTrait(context.Background(), "MY_DATA_KEY", traitID)
 	if err != nil {
 		log.Fatalf("failed to lookup trait: %s", err)
 	}
@@ -284,6 +261,11 @@ func main() {
 
 #### Generate URL for Android
 ```go
+import (
+	...
+	"github.com/gandalf-network/gandalf-sdk-go/eyeofsauron/example/generated"
+)
+
 func main() {
 	// Define the input data
 	services := connect.InputData{
@@ -298,7 +280,7 @@ func main() {
 		PublicKey:   publicKey,
 		RedirectURL: redirectURL,
 		Data:    	 services,
-		Platform: 	 PlatformTypeAndroid,
+		Platform: 	connect.PlatformTypeAndroid,
 	}
 
 	// Call the GenerateURL method for Android

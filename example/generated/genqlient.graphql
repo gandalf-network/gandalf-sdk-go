@@ -1,104 +1,125 @@
-fragment YoutubeActivityMetadata on YoutubeActivityMetadata {
-  title
-  subject {
+fragment PlaystationActivityMetadata on PlaystationActivityMetadata {
+  title: title
+  subject: subject {
     ... on Identifier {
       value
       identifierType
     }
   }
-  date
-  percentageWatched
-  contentType
+  lastPlayedAt: lastPlayedAt
 }
 
 fragment AmazonActivityMetadata on AmazonActivityMetadata {
-  productName
-  subject {
+  productName: productName
+  subject: subject {
     ... on Identifier {
       value
       identifierType
     }
   }
-  date
-  quantityPurchased
-  totalCost
+  date: date
+  quantityPurchased: quantityPurchased
+  totalCost: totalCost
+}
+
+fragment NetflixActivityMetadata on NetflixActivityMetadata {
+  title: title
+  subject: subject {
+    ... on Identifier {
+      value
+      identifierType
+    }
+  }
+  date: date
+  lastPlayedAt: lastPlayedAt
 }
 
 fragment UberActivityMetadata on UberActivityMetadata {
-  subject {
+  subject: subject {
     ... on Identifier {
       value
       identifierType
     }
   }
-  beginTripTime
-  dropoffTime
-  cost
-  city
-  distance
-  status
+  beginTripTime: beginTripTime
+  dropoffTime: dropoffTime
+  cost: cost
+  city: city
+  distance: distance
+  status: status
+}
+
+fragment YoutubeActivityMetadata on YoutubeActivityMetadata {
+  title: title
+  subject: subject {
+    ... on Identifier {
+      value
+      identifierType
+    }
+  }
+  date: date
+  percentageWatched: percentageWatched
+  contentType: contentType
 }
 
 fragment BookingActivityMetadata on BookingActivityMetadata {
-  subject {
+  subject: subject {
     ... on Identifier {
       value
       identifierType
     }
   }
-  bookingID
-  price
-  bookings {
+  bookingID: bookingID
+  price: price
+  bookings: bookings {
     ... on BookingItem {
       startDateTime
       endDateTime
       address
       depatureLocation
       arrivalLocation
-      layoverLocations {
-      String
-      }
+      layoverLocations      
       activityType
     }
   }
 }
 
-fragment PlaystationActivityMetadata on PlaystationActivityMetadata {
-  title
-  subject {
+fragment InstacartActivityMetadata on InstacartActivityMetadata {
+  subject: subject {
     ... on Identifier {
       value
       identifierType
     }
   }
-  lastPlayedAt
-}
-
-fragment NetflixActivityMetadata on NetflixActivityMetadata {
-  title
-  subject {
-    ... on Identifier {
-      value
-      identifierType
+  retailer: retailer
+  totalOrderAmountSpent: totalOrderAmountSpent
+  dateOrdered: dateOrdered
+  dateDelivered: dateDelivered
+  statusString: statusString
+  items: items {
+    ... on InstacartOrderItem {
+      itemID
+      productName
+      unitPrice
+      status
+      quantityPurchased
     }
   }
-  date
-  lastPlayedAt
 }
 
 fragment UberEatsActivityMetadata on UberEatsActivityMetadata {
-  subject {
+  subject: subject {
     ... on Identifier {
       value
       identifierType
     }
   }
-  date
-  restaurant
-  currency
-  totalPrice
-  status
-  items {
+  date: date
+  restaurant: restaurant
+  currency: currency
+  totalPrice: totalPrice
+  UberEatsActivityMetadataStatus: status
+  UberEatsActivityMetadataItems: items {
     ... on UberEatsOrderItem {
       name
       price
@@ -110,29 +131,6 @@ fragment UberEatsActivityMetadata on UberEatsActivityMetadata {
       quantity
     }
       }
-    }
-  }
-}
-
-fragment InstacartActivityMetadata on InstacartActivityMetadata {
-  subject {
-    ... on Identifier {
-      value
-      identifierType
-    }
-  }
-  retailer
-  totalOrderAmountSpent
-  dateOrdered
-  dateDelivered
-  statusString
-  items {
-    ... on InstacartOrderItem {
-      itemID
-      productName
-      unitPrice
-      status
-      quantityPurchased
     }
   }
 }
