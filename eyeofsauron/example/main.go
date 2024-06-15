@@ -18,11 +18,13 @@ func main() {
 
 	response, err := eye.GetActivity(
 		context.Background(),
-		"BG7u85FMLGnYnUv2ZsFTAXrGT2Xw3TikrBHm2kYz31qq",
+		"3pLT1hCieyPQQb876i24D34Qf8y6Yyke5m4rhPRhV67D",
+		[]generated.ActivityType{generated.ActivityTypeWatch},
 		generated.SourceNetflix,
 		100,
 		1,
 	)
+
 	if err != nil {
 		log.Fatalf("failed to run gandalf client: %s", err)
 	}
@@ -31,7 +33,7 @@ func main() {
 		activityID, _ := uuid.Parse(activity.Id)
 		response, err := eye.LookupActivity(
 			context.Background(),
-			"BG7u85FMLGnYnUv2ZsFTAXrGT2Xw3TikrBHm2kYz31qq",
+			"3pLT1hCieyPQQb876i24D34Qf8y6Yyke5m4rhPRhV67D",
 			activityID,
 		)
 
@@ -40,6 +42,9 @@ func main() {
 		}
 		printLookupActivityMetadata(response.LookupActivity.GetMetadata())
 	}
+
+	getTrait()
+	lookupTrait()
 }
 
 func printGetActivityMetadata(metadata interface{}) {
@@ -99,4 +104,38 @@ func printJSON(v interface{}) {
 		return
 	}
 	fmt.Println(string(jsonData))
+}
+
+func getTrait() {
+	// Initialization
+	eye, err := generated.NewEyeOfSauron("8c48ad0e5892d51d8e2e411a77a1d73ebe764b619c846d1cab3dc45ee172e8ca")
+	if err != nil {
+		log.Fatalf("failed to run gandalf client: %s", err)
+	}
+
+	response, err := eye.GetTraits(context.Background(), "3pLT1hCieyPQQb876i24D34Qf8y6Yyke5m4rhPRhV67D", generated.SourceNetflix, []generated.TraitLabel{generated.TraitLabelPlan})
+	if err != nil {
+		log.Fatalf("failed to get traits: %s", err)
+	}
+
+	fmt.Println("Get Traits", response.GetGetTraits())
+}
+
+func lookupTrait() {
+	// Lookup trait
+	eye, err := generated.NewEyeOfSauron("8c48ad0e5892d51d8e2e411a77a1d73ebe764b619c846d1cab3dc45ee172e8ca")
+	if err != nil {
+		log.Fatalf("failed to run gandalf client: %s", err)
+	}
+
+	traitID, err := uuid.Parse("e55bf3a6-66a5-4902-b7f2-34e352b65d52")
+	if err != nil {
+		log.Fatalf("failed to parse string to uuid")
+	}
+	response, err := eye.LookupTrait(context.Background(), "3pLT1hCieyPQQb876i24D34Qf8y6Yyke5m4rhPRhV67D", traitID)
+	if err != nil {
+		log.Fatalf("failed to get traits: %s", err)
+	}
+
+	fmt.Println("Lookup Trait", response.GetLookupTrait())
 }

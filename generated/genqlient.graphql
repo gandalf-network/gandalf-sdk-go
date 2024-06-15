@@ -1,3 +1,56 @@
+fragment AmazonActivityMetadata on AmazonActivityMetadata {
+  productName: productName
+  subject: subject {
+    ... on Identifier {
+      value
+      identifierType
+    }
+  }
+  date: date
+  quantityPurchased: quantityPurchased
+  totalCost: totalCost
+}
+
+fragment NetflixActivityMetadata on NetflixActivityMetadata {
+  title: title
+  subject: subject {
+    ... on Identifier {
+      value
+      identifierType
+    }
+  }
+  date: date
+  lastPlayedAt: lastPlayedAt
+}
+
+fragment UberEatsActivityMetadata on UberEatsActivityMetadata {
+  subject: subject {
+    ... on Identifier {
+      value
+      identifierType
+    }
+  }
+  date: date
+  restaurant: restaurant
+  currency: currency
+  totalPrice: totalPrice
+  status: status
+  items: items {
+    ... on UberEatsOrderItem {
+      name
+      price
+      quantityPurchased
+      customizations {
+    ... on UberEatsOrderItemCustomizations {
+      customization
+      value
+      quantity
+    }
+      }
+    }
+  }
+}
+
 fragment InstacartActivityMetadata on InstacartActivityMetadata {
   subject: subject {
     ... on Identifier {
@@ -10,7 +63,7 @@ fragment InstacartActivityMetadata on InstacartActivityMetadata {
   dateOrdered: dateOrdered
   dateDelivered: dateDelivered
   statusString: statusString
-  items: items {
+  InstacartActivityMetadataItems: items {
     ... on InstacartOrderItem {
       itemID
       productName
@@ -66,7 +119,7 @@ fragment UberActivityMetadata on UberActivityMetadata {
   cost: cost
   city: city
   distance: distance
-  status: status
+  UberActivityMetadataStatus: status
 }
 
 fragment YoutubeActivityMetadata on YoutubeActivityMetadata {
@@ -80,59 +133,6 @@ fragment YoutubeActivityMetadata on YoutubeActivityMetadata {
   date: date
   percentageWatched: percentageWatched
   contentType: contentType
-}
-
-fragment UberEatsActivityMetadata on UberEatsActivityMetadata {
-  subject: subject {
-    ... on Identifier {
-      value
-      identifierType
-    }
-  }
-  date: date
-  restaurant: restaurant
-  currency: currency
-  totalPrice: totalPrice
-  UberEatsActivityMetadataStatus: status
-  UberEatsActivityMetadataItems: items {
-    ... on UberEatsOrderItem {
-      name
-      price
-      quantityPurchased
-      customizations {
-    ... on UberEatsOrderItemCustomizations {
-      customization
-      value
-      quantity
-    }
-      }
-    }
-  }
-}
-
-fragment AmazonActivityMetadata on AmazonActivityMetadata {
-  productName: productName
-  subject: subject {
-    ... on Identifier {
-      value
-      identifierType
-    }
-  }
-  date: date
-  quantityPurchased: quantityPurchased
-  totalCost: totalCost
-}
-
-fragment NetflixActivityMetadata on NetflixActivityMetadata {
-  title: title
-  subject: subject {
-    ... on Identifier {
-      value
-      identifierType
-    }
-  }
-  date: date
-  lastPlayedAt: lastPlayedAt
 }
 
 query getActivity($dataKey: String!, $activityType: [ActivityType], $source: Source!, $limit: Int64!, $page: Int64!) {
