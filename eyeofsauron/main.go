@@ -8,6 +8,8 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"unicode"
+	"unicode/utf8"
 
 	graphqlClient "github.com/gandalf-network/gandalf-sdk-go/eyeofsauron/graphql"
 	"github.com/gandalf-network/gandalf-sdk-go/eyeofsauron/constants"
@@ -290,6 +292,8 @@ func findInnermostType(t *Type) *Type {
 }
 
 func generateFragments(sb *strings.Builder, typesMap map[string]Type, interfaceImplementations map[string][]string) string {
+	typeFieldMap := make(map[string]map[string]string)
+
 	for typeName, typeValue := range typesMap {
 		fields := typeValue.Fields
 		if len(typeValue.Interfaces) == 0 {
@@ -298,9 +302,25 @@ func generateFragments(sb *strings.Builder, typesMap map[string]Type, interfaceI
 
 		sb.WriteString(fmt.Sprintf("fragment %s on %s {\n", typeName, typeName))
 		for _, field := range fields {
-			sb.WriteString(fmt.Sprintf("  %s", field.Name))
-
+			fieldName := field.Name
 			innermostType := findInnermostType(&field.Type)
+
+			if _, exists := typeFieldMap[fieldName]; !exists {
+				typeFieldMap[fieldName] = make(map[string]string)
+			}
+
+			if alias, ok := typeFieldMap[fieldName][innermostType.Name]; ok {
+				sb.WriteString(fmt.Sprintf("  %s: %s", alias, field.Name))
+			} else {
+				alias := fieldName
+				if _, exists := typeFieldMap[fieldName]["default"]; exists {
+					alias = fmt.Sprintf("%s%s", typeName, upperFirst(fieldName))
+				}
+				typeFieldMap[fieldName]["default"] = alias
+				typeFieldMap[fieldName][innermostType.Name] = alias
+				sb.WriteString(fmt.Sprintf("  %s: %s", alias, field.Name))
+			}
+
 			if innermostType.Kind == "INTERFACE" {
 				sb.WriteString(fmt.Sprintf(" {\n    ...%s\n  }\n", innermostType.Name))
 			} else if innermostType.Kind == "OBJECT" {
@@ -377,7 +397,9 @@ func writeFieldSelection(sb *strings.Builder, t Type, typesMap map[string]Type, 
 		sb.WriteString(" {\n")
 		typeValue := typesMap[t.Name]
 		for _, field := range typeValue.Fields {
+
 			sb.WriteString(fmt.Sprintf("      %s", field.Name))
+
 			if len(field.Args) > 0 {
 				sb.WriteString("(")
 				for i, arg := range field.Args {
@@ -397,9 +419,13 @@ func writeFieldSelection(sb *strings.Builder, t Type, typesMap map[string]Type, 
 					}
 					sb.WriteString("      }\n")
 				} else if field.Type.OfType.Kind == "OBJECT" || field.Type.OfType.Kind == "UNION" || field.Type.OfType.Kind == "LIST" {
-					sb.WriteString(" {\n")
-					writeFieldSelection(sb, *field.Type.OfType, typesMap, interfaceImplementations)
-					sb.WriteString("      }\n")
+					if field.Type.OfType.OfType != nil && field.Type.OfType.OfType.Kind != "SCALAR" {
+						sb.WriteString(" {\n")
+						writeFieldSelection(sb, *field.Type.OfType, typesMap, interfaceImplementations)
+						sb.WriteString("      }\n")
+					} else {
+						sb.WriteString("      \n")
+					}
 				} else {
 					sb.WriteString("\n")
 				}
@@ -408,8 +434,6 @@ func writeFieldSelection(sb *strings.Builder, t Type, typesMap map[string]Type, 
 			}
 		}
 		sb.WriteString("    }\n")
-	} else {
-		sb.WriteString(fmt.Sprintf("      %s\n", t.Name))
 	}
 }
 
@@ -422,4 +446,16 @@ func writeToFile(filename, content string) {
 	if err := os.WriteFile(filename, []byte(content), 0644); err != nil {
 		log.Fatalf("Error writing to file %s: %v", filename, err)
 	}
+}
+
+func changeFirst(s string, f func(rune) rune) string {
+	c, n := utf8.DecodeRuneInString(s)
+	if c == utf8.RuneError {
+		return s
+	}
+	return string(f(c)) + s[n:]
+}
+
+func upperFirst(s string) string {
+	return changeFirst(strings.TrimLeft(s, "_"), unicode.ToUpper)
 }
