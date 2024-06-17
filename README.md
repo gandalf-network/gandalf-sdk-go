@@ -38,6 +38,7 @@ package main
 import (
 	"log"
 
+	"github.com/gandalf-network/gandalf-sdk-go/connect"
 	"github.com/gandalf-network/gandalf-sdk-go/eyeofsauron/generated"
 )
 
@@ -63,17 +64,16 @@ import (
 	"github.com/gandalf-network/gandalf-sdk-go/eyeofsauron/generated"
 )
 
-func getActivity() {
-    // Initialization
-    eye, err := generated.NewEyeOfSauron("<YOUR_GANDALF_PRIVATE_KEY")
-	if err != nil {
-		log.Fatalf("failed to initialize gandalf client: %s", err)
-	}
+func main() {
+	// initialize eyeofsauron object
+	...
+
 
     // Get activity
     response, err := eye.GetActivity(
 		context.Background(),
 		"MY_DATA_KEY",
+		[]generated.ActivityType{generated.ActivityTypeWatch},
 		generated.SourceNetflix,
 		10,
 		1,
@@ -132,12 +132,9 @@ import (
 	"github.com/gandalf-network/gandalf-sdk-go/eyeofsauron/generated"
 )
 
-func lookupActivity() {
-    // Initialization
-    eye, err := generated.NewEyeOfSauron("<YOUR_GANDALF_PRIVATE_KEY")
-	if err != nil {
-		log.Fatalf("failed to initialize gandalf client: %s", err)
-	}
+func main() {
+	// initialize eyeofsauron object
+	...
 
     // Lookup activity
     response, err := eye.LookupActivity(
@@ -184,6 +181,129 @@ func printJSON(v interface{}) {
 }
 ```
 
+
+### Get Traits
+```go
+func main() {
+	// initialize eyeofsauron object
+	...
+
+	response, err := eye.GetTraits(context.Background(), "MY_DATA_KEY", generated.SourceNetflix, []generated.TraitLabel{generated.TraitLabelPlan})
+	if err != nil {
+		log.Fatalf("failed to get traits: %s", err)
+	}
+
+	fmt.Println("Get Traits", response.GetGetTraits())
+}
+```
+
+### Lookup Traits
+```go
+func main() {
+	// initialize eyeofsauron object
+	...
+	
+	traitID, err := uuid.Parse("MY_TRAIT_ID")
+	if err != nil {
+		log.Fatalf("failed to parse string to uuid")
+	}
+	response, err := eye.LookupTrait(context.Background(), "MY_DATA_KEY", traitID)
+	if err != nil {
+		log.Fatalf("failed to lookup trait: %s", err)
+	}
+
+	fmt.Println("Lookup Trait", response.GetLookupTrait())
+}
+```
+
+
 ## Connect
 
 `Connect` is a library in Go that makes it easier to generate valid Connect URLs that let your users link their accounts to Gandalf. To use this library, follow the installation and usage instructions provided in the documentation.
+
+
+### Connect installation
+
+To install the `Connect` package, use the following command:
+
+```bash
+go get github.com/gandalf-network/gandalf-sdk-go/connect
+```
+
+```go
+const publicKey = "0x036518f1c7a10fc77f835becc0aca9916c54505f771c82d87dd5943bb01ba5ca08";
+const redirectURL = "https://example.com"
+
+
+func main() {
+	// Define the input data
+	services := connect.InputData{
+		"netflix": connect.Service{
+			Traits:     []string{"rating"},
+			Activities: []string{"watch"},
+		},
+	}
+
+	// Define the config parameters
+	config := connect.Config{
+		PublicKey:   publicKey,
+		RedirectURL: redirectURL,
+		Data:    	 services,
+	}
+	
+	// Initialization
+	conn, err := connect.NewConnect(config)
+	if err != nil {
+		log.Fatalf("An error occurred with initializing connect: %v", err)
+	}
+
+	// Call the GenerateURL method
+	url, err := conn.GenerateURL()
+	if err != nil {
+		log.Fatalf("An error occurred generating url: %v", err)
+	}
+	fmt.Println("URL => ", url)
+	
+	
+	// Call the GenerateQRCode method
+	qrCode, err := conn.GenerateQRCode()
+	if err != nil {
+		log.Fatalf("An error occurred generating QR Code url: %v", err)
+	}
+	fmt.Println("Base64 QR Code => ", qrCode)
+}
+```
+
+#### Generate URL for Android
+```go
+import (
+	...
+	"github.com/gandalf-network/gandalf-sdk-go/eyeofsauron/generated"
+)
+
+func main() {
+	// Define the input data
+	services := connect.InputData{
+		"netflix": connect.Service{
+			Traits:     []string{"rating"},
+			Activities: []string{"watch"},
+		},
+	}
+
+	// Define the config parameters
+	config := connect.Config{
+		PublicKey:   publicKey,
+		RedirectURL: redirectURL,
+		Data:    	 services,
+		Platform: 	connect.PlatformTypeAndroid,
+	}
+
+	// Call the GenerateURL method for Android
+	androidUrl, err := conn.GenerateURL()
+	if err != nil {
+		log.Fatalf("An error occurred generating url: %v", err)
+	}
+	fmt.Println("URL => ", androidUrl)
+}
+
+```
