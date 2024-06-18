@@ -1,21 +1,16 @@
-fragment TripBooking on TripBooking {
-  departureLocation: departureLocation
-  arrivalLocation: arrivalLocation
-  layoverLocations: layoverLocations
-  activityType: activityType
-}
-
-fragment YoutubeActivityMetadata on YoutubeActivityMetadata {
-  title: title
+fragment BookingActivityMetadata on BookingActivityMetadata {
   subject: subject {
     ... on Identifier {
       value
       identifierType
     }
   }
-  date: date
-  percentageWatched: percentageWatched
-  contentType: contentType
+  price: price
+  bookingID: bookingID
+  bookings: bookings {
+   ...StayBooking
+   ...TripBooking
+  }
 }
 
 fragment InstacartActivityMetadata on InstacartActivityMetadata {
@@ -41,29 +36,6 @@ fragment InstacartActivityMetadata on InstacartActivityMetadata {
   }
 }
 
-fragment PlaystationActivityMetadata on PlaystationActivityMetadata {
-  title: title
-  subject: subject {
-    ... on Identifier {
-      value
-      identifierType
-    }
-  }
-  lastPlayedAt: lastPlayedAt
-}
-
-fragment NetflixActivityMetadata on NetflixActivityMetadata {
-  title: title
-  subject: subject {
-    ... on Identifier {
-      value
-      identifierType
-    }
-  }
-  date: date
-  lastPlayedAt: lastPlayedAt
-}
-
 fragment UberActivityMetadata on UberActivityMetadata {
   subject: subject {
     ... on Identifier {
@@ -79,26 +51,55 @@ fragment UberActivityMetadata on UberActivityMetadata {
   status: status
 }
 
-fragment BookingActivityMetadata on BookingActivityMetadata {
+fragment StayBooking on StayBooking {
+  startDateTime: startDateTime
+  endDateTime: endDateTime
+  address: address
+  activityType: activityType
+}
+
+fragment YoutubeActivityMetadata on YoutubeActivityMetadata {
+  title: title
   subject: subject {
     ... on Identifier {
       value
       identifierType
     }
   }
-  price: price
-  bookingID: bookingID
-  bookings: bookings {
-   ...StayBooking
-   ...TripBooking
-  }
+  date: date
+  percentageWatched: percentageWatched
+  contentType: contentType
 }
 
-fragment StayBooking on StayBooking {
-  startDateTime: startDateTime
-  endDateTime: endDateTime
-  address: address
+fragment TripBooking on TripBooking {
+  departureLocation: departureLocation
+  arrivalLocation: arrivalLocation
+  layoverLocations: layoverLocations
   activityType: activityType
+}
+
+fragment AmazonActivityMetadata on AmazonActivityMetadata {
+  productName: productName
+  subject: subject {
+    ... on Identifier {
+      value
+      identifierType
+    }
+  }
+  date: date
+  quantityPurchased: quantityPurchased
+  totalCost: totalCost
+}
+
+fragment PlaystationActivityMetadata on PlaystationActivityMetadata {
+  title: title
+  subject: subject {
+    ... on Identifier {
+      value
+      identifierType
+    }
+  }
+  lastPlayedAt: lastPlayedAt
 }
 
 fragment UberEatsActivityMetadata on UberEatsActivityMetadata {
@@ -129,8 +130,8 @@ fragment UberEatsActivityMetadata on UberEatsActivityMetadata {
   }
 }
 
-fragment AmazonActivityMetadata on AmazonActivityMetadata {
-  productName: productName
+fragment NetflixActivityMetadata on NetflixActivityMetadata {
+  title: title
   subject: subject {
     ... on Identifier {
       value
@@ -138,8 +139,7 @@ fragment AmazonActivityMetadata on AmazonActivityMetadata {
     }
   }
   date: date
-  quantityPurchased: quantityPurchased
-  totalCost: totalCost
+  lastPlayedAt: lastPlayedAt
 }
 
 query getActivity($dataKey: String!, $activityType: [ActivityType], $source: Source!, $limit: Int64!, $page: Int64!) {
