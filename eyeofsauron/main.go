@@ -93,6 +93,7 @@ func main() {
 	interfaceImplementations := buildInterfaceImplementationsMap(respData)
 
 	var stringBuilder *strings.Builder = &strings.Builder{}
+
 	generateFragments(stringBuilder, typesMap, interfaceImplementations)
 	generateQueries(stringBuilder, respData, typesMap, interfaceImplementations)
 	generateMutations(stringBuilder, respData, typesMap, interfaceImplementations)
@@ -321,7 +322,11 @@ func generateFragments(sb *strings.Builder, typesMap map[string]Type, interfaceI
 			}
 
 			if innermostType.Kind == "INTERFACE" {
-				sb.WriteString(fmt.Sprintf(" {\n    ...%s\n  }\n", innermostType.Name))
+				sb.WriteString(" {\n")
+				for _, impl := range interfaceImplementations[innermostType.Name] {
+					sb.WriteString(fmt.Sprintf("   ...%s\n", impl))
+				}
+				sb.WriteString("  }\n")
 			} else if innermostType.Kind == "OBJECT" {
 				sb.WriteString(" {\n")
 				writeFieldSelection(sb, *innermostType, typesMap, interfaceImplementations)
@@ -332,7 +337,6 @@ func generateFragments(sb *strings.Builder, typesMap map[string]Type, interfaceI
 
 		}
 		sb.WriteString("}\n\n")
-
 	}
 
 	return sb.String()

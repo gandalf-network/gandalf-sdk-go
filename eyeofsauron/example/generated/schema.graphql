@@ -40,18 +40,12 @@ type Application {
 
 type BookingActivityMetadata implements ActivityMetadata {
   subject: [Identifier]
-  bookingID: String!
   price: String!
-  bookings: [BookingItem]!
+  bookingID: String!
+  bookings: [BookingItemInterface]!
 }
 
-type BookingItem {
-  startDateTime: Time!
-  endDateTime: Time!
-  address: String!
-  depatureLocation: String!
-  arrivalLocation: String!
-  layoverLocations: [String]!
+interface BookingItemInterface {
   activityType: ActivityType!
 }
 
@@ -161,6 +155,13 @@ enum Source {
   GANDALF
 }
 
+type StayBooking implements BookingItemInterface {
+  startDateTime: Time!
+  endDateTime: Time!
+  address: String!
+  activityType: ActivityType!
+}
+
 scalar String
 
 scalar Time
@@ -186,6 +187,13 @@ enum TraitLabel {
   POST_COUNT
   EMAIL
   ORDER_COUNT
+}
+
+type TripBooking implements BookingItemInterface {
+  departureLocation: String!
+  arrivalLocation: String!
+  layoverLocations: [String]!
+  activityType: ActivityType!
 }
 
 enum TripStatus {
