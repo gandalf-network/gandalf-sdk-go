@@ -19,7 +19,7 @@ go get github.com/gandalf-network/gandalf-sdk-go/eyeofsauron
 To generate the necessary files, use the following command:
 
 ```bash
-go run github.com/gandalf-network/gandalf-sdk-go/eyeofsauron -f ./example/generated
+go run github.com/gandalf-network/gandalf-sdk-go/eyeofsauron
 ```
 
 #### Flags

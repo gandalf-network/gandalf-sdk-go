@@ -1,4 +1,12 @@
-fragment UberEatsActivityMetadata on UberEatsActivityMetadata {
+fragment TripBooking on TripBooking {
+  departureLocation: departureLocation
+  arrivalLocation: arrivalLocation
+  layoverLocations: layoverLocations
+  activityType: activityType
+}
+
+fragment YoutubeActivityMetadata on YoutubeActivityMetadata {
+  title: title
   subject: subject {
     ... on Identifier {
       value
@@ -6,24 +14,42 @@ fragment UberEatsActivityMetadata on UberEatsActivityMetadata {
     }
   }
   date: date
-  restaurant: restaurant
-  currency: currency
-  totalPrice: totalPrice
-  status: status
-  items: items {
-    ... on UberEatsOrderItem {
-      name
-      price
-      quantityPurchased
-      customizations {
-    ... on UberEatsOrderItemCustomizations {
-      customization
+  percentageWatched: percentageWatched
+  contentType: contentType
+}
+
+fragment InstacartActivityMetadata on InstacartActivityMetadata {
+  subject: subject {
+    ... on Identifier {
       value
-      quantity
-    }
-      }
+      identifierType
     }
   }
+  retailer: retailer
+  totalOrderAmountSpent: totalOrderAmountSpent
+  dateOrdered: dateOrdered
+  dateDelivered: dateDelivered
+  statusString: statusString
+  items: items {
+    ... on InstacartOrderItem {
+      itemID
+      productName
+      unitPrice
+      status
+      quantityPurchased
+    }
+  }
+}
+
+fragment PlaystationActivityMetadata on PlaystationActivityMetadata {
+  title: title
+  subject: subject {
+    ... on Identifier {
+      value
+      identifierType
+    }
+  }
+  lastPlayedAt: lastPlayedAt
 }
 
 fragment NetflixActivityMetadata on NetflixActivityMetadata {
@@ -50,25 +76,7 @@ fragment UberActivityMetadata on UberActivityMetadata {
   cost: cost
   city: city
   distance: distance
-  UberActivityMetadataStatus: status
-}
-
-fragment PlaystationActivityMetadata on PlaystationActivityMetadata {
-  title: title
-  subject: subject {
-    ... on Identifier {
-      value
-      identifierType
-    }
-  }
-  lastPlayedAt: lastPlayedAt
-}
-
-fragment TripBooking on TripBooking {
-  departureLocation: departureLocation
-  arrivalLocation: arrivalLocation
-  layoverLocations: layoverLocations
-  activityType: activityType
+  status: status
 }
 
 fragment BookingActivityMetadata on BookingActivityMetadata {
@@ -86,34 +94,39 @@ fragment BookingActivityMetadata on BookingActivityMetadata {
   }
 }
 
-fragment InstacartActivityMetadata on InstacartActivityMetadata {
+fragment StayBooking on StayBooking {
+  startDateTime: startDateTime
+  endDateTime: endDateTime
+  address: address
+  activityType: activityType
+}
+
+fragment UberEatsActivityMetadata on UberEatsActivityMetadata {
   subject: subject {
     ... on Identifier {
       value
       identifierType
     }
   }
-  retailer: retailer
-  totalOrderAmountSpent: totalOrderAmountSpent
-  dateOrdered: dateOrdered
-  dateDelivered: dateDelivered
-  statusString: statusString
-  InstacartActivityMetadataItems: items {
-    ... on InstacartOrderItem {
-      itemID
-      productName
-      unitPrice
-      status
+  date: date
+  restaurant: restaurant
+  currency: currency
+  totalPrice: totalPrice
+  UberEatsActivityMetadataStatus: status
+  UberEatsActivityMetadataItems: items {
+    ... on UberEatsOrderItem {
+      name
+      price
       quantityPurchased
+      customizations {
+    ... on UberEatsOrderItemCustomizations {
+      customization
+      value
+      quantity
+    }
+      }
     }
   }
-}
-
-fragment StayBooking on StayBooking {
-  startDateTime: startDateTime
-  endDateTime: endDateTime
-  address: address
-  activityType: activityType
 }
 
 fragment AmazonActivityMetadata on AmazonActivityMetadata {
@@ -127,19 +140,6 @@ fragment AmazonActivityMetadata on AmazonActivityMetadata {
   date: date
   quantityPurchased: quantityPurchased
   totalCost: totalCost
-}
-
-fragment YoutubeActivityMetadata on YoutubeActivityMetadata {
-  title: title
-  subject: subject {
-    ... on Identifier {
-      value
-      identifierType
-    }
-  }
-  date: date
-  percentageWatched: percentageWatched
-  contentType: contentType
 }
 
 query getActivity($dataKey: String!, $activityType: [ActivityType], $source: Source!, $limit: Int64!, $page: Int64!) {
