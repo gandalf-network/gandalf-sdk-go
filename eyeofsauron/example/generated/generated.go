@@ -1030,9 +1030,9 @@ func (v *GetActivityActivityResponseDataActivityMetadataInstacartActivityMetadat
 	return v.InstacartActivityMetadata.StatusString
 }
 
-// GetItems returns GetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata.Items, and is useful for accessing the field via an interface.
-func (v *GetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata) GetItems() []InstacartActivityMetadataItemsInstacartOrderItem {
-	return v.InstacartActivityMetadata.Items
+// GetInstacartActivityMetadataItems returns GetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata.InstacartActivityMetadataItems, and is useful for accessing the field via an interface.
+func (v *GetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata) GetInstacartActivityMetadataItems() []InstacartActivityMetadataInstacartActivityMetadataItemsInstacartOrderItem {
+	return v.InstacartActivityMetadata.InstacartActivityMetadataItems
 }
 
 func (v *GetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata) UnmarshalJSON(b []byte) error {
@@ -1075,7 +1075,7 @@ type __premarshalGetActivityActivityResponseDataActivityMetadataInstacartActivit
 
 	StatusString string `json:"statusString"`
 
-	Items []InstacartActivityMetadataItemsInstacartOrderItem `json:"items"`
+	InstacartActivityMetadataItems []InstacartActivityMetadataInstacartActivityMetadataItemsInstacartOrderItem `json:"InstacartActivityMetadataItems"`
 }
 
 func (v *GetActivityActivityResponseDataActivityMetadataInstacartActivityMetadata) MarshalJSON() ([]byte, error) {
@@ -1096,7 +1096,7 @@ func (v *GetActivityActivityResponseDataActivityMetadataInstacartActivityMetadat
 	retval.DateOrdered = v.InstacartActivityMetadata.DateOrdered
 	retval.DateDelivered = v.InstacartActivityMetadata.DateDelivered
 	retval.StatusString = v.InstacartActivityMetadata.StatusString
-	retval.Items = v.InstacartActivityMetadata.Items
+	retval.InstacartActivityMetadataItems = v.InstacartActivityMetadata.InstacartActivityMetadataItems
 	return &retval, nil
 }
 
@@ -1307,9 +1307,9 @@ func (v *GetActivityActivityResponseDataActivityMetadataUberActivityMetadata) Ge
 	return v.UberActivityMetadata.Distance
 }
 
-// GetStatus returns GetActivityActivityResponseDataActivityMetadataUberActivityMetadata.Status, and is useful for accessing the field via an interface.
-func (v *GetActivityActivityResponseDataActivityMetadataUberActivityMetadata) GetStatus() TripStatus {
-	return v.UberActivityMetadata.Status
+// GetUberActivityMetadataStatus returns GetActivityActivityResponseDataActivityMetadataUberActivityMetadata.UberActivityMetadataStatus, and is useful for accessing the field via an interface.
+func (v *GetActivityActivityResponseDataActivityMetadataUberActivityMetadata) GetUberActivityMetadataStatus() TripStatus {
+	return v.UberActivityMetadata.UberActivityMetadataStatus
 }
 
 func (v *GetActivityActivityResponseDataActivityMetadataUberActivityMetadata) UnmarshalJSON(b []byte) error {
@@ -1352,7 +1352,7 @@ type __premarshalGetActivityActivityResponseDataActivityMetadataUberActivityMeta
 
 	Distance string `json:"distance"`
 
-	Status TripStatus `json:"status"`
+	UberActivityMetadataStatus TripStatus `json:"UberActivityMetadataStatus"`
 }
 
 func (v *GetActivityActivityResponseDataActivityMetadataUberActivityMetadata) MarshalJSON() ([]byte, error) {
@@ -1373,7 +1373,7 @@ func (v *GetActivityActivityResponseDataActivityMetadataUberActivityMetadata) __
 	retval.Cost = v.UberActivityMetadata.Cost
 	retval.City = v.UberActivityMetadata.City
 	retval.Distance = v.UberActivityMetadata.Distance
-	retval.Status = v.UberActivityMetadata.Status
+	retval.UberActivityMetadataStatus = v.UberActivityMetadata.UberActivityMetadataStatus
 	return &retval, nil
 }
 
@@ -1413,14 +1413,14 @@ func (v *GetActivityActivityResponseDataActivityMetadataUberEatsActivityMetadata
 	return v.UberEatsActivityMetadata.TotalPrice
 }
 
-// GetUberEatsActivityMetadataStatus returns GetActivityActivityResponseDataActivityMetadataUberEatsActivityMetadata.UberEatsActivityMetadataStatus, and is useful for accessing the field via an interface.
-func (v *GetActivityActivityResponseDataActivityMetadataUberEatsActivityMetadata) GetUberEatsActivityMetadataStatus() UberEatsOrderStatus {
-	return v.UberEatsActivityMetadata.UberEatsActivityMetadataStatus
+// GetStatus returns GetActivityActivityResponseDataActivityMetadataUberEatsActivityMetadata.Status, and is useful for accessing the field via an interface.
+func (v *GetActivityActivityResponseDataActivityMetadataUberEatsActivityMetadata) GetStatus() UberEatsOrderStatus {
+	return v.UberEatsActivityMetadata.Status
 }
 
-// GetUberEatsActivityMetadataItems returns GetActivityActivityResponseDataActivityMetadataUberEatsActivityMetadata.UberEatsActivityMetadataItems, and is useful for accessing the field via an interface.
-func (v *GetActivityActivityResponseDataActivityMetadataUberEatsActivityMetadata) GetUberEatsActivityMetadataItems() []UberEatsActivityMetadataUberEatsActivityMetadataItemsUberEatsOrderItem {
-	return v.UberEatsActivityMetadata.UberEatsActivityMetadataItems
+// GetItems returns GetActivityActivityResponseDataActivityMetadataUberEatsActivityMetadata.Items, and is useful for accessing the field via an interface.
+func (v *GetActivityActivityResponseDataActivityMetadataUberEatsActivityMetadata) GetItems() []UberEatsActivityMetadataItemsUberEatsOrderItem {
+	return v.UberEatsActivityMetadata.Items
 }
 
 func (v *GetActivityActivityResponseDataActivityMetadataUberEatsActivityMetadata) UnmarshalJSON(b []byte) error {
@@ -1461,9 +1461,9 @@ type __premarshalGetActivityActivityResponseDataActivityMetadataUberEatsActivity
 
 	TotalPrice float64 `json:"totalPrice"`
 
-	UberEatsActivityMetadataStatus UberEatsOrderStatus `json:"UberEatsActivityMetadataStatus"`
+	Status UberEatsOrderStatus `json:"status"`
 
-	UberEatsActivityMetadataItems []UberEatsActivityMetadataUberEatsActivityMetadataItemsUberEatsOrderItem `json:"UberEatsActivityMetadataItems"`
+	Items []UberEatsActivityMetadataItemsUberEatsOrderItem `json:"items"`
 }
 
 func (v *GetActivityActivityResponseDataActivityMetadataUberEatsActivityMetadata) MarshalJSON() ([]byte, error) {
@@ -1483,13 +1483,8 @@ func (v *GetActivityActivityResponseDataActivityMetadataUberEatsActivityMetadata
 	retval.Restaurant = v.UberEatsActivityMetadata.Restaurant
 	retval.Currency = v.UberEatsActivityMetadata.Currency
 	retval.TotalPrice = v.UberEatsActivityMetadata.TotalPrice
-<<<<<<< HEAD
 	retval.Status = v.UberEatsActivityMetadata.Status
-	retval.UberEatsActivityMetadataItems = v.UberEatsActivityMetadata.UberEatsActivityMetadataItems
-=======
-	retval.UberEatsActivityMetadataStatus = v.UberEatsActivityMetadata.UberEatsActivityMetadataStatus
 	retval.Items = v.UberEatsActivityMetadata.Items
->>>>>>> 0970f72 (Traits docs)
 	return &retval, nil
 }
 
@@ -1656,13 +1651,13 @@ const (
 
 // InstacartActivityMetadata includes the GraphQL fields of InstacartActivityMetadata requested by the fragment InstacartActivityMetadata.
 type InstacartActivityMetadata struct {
-	Subject               []InstacartActivityMetadataSubjectIdentifier       `json:"subject"`
-	Retailer              string                                             `json:"retailer"`
-	TotalOrderAmountSpent string                                             `json:"totalOrderAmountSpent"`
-	DateOrdered           graphqlTypes.Date                                  `json:"dateOrdered"`
-	DateDelivered         graphqlTypes.Date                                  `json:"dateDelivered"`
-	StatusString          string                                             `json:"statusString"`
-	Items                 []InstacartActivityMetadataItemsInstacartOrderItem `json:"items"`
+	Subject                        []InstacartActivityMetadataSubjectIdentifier                                `json:"subject"`
+	Retailer                       string                                                                      `json:"retailer"`
+	TotalOrderAmountSpent          string                                                                      `json:"totalOrderAmountSpent"`
+	DateOrdered                    graphqlTypes.Date                                                           `json:"dateOrdered"`
+	DateDelivered                  graphqlTypes.Date                                                           `json:"dateDelivered"`
+	StatusString                   string                                                                      `json:"statusString"`
+	InstacartActivityMetadataItems []InstacartActivityMetadataInstacartActivityMetadataItemsInstacartOrderItem `json:"InstacartActivityMetadataItems"`
 }
 
 // GetSubject returns InstacartActivityMetadata.Subject, and is useful for accessing the field via an interface.
@@ -1685,13 +1680,13 @@ func (v *InstacartActivityMetadata) GetDateDelivered() graphqlTypes.Date { retur
 // GetStatusString returns InstacartActivityMetadata.StatusString, and is useful for accessing the field via an interface.
 func (v *InstacartActivityMetadata) GetStatusString() string { return v.StatusString }
 
-// GetItems returns InstacartActivityMetadata.Items, and is useful for accessing the field via an interface.
-func (v *InstacartActivityMetadata) GetItems() []InstacartActivityMetadataItemsInstacartOrderItem {
-	return v.Items
+// GetInstacartActivityMetadataItems returns InstacartActivityMetadata.InstacartActivityMetadataItems, and is useful for accessing the field via an interface.
+func (v *InstacartActivityMetadata) GetInstacartActivityMetadataItems() []InstacartActivityMetadataInstacartActivityMetadataItemsInstacartOrderItem {
+	return v.InstacartActivityMetadataItems
 }
 
-// InstacartActivityMetadataItemsInstacartOrderItem includes the requested fields of the GraphQL type InstacartOrderItem.
-type InstacartActivityMetadataItemsInstacartOrderItem struct {
+// InstacartActivityMetadataInstacartActivityMetadataItemsInstacartOrderItem includes the requested fields of the GraphQL type InstacartOrderItem.
+type InstacartActivityMetadataInstacartActivityMetadataItemsInstacartOrderItem struct {
 	ItemID            string              `json:"itemID"`
 	ProductName       string              `json:"productName"`
 	UnitPrice         string              `json:"unitPrice"`
@@ -1699,24 +1694,28 @@ type InstacartActivityMetadataItemsInstacartOrderItem struct {
 	QuantityPurchased graphqlTypes.Int64  `json:"quantityPurchased"`
 }
 
-// GetItemID returns InstacartActivityMetadataItemsInstacartOrderItem.ItemID, and is useful for accessing the field via an interface.
-func (v *InstacartActivityMetadataItemsInstacartOrderItem) GetItemID() string { return v.ItemID }
+// GetItemID returns InstacartActivityMetadataInstacartActivityMetadataItemsInstacartOrderItem.ItemID, and is useful for accessing the field via an interface.
+func (v *InstacartActivityMetadataInstacartActivityMetadataItemsInstacartOrderItem) GetItemID() string {
+	return v.ItemID
+}
 
-// GetProductName returns InstacartActivityMetadataItemsInstacartOrderItem.ProductName, and is useful for accessing the field via an interface.
-func (v *InstacartActivityMetadataItemsInstacartOrderItem) GetProductName() string {
+// GetProductName returns InstacartActivityMetadataInstacartActivityMetadataItemsInstacartOrderItem.ProductName, and is useful for accessing the field via an interface.
+func (v *InstacartActivityMetadataInstacartActivityMetadataItemsInstacartOrderItem) GetProductName() string {
 	return v.ProductName
 }
 
-// GetUnitPrice returns InstacartActivityMetadataItemsInstacartOrderItem.UnitPrice, and is useful for accessing the field via an interface.
-func (v *InstacartActivityMetadataItemsInstacartOrderItem) GetUnitPrice() string { return v.UnitPrice }
+// GetUnitPrice returns InstacartActivityMetadataInstacartActivityMetadataItemsInstacartOrderItem.UnitPrice, and is useful for accessing the field via an interface.
+func (v *InstacartActivityMetadataInstacartActivityMetadataItemsInstacartOrderItem) GetUnitPrice() string {
+	return v.UnitPrice
+}
 
-// GetStatus returns InstacartActivityMetadataItemsInstacartOrderItem.Status, and is useful for accessing the field via an interface.
-func (v *InstacartActivityMetadataItemsInstacartOrderItem) GetStatus() InstacartItemStatus {
+// GetStatus returns InstacartActivityMetadataInstacartActivityMetadataItemsInstacartOrderItem.Status, and is useful for accessing the field via an interface.
+func (v *InstacartActivityMetadataInstacartActivityMetadataItemsInstacartOrderItem) GetStatus() InstacartItemStatus {
 	return v.Status
 }
 
-// GetQuantityPurchased returns InstacartActivityMetadataItemsInstacartOrderItem.QuantityPurchased, and is useful for accessing the field via an interface.
-func (v *InstacartActivityMetadataItemsInstacartOrderItem) GetQuantityPurchased() graphqlTypes.Int64 {
+// GetQuantityPurchased returns InstacartActivityMetadataInstacartActivityMetadataItemsInstacartOrderItem.QuantityPurchased, and is useful for accessing the field via an interface.
+func (v *InstacartActivityMetadataInstacartActivityMetadataItemsInstacartOrderItem) GetQuantityPurchased() graphqlTypes.Int64 {
 	return v.QuantityPurchased
 }
 
@@ -2243,9 +2242,9 @@ func (v *LookupActivityMetadataInstacartActivityMetadata) GetStatusString() stri
 	return v.InstacartActivityMetadata.StatusString
 }
 
-// GetItems returns LookupActivityMetadataInstacartActivityMetadata.Items, and is useful for accessing the field via an interface.
-func (v *LookupActivityMetadataInstacartActivityMetadata) GetItems() []InstacartActivityMetadataItemsInstacartOrderItem {
-	return v.InstacartActivityMetadata.Items
+// GetInstacartActivityMetadataItems returns LookupActivityMetadataInstacartActivityMetadata.InstacartActivityMetadataItems, and is useful for accessing the field via an interface.
+func (v *LookupActivityMetadataInstacartActivityMetadata) GetInstacartActivityMetadataItems() []InstacartActivityMetadataInstacartActivityMetadataItemsInstacartOrderItem {
+	return v.InstacartActivityMetadata.InstacartActivityMetadataItems
 }
 
 func (v *LookupActivityMetadataInstacartActivityMetadata) UnmarshalJSON(b []byte) error {
@@ -2288,7 +2287,7 @@ type __premarshalLookupActivityMetadataInstacartActivityMetadata struct {
 
 	StatusString string `json:"statusString"`
 
-	Items []InstacartActivityMetadataItemsInstacartOrderItem `json:"items"`
+	InstacartActivityMetadataItems []InstacartActivityMetadataInstacartActivityMetadataItemsInstacartOrderItem `json:"InstacartActivityMetadataItems"`
 }
 
 func (v *LookupActivityMetadataInstacartActivityMetadata) MarshalJSON() ([]byte, error) {
@@ -2309,7 +2308,7 @@ func (v *LookupActivityMetadataInstacartActivityMetadata) __premarshalJSON() (*_
 	retval.DateOrdered = v.InstacartActivityMetadata.DateOrdered
 	retval.DateDelivered = v.InstacartActivityMetadata.DateDelivered
 	retval.StatusString = v.InstacartActivityMetadata.StatusString
-	retval.Items = v.InstacartActivityMetadata.Items
+	retval.InstacartActivityMetadataItems = v.InstacartActivityMetadata.InstacartActivityMetadataItems
 	return &retval, nil
 }
 
@@ -2514,9 +2513,9 @@ func (v *LookupActivityMetadataUberActivityMetadata) GetDistance() string {
 	return v.UberActivityMetadata.Distance
 }
 
-// GetStatus returns LookupActivityMetadataUberActivityMetadata.Status, and is useful for accessing the field via an interface.
-func (v *LookupActivityMetadataUberActivityMetadata) GetStatus() TripStatus {
-	return v.UberActivityMetadata.Status
+// GetUberActivityMetadataStatus returns LookupActivityMetadataUberActivityMetadata.UberActivityMetadataStatus, and is useful for accessing the field via an interface.
+func (v *LookupActivityMetadataUberActivityMetadata) GetUberActivityMetadataStatus() TripStatus {
+	return v.UberActivityMetadata.UberActivityMetadataStatus
 }
 
 func (v *LookupActivityMetadataUberActivityMetadata) UnmarshalJSON(b []byte) error {
@@ -2559,7 +2558,7 @@ type __premarshalLookupActivityMetadataUberActivityMetadata struct {
 
 	Distance string `json:"distance"`
 
-	Status TripStatus `json:"status"`
+	UberActivityMetadataStatus TripStatus `json:"UberActivityMetadataStatus"`
 }
 
 func (v *LookupActivityMetadataUberActivityMetadata) MarshalJSON() ([]byte, error) {
@@ -2580,7 +2579,7 @@ func (v *LookupActivityMetadataUberActivityMetadata) __premarshalJSON() (*__prem
 	retval.Cost = v.UberActivityMetadata.Cost
 	retval.City = v.UberActivityMetadata.City
 	retval.Distance = v.UberActivityMetadata.Distance
-	retval.Status = v.UberActivityMetadata.Status
+	retval.UberActivityMetadataStatus = v.UberActivityMetadata.UberActivityMetadataStatus
 	return &retval, nil
 }
 
@@ -2618,14 +2617,14 @@ func (v *LookupActivityMetadataUberEatsActivityMetadata) GetTotalPrice() float64
 	return v.UberEatsActivityMetadata.TotalPrice
 }
 
-// GetUberEatsActivityMetadataStatus returns LookupActivityMetadataUberEatsActivityMetadata.UberEatsActivityMetadataStatus, and is useful for accessing the field via an interface.
-func (v *LookupActivityMetadataUberEatsActivityMetadata) GetUberEatsActivityMetadataStatus() UberEatsOrderStatus {
-	return v.UberEatsActivityMetadata.UberEatsActivityMetadataStatus
+// GetStatus returns LookupActivityMetadataUberEatsActivityMetadata.Status, and is useful for accessing the field via an interface.
+func (v *LookupActivityMetadataUberEatsActivityMetadata) GetStatus() UberEatsOrderStatus {
+	return v.UberEatsActivityMetadata.Status
 }
 
-// GetUberEatsActivityMetadataItems returns LookupActivityMetadataUberEatsActivityMetadata.UberEatsActivityMetadataItems, and is useful for accessing the field via an interface.
-func (v *LookupActivityMetadataUberEatsActivityMetadata) GetUberEatsActivityMetadataItems() []UberEatsActivityMetadataUberEatsActivityMetadataItemsUberEatsOrderItem {
-	return v.UberEatsActivityMetadata.UberEatsActivityMetadataItems
+// GetItems returns LookupActivityMetadataUberEatsActivityMetadata.Items, and is useful for accessing the field via an interface.
+func (v *LookupActivityMetadataUberEatsActivityMetadata) GetItems() []UberEatsActivityMetadataItemsUberEatsOrderItem {
+	return v.UberEatsActivityMetadata.Items
 }
 
 func (v *LookupActivityMetadataUberEatsActivityMetadata) UnmarshalJSON(b []byte) error {
@@ -2666,9 +2665,9 @@ type __premarshalLookupActivityMetadataUberEatsActivityMetadata struct {
 
 	TotalPrice float64 `json:"totalPrice"`
 
-	UberEatsActivityMetadataStatus UberEatsOrderStatus `json:"UberEatsActivityMetadataStatus"`
+	Status UberEatsOrderStatus `json:"status"`
 
-	UberEatsActivityMetadataItems []UberEatsActivityMetadataUberEatsActivityMetadataItemsUberEatsOrderItem `json:"UberEatsActivityMetadataItems"`
+	Items []UberEatsActivityMetadataItemsUberEatsOrderItem `json:"items"`
 }
 
 func (v *LookupActivityMetadataUberEatsActivityMetadata) MarshalJSON() ([]byte, error) {
@@ -2688,13 +2687,8 @@ func (v *LookupActivityMetadataUberEatsActivityMetadata) __premarshalJSON() (*__
 	retval.Restaurant = v.UberEatsActivityMetadata.Restaurant
 	retval.Currency = v.UberEatsActivityMetadata.Currency
 	retval.TotalPrice = v.UberEatsActivityMetadata.TotalPrice
-<<<<<<< HEAD
 	retval.Status = v.UberEatsActivityMetadata.Status
-	retval.UberEatsActivityMetadataItems = v.UberEatsActivityMetadata.UberEatsActivityMetadataItems
-=======
-	retval.UberEatsActivityMetadataStatus = v.UberEatsActivityMetadata.UberEatsActivityMetadataStatus
 	retval.Items = v.UberEatsActivityMetadata.Items
->>>>>>> 0970f72 (Traits docs)
 	return &retval, nil
 }
 
@@ -2966,13 +2960,13 @@ const (
 
 // UberActivityMetadata includes the GraphQL fields of UberActivityMetadata requested by the fragment UberActivityMetadata.
 type UberActivityMetadata struct {
-	Subject       []UberActivityMetadataSubjectIdentifier `json:"subject"`
-	BeginTripTime time.Time                               `json:"beginTripTime"`
-	DropoffTime   time.Time                               `json:"dropoffTime"`
-	Cost          string                                  `json:"cost"`
-	City          string                                  `json:"city"`
-	Distance      string                                  `json:"distance"`
-	Status        TripStatus                              `json:"status"`
+	Subject                    []UberActivityMetadataSubjectIdentifier `json:"subject"`
+	BeginTripTime              time.Time                               `json:"beginTripTime"`
+	DropoffTime                time.Time                               `json:"dropoffTime"`
+	Cost                       string                                  `json:"cost"`
+	City                       string                                  `json:"city"`
+	Distance                   string                                  `json:"distance"`
+	UberActivityMetadataStatus TripStatus                              `json:"UberActivityMetadataStatus"`
 }
 
 // GetSubject returns UberActivityMetadata.Subject, and is useful for accessing the field via an interface.
@@ -2993,8 +2987,10 @@ func (v *UberActivityMetadata) GetCity() string { return v.City }
 // GetDistance returns UberActivityMetadata.Distance, and is useful for accessing the field via an interface.
 func (v *UberActivityMetadata) GetDistance() string { return v.Distance }
 
-// GetStatus returns UberActivityMetadata.Status, and is useful for accessing the field via an interface.
-func (v *UberActivityMetadata) GetStatus() TripStatus { return v.Status }
+// GetUberActivityMetadataStatus returns UberActivityMetadata.UberActivityMetadataStatus, and is useful for accessing the field via an interface.
+func (v *UberActivityMetadata) GetUberActivityMetadataStatus() TripStatus {
+	return v.UberActivityMetadataStatus
+}
 
 // UberActivityMetadataSubjectIdentifier includes the requested fields of the GraphQL type Identifier.
 type UberActivityMetadataSubjectIdentifier struct {
@@ -3012,23 +3008,13 @@ func (v *UberActivityMetadataSubjectIdentifier) GetIdentifierType() IdentifierTy
 
 // UberEatsActivityMetadata includes the GraphQL fields of UberEatsActivityMetadata requested by the fragment UberEatsActivityMetadata.
 type UberEatsActivityMetadata struct {
-<<<<<<< HEAD
-	Subject                       []UberEatsActivityMetadataSubjectIdentifier                              `json:"subject"`
-	Date                          graphqlTypes.Date                                                        `json:"date"`
-	Restaurant                    string                                                                   `json:"restaurant"`
-	Currency                      string                                                                   `json:"currency"`
-	TotalPrice                    float64                                                                  `json:"totalPrice"`
-	Status                        UberEatsOrderStatus                                                      `json:"status"`
-	UberEatsActivityMetadataItems []UberEatsActivityMetadataUberEatsActivityMetadataItemsUberEatsOrderItem `json:"UberEatsActivityMetadataItems"`
-=======
-	Subject                        []UberEatsActivityMetadataSubjectIdentifier      `json:"subject"`
-	Date                           graphqlTypes.Date                                `json:"date"`
-	Restaurant                     string                                           `json:"restaurant"`
-	Currency                       string                                           `json:"currency"`
-	TotalPrice                     float64                                          `json:"totalPrice"`
-	UberEatsActivityMetadataStatus UberEatsOrderStatus                              `json:"UberEatsActivityMetadataStatus"`
-	Items                          []UberEatsActivityMetadataItemsUberEatsOrderItem `json:"items"`
->>>>>>> 0970f72 (Traits docs)
+	Subject    []UberEatsActivityMetadataSubjectIdentifier      `json:"subject"`
+	Date       graphqlTypes.Date                                `json:"date"`
+	Restaurant string                                           `json:"restaurant"`
+	Currency   string                                           `json:"currency"`
+	TotalPrice float64                                          `json:"totalPrice"`
+	Status     UberEatsOrderStatus                              `json:"status"`
+	Items      []UberEatsActivityMetadataItemsUberEatsOrderItem `json:"items"`
 }
 
 // GetSubject returns UberEatsActivityMetadata.Subject, and is useful for accessing the field via an interface.
@@ -3048,14 +3034,58 @@ func (v *UberEatsActivityMetadata) GetCurrency() string { return v.Currency }
 // GetTotalPrice returns UberEatsActivityMetadata.TotalPrice, and is useful for accessing the field via an interface.
 func (v *UberEatsActivityMetadata) GetTotalPrice() float64 { return v.TotalPrice }
 
-// GetUberEatsActivityMetadataStatus returns UberEatsActivityMetadata.UberEatsActivityMetadataStatus, and is useful for accessing the field via an interface.
-func (v *UberEatsActivityMetadata) GetUberEatsActivityMetadataStatus() UberEatsOrderStatus {
-	return v.UberEatsActivityMetadataStatus
+// GetStatus returns UberEatsActivityMetadata.Status, and is useful for accessing the field via an interface.
+func (v *UberEatsActivityMetadata) GetStatus() UberEatsOrderStatus { return v.Status }
+
+// GetItems returns UberEatsActivityMetadata.Items, and is useful for accessing the field via an interface.
+func (v *UberEatsActivityMetadata) GetItems() []UberEatsActivityMetadataItemsUberEatsOrderItem {
+	return v.Items
 }
 
-// GetUberEatsActivityMetadataItems returns UberEatsActivityMetadata.UberEatsActivityMetadataItems, and is useful for accessing the field via an interface.
-func (v *UberEatsActivityMetadata) GetUberEatsActivityMetadataItems() []UberEatsActivityMetadataUberEatsActivityMetadataItemsUberEatsOrderItem {
-	return v.UberEatsActivityMetadataItems
+// UberEatsActivityMetadataItemsUberEatsOrderItem includes the requested fields of the GraphQL type UberEatsOrderItem.
+type UberEatsActivityMetadataItemsUberEatsOrderItem struct {
+	Name              string                                                         `json:"name"`
+	Price             string                                                         `json:"price"`
+	QuantityPurchased graphqlTypes.Int64                                             `json:"quantityPurchased"`
+	Customizations    []UberEatsActivityMetadataItemsUberEatsOrderItemCustomizations `json:"customizations"`
+}
+
+// GetName returns UberEatsActivityMetadataItemsUberEatsOrderItem.Name, and is useful for accessing the field via an interface.
+func (v *UberEatsActivityMetadataItemsUberEatsOrderItem) GetName() string { return v.Name }
+
+// GetPrice returns UberEatsActivityMetadataItemsUberEatsOrderItem.Price, and is useful for accessing the field via an interface.
+func (v *UberEatsActivityMetadataItemsUberEatsOrderItem) GetPrice() string { return v.Price }
+
+// GetQuantityPurchased returns UberEatsActivityMetadataItemsUberEatsOrderItem.QuantityPurchased, and is useful for accessing the field via an interface.
+func (v *UberEatsActivityMetadataItemsUberEatsOrderItem) GetQuantityPurchased() graphqlTypes.Int64 {
+	return v.QuantityPurchased
+}
+
+// GetCustomizations returns UberEatsActivityMetadataItemsUberEatsOrderItem.Customizations, and is useful for accessing the field via an interface.
+func (v *UberEatsActivityMetadataItemsUberEatsOrderItem) GetCustomizations() []UberEatsActivityMetadataItemsUberEatsOrderItemCustomizations {
+	return v.Customizations
+}
+
+// UberEatsActivityMetadataItemsUberEatsOrderItemCustomizations includes the requested fields of the GraphQL type UberEatsOrderItemCustomizations.
+type UberEatsActivityMetadataItemsUberEatsOrderItemCustomizations struct {
+	Customization string             `json:"customization"`
+	Value         string             `json:"value"`
+	Quantity      graphqlTypes.Int64 `json:"quantity"`
+}
+
+// GetCustomization returns UberEatsActivityMetadataItemsUberEatsOrderItemCustomizations.Customization, and is useful for accessing the field via an interface.
+func (v *UberEatsActivityMetadataItemsUberEatsOrderItemCustomizations) GetCustomization() string {
+	return v.Customization
+}
+
+// GetValue returns UberEatsActivityMetadataItemsUberEatsOrderItemCustomizations.Value, and is useful for accessing the field via an interface.
+func (v *UberEatsActivityMetadataItemsUberEatsOrderItemCustomizations) GetValue() string {
+	return v.Value
+}
+
+// GetQuantity returns UberEatsActivityMetadataItemsUberEatsOrderItemCustomizations.Quantity, and is useful for accessing the field via an interface.
+func (v *UberEatsActivityMetadataItemsUberEatsOrderItemCustomizations) GetQuantity() graphqlTypes.Int64 {
+	return v.Quantity
 }
 
 // UberEatsActivityMetadataSubjectIdentifier includes the requested fields of the GraphQL type Identifier.
@@ -3070,56 +3100,6 @@ func (v *UberEatsActivityMetadataSubjectIdentifier) GetValue() string { return v
 // GetIdentifierType returns UberEatsActivityMetadataSubjectIdentifier.IdentifierType, and is useful for accessing the field via an interface.
 func (v *UberEatsActivityMetadataSubjectIdentifier) GetIdentifierType() IdentifierType {
 	return v.IdentifierType
-}
-
-// UberEatsActivityMetadataUberEatsActivityMetadataItemsUberEatsOrderItem includes the requested fields of the GraphQL type UberEatsOrderItem.
-type UberEatsActivityMetadataUberEatsActivityMetadataItemsUberEatsOrderItem struct {
-	Name              string                                                                                 `json:"name"`
-	Price             string                                                                                 `json:"price"`
-	QuantityPurchased graphqlTypes.Int64                                                                     `json:"quantityPurchased"`
-	Customizations    []UberEatsActivityMetadataUberEatsActivityMetadataItemsUberEatsOrderItemCustomizations `json:"customizations"`
-}
-
-// GetName returns UberEatsActivityMetadataUberEatsActivityMetadataItemsUberEatsOrderItem.Name, and is useful for accessing the field via an interface.
-func (v *UberEatsActivityMetadataUberEatsActivityMetadataItemsUberEatsOrderItem) GetName() string {
-	return v.Name
-}
-
-// GetPrice returns UberEatsActivityMetadataUberEatsActivityMetadataItemsUberEatsOrderItem.Price, and is useful for accessing the field via an interface.
-func (v *UberEatsActivityMetadataUberEatsActivityMetadataItemsUberEatsOrderItem) GetPrice() string {
-	return v.Price
-}
-
-// GetQuantityPurchased returns UberEatsActivityMetadataUberEatsActivityMetadataItemsUberEatsOrderItem.QuantityPurchased, and is useful for accessing the field via an interface.
-func (v *UberEatsActivityMetadataUberEatsActivityMetadataItemsUberEatsOrderItem) GetQuantityPurchased() graphqlTypes.Int64 {
-	return v.QuantityPurchased
-}
-
-// GetCustomizations returns UberEatsActivityMetadataUberEatsActivityMetadataItemsUberEatsOrderItem.Customizations, and is useful for accessing the field via an interface.
-func (v *UberEatsActivityMetadataUberEatsActivityMetadataItemsUberEatsOrderItem) GetCustomizations() []UberEatsActivityMetadataUberEatsActivityMetadataItemsUberEatsOrderItemCustomizations {
-	return v.Customizations
-}
-
-// UberEatsActivityMetadataUberEatsActivityMetadataItemsUberEatsOrderItemCustomizations includes the requested fields of the GraphQL type UberEatsOrderItemCustomizations.
-type UberEatsActivityMetadataUberEatsActivityMetadataItemsUberEatsOrderItemCustomizations struct {
-	Customization string             `json:"customization"`
-	Value         string             `json:"value"`
-	Quantity      graphqlTypes.Int64 `json:"quantity"`
-}
-
-// GetCustomization returns UberEatsActivityMetadataUberEatsActivityMetadataItemsUberEatsOrderItemCustomizations.Customization, and is useful for accessing the field via an interface.
-func (v *UberEatsActivityMetadataUberEatsActivityMetadataItemsUberEatsOrderItemCustomizations) GetCustomization() string {
-	return v.Customization
-}
-
-// GetValue returns UberEatsActivityMetadataUberEatsActivityMetadataItemsUberEatsOrderItemCustomizations.Value, and is useful for accessing the field via an interface.
-func (v *UberEatsActivityMetadataUberEatsActivityMetadataItemsUberEatsOrderItemCustomizations) GetValue() string {
-	return v.Value
-}
-
-// GetQuantity returns UberEatsActivityMetadataUberEatsActivityMetadataItemsUberEatsOrderItemCustomizations.Quantity, and is useful for accessing the field via an interface.
-func (v *UberEatsActivityMetadataUberEatsActivityMetadataItemsUberEatsOrderItemCustomizations) GetQuantity() graphqlTypes.Int64 {
-	return v.Quantity
 }
 
 type UberEatsOrderStatus string
@@ -3385,7 +3365,7 @@ fragment UberActivityMetadata on UberActivityMetadata {
 	cost
 	city
 	distance
-	status
+	UberActivityMetadataStatus: status
 }
 fragment InstacartActivityMetadata on InstacartActivityMetadata {
 	subject {
@@ -3399,7 +3379,7 @@ fragment InstacartActivityMetadata on InstacartActivityMetadata {
 	dateOrdered
 	dateDelivered
 	statusString
-	items {
+	InstacartActivityMetadataItems: items {
 		... on InstacartOrderItem {
 			itemID
 			productName
@@ -3420,13 +3400,8 @@ fragment UberEatsActivityMetadata on UberEatsActivityMetadata {
 	restaurant
 	currency
 	totalPrice
-<<<<<<< HEAD
 	status
-	UberEatsActivityMetadataItems: items {
-=======
-	UberEatsActivityMetadataStatus: status
 	items {
->>>>>>> 0970f72 (Traits docs)
 		... on UberEatsOrderItem {
 			name
 			price
@@ -3712,7 +3687,7 @@ fragment UberActivityMetadata on UberActivityMetadata {
 	cost
 	city
 	distance
-	status
+	UberActivityMetadataStatus: status
 }
 fragment InstacartActivityMetadata on InstacartActivityMetadata {
 	subject {
@@ -3726,7 +3701,7 @@ fragment InstacartActivityMetadata on InstacartActivityMetadata {
 	dateOrdered
 	dateDelivered
 	statusString
-	items {
+	InstacartActivityMetadataItems: items {
 		... on InstacartOrderItem {
 			itemID
 			productName
@@ -3747,13 +3722,8 @@ fragment UberEatsActivityMetadata on UberEatsActivityMetadata {
 	restaurant
 	currency
 	totalPrice
-<<<<<<< HEAD
 	status
-	UberEatsActivityMetadataItems: items {
-=======
-	UberEatsActivityMetadataStatus: status
 	items {
->>>>>>> 0970f72 (Traits docs)
 		... on UberEatsOrderItem {
 			name
 			price
