@@ -120,10 +120,10 @@ func (v *AmazonActivityMetadataSubjectIdentifier) GetIdentifierType() Identifier
 
 // BookingActivityMetadata includes the GraphQL fields of BookingActivityMetadata requested by the fragment BookingActivityMetadata.
 type BookingActivityMetadata struct {
-	Subject   []BookingActivityMetadataSubjectIdentifier   `json:"subject"`
-	BookingID string                                       `json:"bookingID"`
-	Price     string                                       `json:"price"`
-	Bookings  []BookingActivityMetadataBookingsBookingItem `json:"bookings"`
+	Subject   []BookingActivityMetadataSubjectIdentifier            `json:"subject"`
+	Price     string                                                `json:"price"`
+	BookingID string                                                `json:"bookingID"`
+	Bookings  []BookingActivityMetadataBookingsBookingItemInterface `json:"-"`
 }
 
 // GetSubject returns BookingActivityMetadata.Subject, and is useful for accessing the field via an interface.
@@ -131,57 +131,350 @@ func (v *BookingActivityMetadata) GetSubject() []BookingActivityMetadataSubjectI
 	return v.Subject
 }
 
-// GetBookingID returns BookingActivityMetadata.BookingID, and is useful for accessing the field via an interface.
-func (v *BookingActivityMetadata) GetBookingID() string { return v.BookingID }
-
 // GetPrice returns BookingActivityMetadata.Price, and is useful for accessing the field via an interface.
 func (v *BookingActivityMetadata) GetPrice() string { return v.Price }
 
+// GetBookingID returns BookingActivityMetadata.BookingID, and is useful for accessing the field via an interface.
+func (v *BookingActivityMetadata) GetBookingID() string { return v.BookingID }
+
 // GetBookings returns BookingActivityMetadata.Bookings, and is useful for accessing the field via an interface.
-func (v *BookingActivityMetadata) GetBookings() []BookingActivityMetadataBookingsBookingItem {
+func (v *BookingActivityMetadata) GetBookings() []BookingActivityMetadataBookingsBookingItemInterface {
 	return v.Bookings
 }
 
-// BookingActivityMetadataBookingsBookingItem includes the requested fields of the GraphQL type BookingItem.
-type BookingActivityMetadataBookingsBookingItem struct {
-	StartDateTime    time.Time    `json:"startDateTime"`
-	EndDateTime      time.Time    `json:"endDateTime"`
-	Address          string       `json:"address"`
-	DepatureLocation string       `json:"depatureLocation"`
-	ArrivalLocation  string       `json:"arrivalLocation"`
-	LayoverLocations []string     `json:"layoverLocations"`
-	ActivityType     ActivityType `json:"activityType"`
+func (v *BookingActivityMetadata) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*BookingActivityMetadata
+		Bookings []json.RawMessage `json:"bookings"`
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.BookingActivityMetadata = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	{
+		dst := &v.Bookings
+		src := firstPass.Bookings
+		*dst = make(
+			[]BookingActivityMetadataBookingsBookingItemInterface,
+			len(src))
+		for i, src := range src {
+			dst := &(*dst)[i]
+			if len(src) != 0 && string(src) != "null" {
+				err = __unmarshalBookingActivityMetadataBookingsBookingItemInterface(
+					src, dst)
+				if err != nil {
+					return fmt.Errorf(
+						"unable to unmarshal BookingActivityMetadata.Bookings: %w", err)
+				}
+			}
+		}
+	}
+	return nil
 }
 
-// GetStartDateTime returns BookingActivityMetadataBookingsBookingItem.StartDateTime, and is useful for accessing the field via an interface.
-func (v *BookingActivityMetadataBookingsBookingItem) GetStartDateTime() time.Time {
-	return v.StartDateTime
+type __premarshalBookingActivityMetadata struct {
+	Subject []BookingActivityMetadataSubjectIdentifier `json:"subject"`
+
+	Price string `json:"price"`
+
+	BookingID string `json:"bookingID"`
+
+	Bookings []json.RawMessage `json:"bookings"`
 }
 
-// GetEndDateTime returns BookingActivityMetadataBookingsBookingItem.EndDateTime, and is useful for accessing the field via an interface.
-func (v *BookingActivityMetadataBookingsBookingItem) GetEndDateTime() time.Time { return v.EndDateTime }
-
-// GetAddress returns BookingActivityMetadataBookingsBookingItem.Address, and is useful for accessing the field via an interface.
-func (v *BookingActivityMetadataBookingsBookingItem) GetAddress() string { return v.Address }
-
-// GetDepatureLocation returns BookingActivityMetadataBookingsBookingItem.DepatureLocation, and is useful for accessing the field via an interface.
-func (v *BookingActivityMetadataBookingsBookingItem) GetDepatureLocation() string {
-	return v.DepatureLocation
+func (v *BookingActivityMetadata) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
 }
 
-// GetArrivalLocation returns BookingActivityMetadataBookingsBookingItem.ArrivalLocation, and is useful for accessing the field via an interface.
-func (v *BookingActivityMetadataBookingsBookingItem) GetArrivalLocation() string {
-	return v.ArrivalLocation
+func (v *BookingActivityMetadata) __premarshalJSON() (*__premarshalBookingActivityMetadata, error) {
+	var retval __premarshalBookingActivityMetadata
+
+	retval.Subject = v.Subject
+	retval.Price = v.Price
+	retval.BookingID = v.BookingID
+	{
+
+		dst := &retval.Bookings
+		src := v.Bookings
+		*dst = make(
+			[]json.RawMessage,
+			len(src))
+		for i, src := range src {
+			dst := &(*dst)[i]
+			var err error
+			*dst, err = __marshalBookingActivityMetadataBookingsBookingItemInterface(
+				&src)
+			if err != nil {
+				return nil, fmt.Errorf(
+					"unable to marshal BookingActivityMetadata.Bookings: %w", err)
+			}
+		}
+	}
+	return &retval, nil
 }
 
-// GetLayoverLocations returns BookingActivityMetadataBookingsBookingItem.LayoverLocations, and is useful for accessing the field via an interface.
-func (v *BookingActivityMetadataBookingsBookingItem) GetLayoverLocations() []string {
-	return v.LayoverLocations
+// BookingActivityMetadataBookingsBookingItemInterface includes the requested fields of the GraphQL interface BookingItemInterface.
+//
+// BookingActivityMetadataBookingsBookingItemInterface is implemented by the following types:
+// BookingActivityMetadataBookingsStayBooking
+// BookingActivityMetadataBookingsTripBooking
+type BookingActivityMetadataBookingsBookingItemInterface interface {
+	implementsGraphQLInterfaceBookingActivityMetadataBookingsBookingItemInterface()
+	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
+	GetTypename() string
 }
 
-// GetActivityType returns BookingActivityMetadataBookingsBookingItem.ActivityType, and is useful for accessing the field via an interface.
-func (v *BookingActivityMetadataBookingsBookingItem) GetActivityType() ActivityType {
-	return v.ActivityType
+func (v *BookingActivityMetadataBookingsStayBooking) implementsGraphQLInterfaceBookingActivityMetadataBookingsBookingItemInterface() {
+}
+func (v *BookingActivityMetadataBookingsTripBooking) implementsGraphQLInterfaceBookingActivityMetadataBookingsBookingItemInterface() {
+}
+
+func __unmarshalBookingActivityMetadataBookingsBookingItemInterface(b []byte, v *BookingActivityMetadataBookingsBookingItemInterface) error {
+	if string(b) == "null" {
+		return nil
+	}
+
+	var tn struct {
+		TypeName string `json:"__typename"`
+	}
+	err := json.Unmarshal(b, &tn)
+	if err != nil {
+		return err
+	}
+
+	switch tn.TypeName {
+	case "StayBooking":
+		*v = new(BookingActivityMetadataBookingsStayBooking)
+		return json.Unmarshal(b, *v)
+	case "TripBooking":
+		*v = new(BookingActivityMetadataBookingsTripBooking)
+		return json.Unmarshal(b, *v)
+	case "":
+		return fmt.Errorf(
+			"response was missing BookingItemInterface.__typename")
+	default:
+		return fmt.Errorf(
+			`unexpected concrete type for BookingActivityMetadataBookingsBookingItemInterface: "%v"`, tn.TypeName)
+	}
+}
+
+func __marshalBookingActivityMetadataBookingsBookingItemInterface(v *BookingActivityMetadataBookingsBookingItemInterface) ([]byte, error) {
+
+	var typename string
+	switch v := (*v).(type) {
+	case *BookingActivityMetadataBookingsStayBooking:
+		typename = "StayBooking"
+
+		premarshaled, err := v.__premarshalJSON()
+		if err != nil {
+			return nil, err
+		}
+		result := struct {
+			TypeName string `json:"__typename"`
+			*__premarshalBookingActivityMetadataBookingsStayBooking
+		}{typename, premarshaled}
+		return json.Marshal(result)
+	case *BookingActivityMetadataBookingsTripBooking:
+		typename = "TripBooking"
+
+		premarshaled, err := v.__premarshalJSON()
+		if err != nil {
+			return nil, err
+		}
+		result := struct {
+			TypeName string `json:"__typename"`
+			*__premarshalBookingActivityMetadataBookingsTripBooking
+		}{typename, premarshaled}
+		return json.Marshal(result)
+	case nil:
+		return []byte("null"), nil
+	default:
+		return nil, fmt.Errorf(
+			`unexpected concrete type for BookingActivityMetadataBookingsBookingItemInterface: "%T"`, v)
+	}
+}
+
+// BookingActivityMetadataBookingsStayBooking includes the requested fields of the GraphQL type StayBooking.
+type BookingActivityMetadataBookingsStayBooking struct {
+	Typename    string `json:"__typename"`
+	StayBooking `json:"-"`
+}
+
+// GetTypename returns BookingActivityMetadataBookingsStayBooking.Typename, and is useful for accessing the field via an interface.
+func (v *BookingActivityMetadataBookingsStayBooking) GetTypename() string { return v.Typename }
+
+// GetStartDateTime returns BookingActivityMetadataBookingsStayBooking.StartDateTime, and is useful for accessing the field via an interface.
+func (v *BookingActivityMetadataBookingsStayBooking) GetStartDateTime() time.Time {
+	return v.StayBooking.StartDateTime
+}
+
+// GetEndDateTime returns BookingActivityMetadataBookingsStayBooking.EndDateTime, and is useful for accessing the field via an interface.
+func (v *BookingActivityMetadataBookingsStayBooking) GetEndDateTime() time.Time {
+	return v.StayBooking.EndDateTime
+}
+
+// GetAddress returns BookingActivityMetadataBookingsStayBooking.Address, and is useful for accessing the field via an interface.
+func (v *BookingActivityMetadataBookingsStayBooking) GetAddress() string {
+	return v.StayBooking.Address
+}
+
+// GetActivityType returns BookingActivityMetadataBookingsStayBooking.ActivityType, and is useful for accessing the field via an interface.
+func (v *BookingActivityMetadataBookingsStayBooking) GetActivityType() ActivityType {
+	return v.StayBooking.ActivityType
+}
+
+func (v *BookingActivityMetadataBookingsStayBooking) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*BookingActivityMetadataBookingsStayBooking
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.BookingActivityMetadataBookingsStayBooking = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.StayBooking)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalBookingActivityMetadataBookingsStayBooking struct {
+	Typename string `json:"__typename"`
+
+	StartDateTime time.Time `json:"startDateTime"`
+
+	EndDateTime time.Time `json:"endDateTime"`
+
+	Address string `json:"address"`
+
+	ActivityType ActivityType `json:"activityType"`
+}
+
+func (v *BookingActivityMetadataBookingsStayBooking) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *BookingActivityMetadataBookingsStayBooking) __premarshalJSON() (*__premarshalBookingActivityMetadataBookingsStayBooking, error) {
+	var retval __premarshalBookingActivityMetadataBookingsStayBooking
+
+	retval.Typename = v.Typename
+	retval.StartDateTime = v.StayBooking.StartDateTime
+	retval.EndDateTime = v.StayBooking.EndDateTime
+	retval.Address = v.StayBooking.Address
+	retval.ActivityType = v.StayBooking.ActivityType
+	return &retval, nil
+}
+
+// BookingActivityMetadataBookingsTripBooking includes the requested fields of the GraphQL type TripBooking.
+type BookingActivityMetadataBookingsTripBooking struct {
+	Typename    string `json:"__typename"`
+	TripBooking `json:"-"`
+}
+
+// GetTypename returns BookingActivityMetadataBookingsTripBooking.Typename, and is useful for accessing the field via an interface.
+func (v *BookingActivityMetadataBookingsTripBooking) GetTypename() string { return v.Typename }
+
+// GetDepartureLocation returns BookingActivityMetadataBookingsTripBooking.DepartureLocation, and is useful for accessing the field via an interface.
+func (v *BookingActivityMetadataBookingsTripBooking) GetDepartureLocation() string {
+	return v.TripBooking.DepartureLocation
+}
+
+// GetArrivalLocation returns BookingActivityMetadataBookingsTripBooking.ArrivalLocation, and is useful for accessing the field via an interface.
+func (v *BookingActivityMetadataBookingsTripBooking) GetArrivalLocation() string {
+	return v.TripBooking.ArrivalLocation
+}
+
+// GetLayoverLocations returns BookingActivityMetadataBookingsTripBooking.LayoverLocations, and is useful for accessing the field via an interface.
+func (v *BookingActivityMetadataBookingsTripBooking) GetLayoverLocations() []string {
+	return v.TripBooking.LayoverLocations
+}
+
+// GetActivityType returns BookingActivityMetadataBookingsTripBooking.ActivityType, and is useful for accessing the field via an interface.
+func (v *BookingActivityMetadataBookingsTripBooking) GetActivityType() ActivityType {
+	return v.TripBooking.ActivityType
+}
+
+func (v *BookingActivityMetadataBookingsTripBooking) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*BookingActivityMetadataBookingsTripBooking
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.BookingActivityMetadataBookingsTripBooking = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.TripBooking)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalBookingActivityMetadataBookingsTripBooking struct {
+	Typename string `json:"__typename"`
+
+	DepartureLocation string `json:"departureLocation"`
+
+	ArrivalLocation string `json:"arrivalLocation"`
+
+	LayoverLocations []string `json:"layoverLocations"`
+
+	ActivityType ActivityType `json:"activityType"`
+}
+
+func (v *BookingActivityMetadataBookingsTripBooking) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *BookingActivityMetadataBookingsTripBooking) __premarshalJSON() (*__premarshalBookingActivityMetadataBookingsTripBooking, error) {
+	var retval __premarshalBookingActivityMetadataBookingsTripBooking
+
+	retval.Typename = v.Typename
+	retval.DepartureLocation = v.TripBooking.DepartureLocation
+	retval.ArrivalLocation = v.TripBooking.ArrivalLocation
+	retval.LayoverLocations = v.TripBooking.LayoverLocations
+	retval.ActivityType = v.TripBooking.ActivityType
+	return &retval, nil
 }
 
 // BookingActivityMetadataSubjectIdentifier includes the requested fields of the GraphQL type Identifier.
@@ -608,18 +901,18 @@ func (v *GetActivityActivityResponseDataActivityMetadataBookingActivityMetadata)
 	return v.BookingActivityMetadata.Subject
 }
 
-// GetBookingID returns GetActivityActivityResponseDataActivityMetadataBookingActivityMetadata.BookingID, and is useful for accessing the field via an interface.
-func (v *GetActivityActivityResponseDataActivityMetadataBookingActivityMetadata) GetBookingID() string {
-	return v.BookingActivityMetadata.BookingID
-}
-
 // GetPrice returns GetActivityActivityResponseDataActivityMetadataBookingActivityMetadata.Price, and is useful for accessing the field via an interface.
 func (v *GetActivityActivityResponseDataActivityMetadataBookingActivityMetadata) GetPrice() string {
 	return v.BookingActivityMetadata.Price
 }
 
+// GetBookingID returns GetActivityActivityResponseDataActivityMetadataBookingActivityMetadata.BookingID, and is useful for accessing the field via an interface.
+func (v *GetActivityActivityResponseDataActivityMetadataBookingActivityMetadata) GetBookingID() string {
+	return v.BookingActivityMetadata.BookingID
+}
+
 // GetBookings returns GetActivityActivityResponseDataActivityMetadataBookingActivityMetadata.Bookings, and is useful for accessing the field via an interface.
-func (v *GetActivityActivityResponseDataActivityMetadataBookingActivityMetadata) GetBookings() []BookingActivityMetadataBookingsBookingItem {
+func (v *GetActivityActivityResponseDataActivityMetadataBookingActivityMetadata) GetBookings() []BookingActivityMetadataBookingsBookingItemInterface {
 	return v.BookingActivityMetadata.Bookings
 }
 
@@ -653,11 +946,11 @@ type __premarshalGetActivityActivityResponseDataActivityMetadataBookingActivityM
 
 	Subject []BookingActivityMetadataSubjectIdentifier `json:"subject"`
 
-	BookingID string `json:"bookingID"`
-
 	Price string `json:"price"`
 
-	Bookings []BookingActivityMetadataBookingsBookingItem `json:"bookings"`
+	BookingID string `json:"bookingID"`
+
+	Bookings []json.RawMessage `json:"bookings"`
 }
 
 func (v *GetActivityActivityResponseDataActivityMetadataBookingActivityMetadata) MarshalJSON() ([]byte, error) {
@@ -673,9 +966,26 @@ func (v *GetActivityActivityResponseDataActivityMetadataBookingActivityMetadata)
 
 	retval.Typename = v.Typename
 	retval.Subject = v.BookingActivityMetadata.Subject
-	retval.BookingID = v.BookingActivityMetadata.BookingID
 	retval.Price = v.BookingActivityMetadata.Price
-	retval.Bookings = v.BookingActivityMetadata.Bookings
+	retval.BookingID = v.BookingActivityMetadata.BookingID
+	{
+
+		dst := &retval.Bookings
+		src := v.BookingActivityMetadata.Bookings
+		*dst = make(
+			[]json.RawMessage,
+			len(src))
+		for i, src := range src {
+			dst := &(*dst)[i]
+			var err error
+			*dst, err = __marshalBookingActivityMetadataBookingsBookingItemInterface(
+				&src)
+			if err != nil {
+				return nil, fmt.Errorf(
+					"unable to marshal GetActivityActivityResponseDataActivityMetadataBookingActivityMetadata.BookingActivityMetadata.Bookings: %w", err)
+			}
+		}
+	}
 	return &retval, nil
 }
 
@@ -1801,18 +2111,18 @@ func (v *LookupActivityMetadataBookingActivityMetadata) GetSubject() []BookingAc
 	return v.BookingActivityMetadata.Subject
 }
 
-// GetBookingID returns LookupActivityMetadataBookingActivityMetadata.BookingID, and is useful for accessing the field via an interface.
-func (v *LookupActivityMetadataBookingActivityMetadata) GetBookingID() string {
-	return v.BookingActivityMetadata.BookingID
-}
-
 // GetPrice returns LookupActivityMetadataBookingActivityMetadata.Price, and is useful for accessing the field via an interface.
 func (v *LookupActivityMetadataBookingActivityMetadata) GetPrice() string {
 	return v.BookingActivityMetadata.Price
 }
 
+// GetBookingID returns LookupActivityMetadataBookingActivityMetadata.BookingID, and is useful for accessing the field via an interface.
+func (v *LookupActivityMetadataBookingActivityMetadata) GetBookingID() string {
+	return v.BookingActivityMetadata.BookingID
+}
+
 // GetBookings returns LookupActivityMetadataBookingActivityMetadata.Bookings, and is useful for accessing the field via an interface.
-func (v *LookupActivityMetadataBookingActivityMetadata) GetBookings() []BookingActivityMetadataBookingsBookingItem {
+func (v *LookupActivityMetadataBookingActivityMetadata) GetBookings() []BookingActivityMetadataBookingsBookingItemInterface {
 	return v.BookingActivityMetadata.Bookings
 }
 
@@ -1846,11 +2156,11 @@ type __premarshalLookupActivityMetadataBookingActivityMetadata struct {
 
 	Subject []BookingActivityMetadataSubjectIdentifier `json:"subject"`
 
-	BookingID string `json:"bookingID"`
-
 	Price string `json:"price"`
 
-	Bookings []BookingActivityMetadataBookingsBookingItem `json:"bookings"`
+	BookingID string `json:"bookingID"`
+
+	Bookings []json.RawMessage `json:"bookings"`
 }
 
 func (v *LookupActivityMetadataBookingActivityMetadata) MarshalJSON() ([]byte, error) {
@@ -1866,9 +2176,26 @@ func (v *LookupActivityMetadataBookingActivityMetadata) __premarshalJSON() (*__p
 
 	retval.Typename = v.Typename
 	retval.Subject = v.BookingActivityMetadata.Subject
-	retval.BookingID = v.BookingActivityMetadata.BookingID
 	retval.Price = v.BookingActivityMetadata.Price
-	retval.Bookings = v.BookingActivityMetadata.Bookings
+	retval.BookingID = v.BookingActivityMetadata.BookingID
+	{
+
+		dst := &retval.Bookings
+		src := v.BookingActivityMetadata.Bookings
+		*dst = make(
+			[]json.RawMessage,
+			len(src))
+		for i, src := range src {
+			dst := &(*dst)[i]
+			var err error
+			*dst, err = __marshalBookingActivityMetadataBookingsBookingItemInterface(
+				&src)
+			if err != nil {
+				return nil, fmt.Errorf(
+					"unable to marshal LookupActivityMetadataBookingActivityMetadata.BookingActivityMetadata.Bookings: %w", err)
+			}
+		}
+	}
 	return &retval, nil
 }
 
@@ -2562,6 +2889,26 @@ const (
 	SourceGandalf     Source = "GANDALF"
 )
 
+// StayBooking includes the GraphQL fields of StayBooking requested by the fragment StayBooking.
+type StayBooking struct {
+	StartDateTime time.Time    `json:"startDateTime"`
+	EndDateTime   time.Time    `json:"endDateTime"`
+	Address       string       `json:"address"`
+	ActivityType  ActivityType `json:"activityType"`
+}
+
+// GetStartDateTime returns StayBooking.StartDateTime, and is useful for accessing the field via an interface.
+func (v *StayBooking) GetStartDateTime() time.Time { return v.StartDateTime }
+
+// GetEndDateTime returns StayBooking.EndDateTime, and is useful for accessing the field via an interface.
+func (v *StayBooking) GetEndDateTime() time.Time { return v.EndDateTime }
+
+// GetAddress returns StayBooking.Address, and is useful for accessing the field via an interface.
+func (v *StayBooking) GetAddress() string { return v.Address }
+
+// GetActivityType returns StayBooking.ActivityType, and is useful for accessing the field via an interface.
+func (v *StayBooking) GetActivityType() ActivityType { return v.ActivityType }
+
 type TraitLabel string
 
 const (
@@ -2578,6 +2925,26 @@ const (
 	TraitLabelEmail            TraitLabel = "EMAIL"
 	TraitLabelOrderCount       TraitLabel = "ORDER_COUNT"
 )
+
+// TripBooking includes the GraphQL fields of TripBooking requested by the fragment TripBooking.
+type TripBooking struct {
+	DepartureLocation string       `json:"departureLocation"`
+	ArrivalLocation   string       `json:"arrivalLocation"`
+	LayoverLocations  []string     `json:"layoverLocations"`
+	ActivityType      ActivityType `json:"activityType"`
+}
+
+// GetDepartureLocation returns TripBooking.DepartureLocation, and is useful for accessing the field via an interface.
+func (v *TripBooking) GetDepartureLocation() string { return v.DepartureLocation }
+
+// GetArrivalLocation returns TripBooking.ArrivalLocation, and is useful for accessing the field via an interface.
+func (v *TripBooking) GetArrivalLocation() string { return v.ArrivalLocation }
+
+// GetLayoverLocations returns TripBooking.LayoverLocations, and is useful for accessing the field via an interface.
+func (v *TripBooking) GetLayoverLocations() []string { return v.LayoverLocations }
+
+// GetActivityType returns TripBooking.ActivityType, and is useful for accessing the field via an interface.
+func (v *TripBooking) GetActivityType() ActivityType { return v.ActivityType }
 
 type TripStatus string
 
@@ -2966,18 +3333,12 @@ fragment BookingActivityMetadata on BookingActivityMetadata {
 			identifierType
 		}
 	}
-	bookingID
 	price
+	bookingID
 	bookings {
-		... on BookingItem {
-			startDateTime
-			endDateTime
-			address
-			depatureLocation
-			arrivalLocation
-			layoverLocations
-			activityType
-		}
+		__typename
+		... StayBooking
+		... TripBooking
 	}
 }
 fragment YoutubeActivityMetadata on YoutubeActivityMetadata {
@@ -3054,6 +3415,18 @@ fragment UberEatsActivityMetadata on UberEatsActivityMetadata {
 			}
 		}
 	}
+}
+fragment StayBooking on StayBooking {
+	startDateTime
+	endDateTime
+	address
+	activityType
+}
+fragment TripBooking on TripBooking {
+	departureLocation
+	arrivalLocation
+	layoverLocations
+	activityType
 }
 `
 
@@ -3282,18 +3655,12 @@ fragment BookingActivityMetadata on BookingActivityMetadata {
 			identifierType
 		}
 	}
-	bookingID
 	price
+	bookingID
 	bookings {
-		... on BookingItem {
-			startDateTime
-			endDateTime
-			address
-			depatureLocation
-			arrivalLocation
-			layoverLocations
-			activityType
-		}
+		__typename
+		... StayBooking
+		... TripBooking
 	}
 }
 fragment YoutubeActivityMetadata on YoutubeActivityMetadata {
@@ -3370,6 +3737,18 @@ fragment UberEatsActivityMetadata on UberEatsActivityMetadata {
 			}
 		}
 	}
+}
+fragment StayBooking on StayBooking {
+	startDateTime
+	endDateTime
+	address
+	activityType
+}
+fragment TripBooking on TripBooking {
+	departureLocation
+	arrivalLocation
+	layoverLocations
+	activityType
 }
 `
 
