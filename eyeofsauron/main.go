@@ -76,7 +76,7 @@ func main() {
 	// Join the CWD with the provided folder path
 	folder = filepath.Join(cwd, folder)
 
-	client := graphqlClient.NewClient("https://sauron.gandalf.network/public/gql")
+	client := graphqlClient.NewClient("https://sauron-staging.gandalf.network/public/gql")
 	req := graphqlClient.NewRequest(constants.IntrospectionQuery)
 
 	ctx := context.Background()

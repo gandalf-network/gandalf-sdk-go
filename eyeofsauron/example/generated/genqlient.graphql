@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 fragment AmazonActivityMetadata on AmazonActivityMetadata {
   productName: productName
   subject: subject {
@@ -69,6 +70,8 @@ fragment BookingActivityMetadata on BookingActivityMetadata {
   }
 }
 
+=======
+>>>>>>> 0970f72 (Traits docs)
 fragment NetflixActivityMetadata on NetflixActivityMetadata {
   title: title
   subject: subject {
@@ -81,11 +84,62 @@ fragment NetflixActivityMetadata on NetflixActivityMetadata {
   lastPlayedAt: lastPlayedAt
 }
 
+<<<<<<< HEAD
 fragment StayBooking on StayBooking {
   startDateTime: startDateTime
   endDateTime: endDateTime
   address: address
   activityType: activityType
+=======
+fragment AmazonActivityMetadata on AmazonActivityMetadata {
+  productName: productName
+  subject: subject {
+    ... on Identifier {
+      value
+      identifierType
+    }
+  }
+  date: date
+  quantityPurchased: quantityPurchased
+  totalCost: totalCost
+}
+
+fragment BookingActivityMetadata on BookingActivityMetadata {
+  subject: subject {
+    ... on Identifier {
+      value
+      identifierType
+    }
+  }
+  bookingID: bookingID
+  price: price
+  bookings: bookings {
+    ... on BookingItem {
+      startDateTime
+      endDateTime
+      address
+      depatureLocation
+      arrivalLocation
+      layoverLocations      
+      activityType
+    }
+  }
+}
+
+fragment UberActivityMetadata on UberActivityMetadata {
+  subject: subject {
+    ... on Identifier {
+      value
+      identifierType
+    }
+  }
+  beginTripTime: beginTripTime
+  dropoffTime: dropoffTime
+  cost: cost
+  city: city
+  distance: distance
+  status: status
+>>>>>>> 0970f72 (Traits docs)
 }
 
 fragment UberEatsActivityMetadata on UberEatsActivityMetadata {
@@ -99,8 +153,13 @@ fragment UberEatsActivityMetadata on UberEatsActivityMetadata {
   restaurant: restaurant
   currency: currency
   totalPrice: totalPrice
+<<<<<<< HEAD
   status: status
   UberEatsActivityMetadataItems: items {
+=======
+  UberEatsActivityMetadataStatus: status
+  items: items {
+>>>>>>> 0970f72 (Traits docs)
     ... on UberEatsOrderItem {
       name
       price
@@ -116,6 +175,22 @@ fragment UberEatsActivityMetadata on UberEatsActivityMetadata {
   }
 }
 
+<<<<<<< HEAD
+=======
+fragment YoutubeActivityMetadata on YoutubeActivityMetadata {
+  title: title
+  subject: subject {
+    ... on Identifier {
+      value
+      identifierType
+    }
+  }
+  date: date
+  percentageWatched: percentageWatched
+  contentType: contentType
+}
+
+>>>>>>> 0970f72 (Traits docs)
 fragment PlaystationActivityMetadata on PlaystationActivityMetadata {
   title: title
   subject: subject {
@@ -127,19 +202,40 @@ fragment PlaystationActivityMetadata on PlaystationActivityMetadata {
   lastPlayedAt: lastPlayedAt
 }
 
+<<<<<<< HEAD
 fragment UberActivityMetadata on UberActivityMetadata {
+=======
+fragment InstacartActivityMetadata on InstacartActivityMetadata {
+>>>>>>> 0970f72 (Traits docs)
   subject: subject {
     ... on Identifier {
       value
       identifierType
     }
   }
+<<<<<<< HEAD
   beginTripTime: beginTripTime
   dropoffTime: dropoffTime
   cost: cost
   city: city
   distance: distance
   UberActivityMetadataStatus: status
+=======
+  retailer: retailer
+  totalOrderAmountSpent: totalOrderAmountSpent
+  dateOrdered: dateOrdered
+  dateDelivered: dateDelivered
+  statusString: statusString
+  InstacartActivityMetadataItems: items {
+    ... on InstacartOrderItem {
+      itemID
+      productName
+      unitPrice
+      status
+      quantityPurchased
+    }
+  }
+>>>>>>> 0970f72 (Traits docs)
 }
 
 query getActivity($dataKey: String!, $activityType: [ActivityType], $source: Source!, $limit: Int64!, $page: Int64!) {
