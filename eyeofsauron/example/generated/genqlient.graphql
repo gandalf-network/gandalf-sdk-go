@@ -36,6 +36,7 @@ fragment InstacartActivityMetadata on InstacartActivityMetadata {
   }
 }
 
+<<<<<<< HEAD
 fragment UberActivityMetadata on UberActivityMetadata {
   subject: subject {
     ... on Identifier {
@@ -59,6 +60,16 @@ fragment StayBooking on StayBooking {
 }
 
 fragment YoutubeActivityMetadata on YoutubeActivityMetadata {
+=======
+fragment TripBooking on TripBooking {
+  departureLocation: departureLocation
+  arrivalLocation: arrivalLocation
+  layoverLocations: layoverLocations
+  activityType: activityType
+}
+
+fragment PlaystationActivityMetadata on PlaystationActivityMetadata {
+>>>>>>> 6027f12 (fix conflict)
   title: title
   subject: subject {
     ... on Identifier {
@@ -66,9 +77,20 @@ fragment YoutubeActivityMetadata on YoutubeActivityMetadata {
       identifierType
     }
   }
+<<<<<<< HEAD
   date: date
   percentageWatched: percentageWatched
   contentType: contentType
+=======
+  lastPlayedAt: lastPlayedAt
+}
+
+fragment StayBooking on StayBooking {
+  startDateTime: startDateTime
+  endDateTime: endDateTime
+  address: address
+  activityType: activityType
+>>>>>>> 6027f12 (fix conflict)
 }
 
 fragment TripBooking on TripBooking {
@@ -113,7 +135,7 @@ fragment UberEatsActivityMetadata on UberEatsActivityMetadata {
   restaurant: restaurant
   currency: currency
   totalPrice: totalPrice
-  UberEatsActivityMetadataStatus: status
+  status: status
   UberEatsActivityMetadataItems: items {
     ... on UberEatsOrderItem {
       name
@@ -130,6 +152,35 @@ fragment UberEatsActivityMetadata on UberEatsActivityMetadata {
   }
 }
 
+<<<<<<< HEAD
+=======
+fragment AmazonActivityMetadata on AmazonActivityMetadata {
+  productName: productName
+  subject: subject {
+    ... on Identifier {
+      value
+      identifierType
+    }
+  }
+  date: date
+  quantityPurchased: quantityPurchased
+  totalCost: totalCost
+}
+
+fragment YoutubeActivityMetadata on YoutubeActivityMetadata {
+  title: title
+  subject: subject {
+    ... on Identifier {
+      value
+      identifierType
+    }
+  }
+  date: date
+  percentageWatched: percentageWatched
+  contentType: contentType
+}
+
+>>>>>>> 6027f12 (fix conflict)
 fragment NetflixActivityMetadata on NetflixActivityMetadata {
   title: title
   subject: subject {
@@ -140,6 +191,21 @@ fragment NetflixActivityMetadata on NetflixActivityMetadata {
   }
   date: date
   lastPlayedAt: lastPlayedAt
+}
+
+fragment UberActivityMetadata on UberActivityMetadata {
+  subject: subject {
+    ... on Identifier {
+      value
+      identifierType
+    }
+  }
+  beginTripTime: beginTripTime
+  dropoffTime: dropoffTime
+  cost: cost
+  city: city
+  distance: distance
+  UberActivityMetadataStatus: status
 }
 
 query getActivity($dataKey: String!, $activityType: [ActivityType], $source: Source!, $limit: Int64!, $page: Int64!) {
