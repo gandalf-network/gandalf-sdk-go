@@ -16,7 +16,7 @@ require (
 	github.com/alexflint/go-scalar v1.0.0 // indirect
 	github.com/bmatcuk/doublestar/v4 v4.6.1 // indirect
 	github.com/decred/dcrd/dcrec/secp256k1/v4 v4.0.1 // indirect
-	github.com/vektah/gqlparser/v2 v2.5.11 // indirect
+	github.com/vektah/gqlparser/v2 v2.5.15 // indirect
 	golang.org/x/mod v0.15.0 // indirect
 	golang.org/x/tools v0.18.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
