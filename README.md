@@ -1,6 +1,28 @@
-# Gandalf SDK for Go
+<h1 align="center">Gandalf SDK for Go</h1>
 
-The Gandalf SDK for Go provides two main libraries: `EyeOfSauron` for interacting with GraphQL APIs and `Connect` for generating valid Connect URLs for account linking.
+<p align="center">
+  <img src="https://mintlify.s3-us-west-1.amazonaws.com/gandalf/logo/gandalf.svg" alt="gandalf-logo" width="30px" height="30px"/>
+  <br>
+  The Gandalf SDK for Go provides two main libraries: <code>EyeOfSauron</code> for interacting with GraphQL APIs and <code>Connect</code> for generating valid Connect URLs for account linking.
+  <br>
+</p>
+
+
+## Documentation
+
+Visit the official Gandalf documentation [here](https://docs.gandalf.network/).
+
+- [Introduction](https://docs.gandalf.network/get-started/introduction)
+- [Getting Started](https://docs.gandalf.network/get-started/quickstart)
+- [Examples](https://docs.gandalf.network/examples/whoami.tv)
+
+## Directory
+
+| Package                                                                                                    | Description                                                                                                            | Links                                                           |
+| ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
+| [`EyeofSauron`](https://github.com/gandalf-network/gandalf-sdk-go/tree/main/eyeofsauron)                        | A command line tool for generating client code for [Gandalf eyeofsauron ](https://docs.gandalf.network/concepts/sauron).                                | [Docs](https://docs.gandalf.network/concepts/sauron)     |
+| [`Connect`](https://github.com/gandalf-network/gandalf-sdk-go/tree/main/connect) | A package for generating connect URL for Gandalf                                                     | [Docs](https://docs.gandalf.network/concepts/connect/intro) |
+                                                               
 
 ## EyeOfSauron
 
@@ -67,7 +89,6 @@ import (
 func main() {
 	// initialize eyeofsauron object
 	...
-
 
     // Get activity
     response, err := eye.GetActivity(
